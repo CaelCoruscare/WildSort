@@ -11,10 +11,10 @@ import io.qt.textproperties 1.0
 
 
 Window {
-    width: 640
-    height: 480
+    width: 1280
+    height: 640
     visible: true
-    title: qsTr("Hello World")
+    title: qsTr("WildSort")
 
    
 
@@ -48,7 +48,7 @@ Window {
             width: page.width
             height: page.height - 40
             anchors.top: page.top
-            color: "green"
+            color: "#b7d1b6"
 
            Image {
                 id: image
@@ -85,9 +85,12 @@ Window {
             }
 
             Button {
+                id: folderButton
                 text: qsTr("Select File")
-                onClicked: folderDialog.open()
-                //onClicked: popup.open()
+                onClicked: {
+                    folderDialog.open();
+                    folderButton.visible = false;
+                }
                 
             }
 
@@ -122,7 +125,7 @@ Window {
 
             Text {
                 id: textIsThereA
-                text: "Is there: "
+                text: qsTr("Is there: ")
                 height: 30
                 anchors.left: infoBar.left
                 anchors.verticalCenter: parent.verticalCenter
@@ -132,7 +135,7 @@ Window {
 
             Text {
                 id: textType
-                text: "...?"
+                text: qsTr("...?")
                 height: 30
                 anchors.left: textIsThereA.right
                 anchors.verticalCenter: parent.verticalCenter
@@ -144,6 +147,45 @@ Window {
 
     }
 
+    Image {
+        id:checkMark
+        source: "images/check-mark.png"
+        anchors.horizontalCenter: page.horizontalCenter
+        anchors.verticalCenter: page.verticalCenter
+        height: page.height - 200
+        width: page.height - 200
+        visible: false
+    }
+
+    Image {
+        id:redX
+        source: "images/x-circle.png"
+        anchors.horizontalCenter: page.horizontalCenter
+        anchors.verticalCenter: page.verticalCenter
+        height: page.height - 200
+        width: page.height - 200
+        visible: false
+    }
+
+    Image {
+        id:backArrow
+        source: "images/left-arrow.png"
+        anchors.horizontalCenter: page.horizontalCenter
+        anchors.verticalCenter: page.verticalCenter
+        height: page.height - 200
+        width: page.height - 200
+        visible: false
+    }
+
+    Image {
+        id:typeChangeArrow
+        source: "images/restart-arrow.png"
+        anchors.horizontalCenter: page.horizontalCenter
+        anchors.verticalCenter: page.verticalCenter
+        height: page.height - 200
+        width: page.height - 200
+        visible: false
+    }
     
 
     Popup {
@@ -155,7 +197,7 @@ Window {
 
         contentItem: TextField {
             id: notes
-            placeholderText: "Put notes here..."
+            placeholderText: qsTr("Put notes here...")
             wrapMode: Text.WordWrap
             //anchors.bottom: page.bottom
             //anchors.horizontalCenter: page.horizontalCenter

@@ -17,6 +17,6 @@ app = QGuiApplication(sys.argv)
 
 engine = QQmlApplicationEngine()
 engine.quit.connect(app.quit)
-engine.load('AnimalSort.qml')
+engine.load('WildSort.qml')
 
 sys.exit(app.exec())
