@@ -161,33 +161,35 @@ class ImageLogic(QObject):
             #Link To File
             linkToFile = url,
 
-            #Camera (assumes file structure of /camera_{CameraName}/)
-            splitURL = url.split('/')
-            camera = next((x for x in splitURL if "camera" in x.lower()), "None Found")
-
 
             with open(url, 'rb') as fh:
-                tags = exifread.process_file(fh, stop_tag="EXIF DateTimeOriginal")
+                tags = exifread.process_file(fh)
                 datetimeTaken = tags["EXIF DateTimeOriginal"]
+                subsecTimeTaken = tags.get("EXIF SubsecTimeOriginal")
                 #2003:08:11 16:45:32
             datetime_obj = datetime.strptime(datetimeTaken, "%Y:%m:%d %H:%M:%S")
-            
+
+            if subsecTimeTaken is not None:
+                datetime_obj = datetime_obj + subsecTimeTaken
             #Date Taken
             dateTaken = datetime_obj.date()
 
             #Time Taken
             timeTaken = datetime_obj.time()
 
+            #Transect	Camera	File	Date	Time
             fileData.append(
-                url, 
+                linkToFile, 
+                dateTaken,
+                timeTaken
             )
 
     def writeReport(self):
         headers = ['Link To File', 'Camera', 'Photo Number', 'Date', 'Time', 'Notes']
 
         sortData = []
-        self.recursiveGetAllNamesAndData(self.allData, headers, sortData)
-        zip(sortData)
+        #self.recursiveGetAllNamesAndData(self.allData, headers, sortData)
+        #zip(sortData)
 
         fileData = []
         self.getFileData(self.pictureURLs, fileData)
@@ -340,6 +342,11 @@ class ImageLogic(QObject):
         #Set the UI to "Is there: Any Trigger?"
         self.looking4Changed.emit(self.typeAddress[-1])
         self.pictureChanged.emit('0' + "/" + str(len(self.pictureURLs)))
+
+        #TESTING
+        fileData = []
+        self.getFileData(self.pictureURLs, fileData)
+        #TESTING
 
         return self.getNextPhoto()
     
