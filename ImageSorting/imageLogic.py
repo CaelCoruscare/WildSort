@@ -28,6 +28,7 @@ class ImageLogic(QObject):
 
     looking4Changed = Signal(str)
     pictureChanged = Signal(str)
+    flashIcon = Signal(str)
 
     typesToLook4 = {
         'Any Trigger': {
@@ -283,9 +284,9 @@ class ImageLogic(QObject):
 
         #Tell the UI to update the "Is there a ____?" area
         self.looking4Changed.emit(self.typeAddress[-1])
+        self.flashIcon.emit("typechange")
 
         self.getNextPhoto()
-
 
     def getNextPhoto(self):
         #Move through the pics until hitting the next one that is relevant for the current Type
@@ -352,12 +353,15 @@ class ImageLogic(QObject):
             case "yes":
                 self.updateCurrentData(1)
                 picToShow = self.getNextPhoto()
+                self.flashIcon.emit("yes")
             case "no":
                 self.updateCurrentData(0)
                 picToShow = self.getNextPhoto()
+                self.flashIcon.emit("no")
             case "back":
                 self.updateCurrentData(1) #This is being set because it essentially sets the data point to "not filled in". See getNextPhoto() for explanation.
                 picToShow = self.getLastPhoto()
+                self.flashIcon.emit("back")
             case _:
                 raise ValueError("user choice passed in is not valid. Should be \'yes\',\'no\', or \'back\' (case insensitive)" , choice)
 

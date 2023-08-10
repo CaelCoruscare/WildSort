@@ -27,6 +27,27 @@ Window {
         function onPictureChanged(picOnOf){
             textPhotoNum.text = picOnOf
         }
+
+        function onFlashIcon(code){
+            if (code == "yes"){
+                checkMark.visible = true;
+                checkMarkTimer.restart()
+            }
+            else if (code == "no"){
+                redX. visible = true;
+                redXTimer.restart()
+            }
+            else if (code == "back"){
+                backArrow.visible = true;
+                backArrowTimer.restart()
+            }
+            else if (code == "typechange"){
+                redX. visible = false;
+                checkMark.visible = false;
+                typeChangeArrow.visible = true;
+                typeChangeArrowTimer.restart()
+            }
+        }
     }
 
     ImageLogic {
@@ -59,9 +80,18 @@ Window {
                 anchors.horizontalCenter: parent.horizontalCenter
                 focus:true
                 Keys.onPressed: (event)=> { 
-                    if (event.key == Qt.Key_L) source = imageLogic.choiceMade("yes");  
-                    else if (event.key == Qt.Key_Semicolon) source = imageLogic.choiceMade("no"); 
-                    else if (event.key == Qt.Key_Apostrophe) source = imageLogic.choiceMade("back"); 
+                    if (event.key == Qt.Key_L){
+                        imageSourceHolder.text = imageLogic.choiceMade("yes"); 
+                        imageTimer.restart();
+                    }
+                    if (event.key == Qt.Key_Semicolon){
+                        imageSourceHolder.text = imageLogic.choiceMade("no"); 
+                        imageTimer.restart();
+                    } 
+                    if (event.key == Qt.Key_Apostrophe){ 
+                        imageSourceHolder.text = imageLogic.choiceMade("back"); 
+                        imageTimer.restart();
+                    }
 
                     if (event.key == Qt.Key_Return) 
                     {
@@ -73,7 +103,21 @@ Window {
                         }
                     }
                         
-                    }
+                }
+                
+                Timer {
+                    id:imageTimer
+                    interval: 200; 
+
+                    onTriggered: parent.source = imageSourceHolder.text;
+
+                    
+                }
+                TextField {
+                    id: imageSourceHolder;
+                    visible: false;
+                    text: "Hello";
+                }
            }
            
 
@@ -152,9 +196,15 @@ Window {
         source: "images/check-mark.png"
         anchors.horizontalCenter: page.horizontalCenter
         anchors.verticalCenter: page.verticalCenter
-        height: page.height - 200
-        width: page.height - 200
+        height: page.height * 0.5
+        width: page.height * 0.5
         visible: false
+
+        Timer {
+            id: checkMarkTimer
+            interval: 100; 
+            onTriggered: parent.visible = false;
+        }
     }
 
     Image {
@@ -162,9 +212,15 @@ Window {
         source: "images/x-circle.png"
         anchors.horizontalCenter: page.horizontalCenter
         anchors.verticalCenter: page.verticalCenter
-        height: page.height - 200
-        width: page.height - 200
+        height: page.height * 0.5
+        width: page.height * 0.5
         visible: false
+
+        Timer {
+            id:redXTimer
+            interval: 100; 
+            onTriggered: parent.visible = false;
+        }
     }
 
     Image {
@@ -172,9 +228,15 @@ Window {
         source: "images/left-arrow.png"
         anchors.horizontalCenter: page.horizontalCenter
         anchors.verticalCenter: page.verticalCenter
-        height: page.height - 200
-        width: page.height - 200
+        height: page.height * 0.5
+        width: page.height * 0.5
         visible: false
+
+        Timer {
+            id:backArrowTimer
+            interval: 100; 
+            onTriggered: parent.visible = false;
+        }
     }
 
     Image {
@@ -182,9 +244,15 @@ Window {
         source: "images/restart-arrow.png"
         anchors.horizontalCenter: page.horizontalCenter
         anchors.verticalCenter: page.verticalCenter
-        height: page.height - 200
-        width: page.height - 200
+        height: page.height * 0.8
+        width: page.height * 0.8
         visible: false
+
+        Timer {
+            id:typeChangeArrowTimer
+            interval: 1000; 
+            onTriggered: parent.visible = false;
+        }
     }
     
 
