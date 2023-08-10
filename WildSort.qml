@@ -54,11 +54,6 @@ Window {
         id: imageLogic
     }
 
-    
-    
-        //focusPolicy: Qt.NoFocus
-
-
     Rectangle {
         id: page
         anchors.fill: parent

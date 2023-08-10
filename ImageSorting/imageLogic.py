@@ -284,6 +284,8 @@ class ImageLogic(QObject):
 
         #Tell the UI to update the "Is there a ____?" area
         self.looking4Changed.emit(self.typeAddress[-1])
+
+        #Flash the Typechange Icon on screen so the user knows that we are changing types
         self.flashIcon.emit("typechange")
 
         self.getNextPhoto()
