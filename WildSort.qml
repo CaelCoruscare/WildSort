@@ -125,7 +125,7 @@ Window {
 
             Button {
                 id: folderButton
-                text: qsTr("Select File")
+                text: qsTr("Select Folder")
                 onClicked: {
                     folderDialog.open();
                     folderButton.visible = false;
