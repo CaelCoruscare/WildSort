@@ -1,5 +1,8 @@
 import csv
-from DataHandling.dataManager import dataManager
+from datetime import datetime
+
+import exifread
+from DataHandling.DataManager import DataManager as dataManager
 
 class reportBuilder():
 

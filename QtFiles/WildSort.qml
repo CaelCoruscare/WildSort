@@ -6,7 +6,8 @@ import QtQuick.Dialogs
 import Qt.labs.folderlistmodel 2.5
 import QtQuick.Layouts
 
-import io.qt.textproperties 1.0
+import com.isort.slotbridge 1.0
+import com.isort.emitterbridge 1.0
 
 
 
@@ -20,12 +21,19 @@ Window {
 
 
     Connections{
-        target: imageLogic
-        function onLooking4Changed(newType){
-            textType.text = newType + "?"
+        target: emitterBridge
+
+        function onUpdateLooking4(newCategory){
+            textCategory.text = newType + "?"
         }
-        function onPictureChanged(picOnOf){
-            textPhotoNum.text = picOnOf
+        function onUpdatePhoto(picURL){
+            photo.source = picURL
+        }
+        function onUpdatePhotoCounter(counterText){
+            textPhotoCounter.text = counterText
+        }
+        function onShowExplanation(explanation){
+            //explanation.text = explanation
         }
 
         function onFlashIcon(code){
@@ -41,18 +49,9 @@ Window {
                 backArrow.visible = true;
                 backArrowTimer.restart()
             }
-            else if (code == "typechange"){
-                redX. visible = false;
-                checkMark.visible = false;
-                typeChangeArrow.visible = true;
-                typeChangeArrowTimer.restart()
-            }
         }
     }
 
-    ImageLogic {
-        id: imageLogic
-    }
 
     Rectangle {
         id: page
@@ -67,25 +66,23 @@ Window {
             color: "#b7d1b6"
 
            Image {
-                id: image
+                id: photo
                 width: page.width
                 height:parent.height
                 fillMode: Image.PreserveAspectFit
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenter: parent.horizontalCenter
                 focus:true
+                source: "/Users/test/Pictures/elephant.jpeg"
                 Keys.onPressed: (event)=> { 
                     if (event.key == Qt.Key_L){
-                        imageSourceHolder.text = imageLogic.choiceMade("yes"); 
-                        imageTimer.restart();
+                        slotBridge.choiceMade("yes"); 
                     }
                     if (event.key == Qt.Key_Semicolon){
-                        imageSourceHolder.text = imageLogic.choiceMade("no"); 
-                        imageTimer.restart();
+                        slotBridge.choiceMade("no"); 
                     } 
                     if (event.key == Qt.Key_Apostrophe){ 
-                        imageSourceHolder.text = imageLogic.choiceMade("back"); 
-                        imageTimer.restart();
+                        slotBridge.choiceMade("back"); 
                     }
 
                     if (event.key == Qt.Key_Return) 
@@ -93,25 +90,10 @@ Window {
                         if (!popup.opened)
                         {
                             popup.open();
-                            notes.text = imageLogic.getNote() 
+                            notes.text = slotBridge.getNote() 
                             notes.forceActiveFocus();
                         }
                     }
-                        
-                }
-                
-                Timer {
-                    id:imageTimer
-                    interval: 200; 
-
-                    onTriggered: parent.source = imageSourceHolder.text;
-
-                    
-                }
-                TextField {
-                    id: imageSourceHolder;
-                    visible: false;
-                    text: "Hello";
                 }
            }
            
@@ -120,7 +102,7 @@ Window {
                 id: folderDialog
                 currentFolder: StandardPaths.standardLocations(StandardPaths.PicturesLocation)[0]
                 //selectedFolder: viewer.folder
-                onAccepted: image.source = imageLogic.setFolder(selectedFolder)
+                onAccepted: slotBridge.handleSetFolder(selectedFolder)
             }
 
             Button {
@@ -132,17 +114,6 @@ Window {
                 }
                 
             }
-
-
-            FileDialog {
-                id: fileDialog
-                //currentFolder: StandardPaths.standardLocations(StandardPaths.PicturesLocation)[0]
-                onAccepted: image.source = selectedFile
-                //onAccepted: imageHolder.color = imageLogic.getColor(imageLogic.testColor)
-            }
-
-
-
         }
 
         Rectangle {
@@ -153,7 +124,7 @@ Window {
             color:"lightgrey"
 
             Text {
-                id: textPhotoNum
+                id: textPhotoCounter
                 text: "Photo 0/0"
                 height: 30
                 anchors.right: infoBar.right
@@ -230,22 +201,6 @@ Window {
         Timer {
             id:backArrowTimer
             interval: 100; 
-            onTriggered: parent.visible = false;
-        }
-    }
-
-    Image {
-        id:typeChangeArrow
-        source: "AppImages/restart-arrow.png"
-        anchors.horizontalCenter: page.horizontalCenter
-        anchors.verticalCenter: page.verticalCenter
-        height: page.height * 0.8
-        width: page.height * 0.8
-        visible: false
-
-        Timer {
-            id:typeChangeArrowTimer
-            interval: 1000; 
             onTriggered: parent.visible = false;
         }
     }
