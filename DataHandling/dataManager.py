@@ -36,6 +36,10 @@ class DataManager():
         #   The data[] for the other categories will all be created based on the filled out data[] of their parent.
         self.dataList[0]["data"] = [1] * len(self.photoURLs)
 
+        print("")
+        print("")
+        print("")
+
     dataList = []
     """
     Holds data on which pictures each type appears in. \n
@@ -52,7 +56,7 @@ class DataManager():
         for key in dict_OfTypes:
             self.dataList.append({'title':key, 'parent': parent, 'data': []})
             if len(dict_OfTypes[key]) > 0:
-                self.fillDataList(dict_OfTypes[key], dict_OfTypes)
+                self.fillDataList(dict_OfTypes[key], self.dataList[-1])
 
     def nextType(self):
         currentColumn = next(self.dataIter, None) 
@@ -70,3 +74,13 @@ class DataManager():
 
     def countPicsInCategory(self, categoryIndex):
         return len(self.dataList[categoryIndex]['data']) - self.dataList[categoryIndex]['data'].count(-1)
+    
+    def countAskedPicsInCategory(self, photoIndex, categoryIndex):
+        slicedData = self.dataList[categoryIndex]['data'][0:photoIndex]
+        return len(slicedData) - slicedData.count(-1)
+
+    def copyParentData(self, categoryIndex):
+        parentList = self.dataList[categoryIndex]['parent']['data']
+        newData = [x if x == 1 else -1 for x in parentList]
+        self.dataList[categoryIndex]['data'] = newData
+

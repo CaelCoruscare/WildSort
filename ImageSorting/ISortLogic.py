@@ -37,9 +37,9 @@ class ISortLogic(QObject):
 
 ########## Forward & Back logic
 
-    def photoForward(self, triggerWasSeen):
+    def photoForward(self, wasTriggerSeen):
         """increments the photo index and handles all resulting logic"""
-        self.recordData(triggerWasSeen)
+        self.recordData(wasTriggerSeen)
         self.photoIndex +=1
 
         if self.isOnBlankScreen():
@@ -49,7 +49,7 @@ class ISortLogic(QObject):
             self.categoryForward() 
 
         elif self.dataManager.checkForSkip(self.photoIndex, self.categoryIndex):
-            self.photoForward()
+            self.photoForward(-1)
             pass
 
         else:
@@ -68,19 +68,21 @@ class ISortLogic(QObject):
         if self.categoryIndex == len(self.dataManager.dataList):
             self.show_AreYouReadyToPrintReport_Button() #Last chance before writing report
         elif self.categoryIndex < len(self.dataManager.dataList):
-            self.photoIndex = 0
-            self.setPhoto()
+            self.dataManager.copyParentData(self.categoryIndex) 
+            self.photoIndex = -1
+            self.setCategory()
+            self.photoForward(-2)
 
     def categoryBack(self):
         if self.categoryIndex > 0:
             self.categoryIndex -=1
             self.photoIndex = len(self.dataManager.photoURLs)
-            self.emitterBridge.flashIcon.emit("back")
+            self.emitterBridge.flashIcon.emit('back')
             self.show_NextCategoryWillBe()
 
 #########Supporting Functions
 
-
+   
     def isOnBlankScreen(self):
         """Returns true if on the blank screen between categories or the blank screen at the end with the [Print Report] button"""
         return self.photoIndex == len(self.dataManager.photoURLs)
@@ -91,13 +93,19 @@ class ISortLogic(QObject):
         
         self.emitterBridge.updatePhotoCounter.emit(str(self.photoIndex) + '/' + str(self.dataManager.countPicsInCategory(self.categoryIndex)))
     
+    def setCategory(self):
+        #TODO: Add a delay of 0.2 seconds
+        self.emitterBridge.updateCategory.emit(self.dataManager.dataList[self.categoryIndex]['title'])
+        
     def clearPhoto(self):
-        self.emitterBridge.updatePhoto.emit("")
-        self.emitterBridge.updatePhotoCounter.emit("-/-")
+        self.emitterBridge.updatePhoto.emit('')
+        self.emitterBridge.updatePhotoCounter.emit('-/-')
 
     def show_NextCategoryWillBe(self):
         #TODO: Add a delay of 0.2 seconds
         #TODO: Show Next Category (Need to add the next category textbox to QML)
+        if self.categoryIndex == len(self.dataManager.dataList):
+            pass
         self.emitterBridge.updatePhoto.emit('AppImages/restart-arrow.png')
         self.emitterBridge.updatePhotoCounter.emit('-/' + str(self.dataManager.countPicsInCategory(self.categoryIndex + 1)))
                                 
@@ -105,10 +113,11 @@ class ISortLogic(QObject):
     def show_AreYouReadyToPrintReport_Button(self):
         #TODO: Add a delay of 0.2 seconds
         #TODO IMPLEMENT button and showing button.
-        self.emitterBridge.updatePhoto.emit('','')
+        self.emitterBridge.updatePhoto.emit('')
+        self.emitterBridge.updatePhotoCounter.emit('')
     
     def recordData(self, dataValue):
         """Sets data based on the photoIndex"""
-        if self.photoIndex < len(self.dataManager.photoURLs): #Skip if we are on a blank screen between categories
+        if self.photoIndex < len(self.dataManager.photoURLs) and self.photoIndex != -1: #Skip if we are on a blank screen between categories
             self.dataManager.dataList[self.categoryIndex]['data'][self.photoIndex] = dataValue
     

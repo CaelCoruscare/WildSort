@@ -23,8 +23,8 @@ Window {
     Connections{
         target: emitterBridge
 
-        function onUpdateLooking4(newCategory){
-            textCategory.text = newType + "?"
+        function onUpdateCategory(newCategory){
+            textCategory.text = newCategory + "?"
         }
         function onUpdatePhoto(picURL){
             photo.source = picURL
@@ -144,7 +144,7 @@ Window {
             }
 
             Text {
-                id: textType
+                id: textCategory
                 text: qsTr("...?")
                 height: 30
                 anchors.left: textIsThereA.right

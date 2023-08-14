@@ -40,7 +40,7 @@ class SlotBridge(QObject):
 
 
         #Set the UI to "Is there: Any Trigger?"
-        self.emitterBridge.updateLooking4.emit("Any Trigger?")
+        self.emitterBridge.updateCategory.emit("Any Trigger")
         self.emitterBridge.updatePhotoCounter.emit('0' + "/" + str(len(self.dataManager.photoURLs)))
         
         #Make sure the pictures start from the beginning 
@@ -72,7 +72,7 @@ class SlotBridge(QObject):
 
             case "back":
                 ###
-                self.photoBack()
+                self.logic.photoBack()
 
             case _:
                 raise ValueError("user choice passed in is not valid. Should be \'yes\',\'no\', or \'back\' (case insensitive)" , choice)

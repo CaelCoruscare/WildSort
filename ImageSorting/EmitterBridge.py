@@ -16,7 +16,7 @@ class EmitterBridge(QObject):
     
     otherTest = "wut"
 
-    updateLooking4 = Signal(str)
+    updateCategory = Signal(str)
     updatePhoto = Signal(str)
     updatePhotoCounter = Signal(str)
     flashIcon = Signal(str)
