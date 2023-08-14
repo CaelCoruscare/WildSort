@@ -188,7 +188,7 @@ Window {
 
     Image {
         id:checkMark
-        source: "images/check-mark.png"
+        source: "AppImages/check-mark.png"
         anchors.horizontalCenter: page.horizontalCenter
         anchors.verticalCenter: page.verticalCenter
         height: page.height * 0.5
@@ -204,7 +204,7 @@ Window {
 
     Image {
         id:redX
-        source: "images/x-circle.png"
+        source: "AppImages/x-circle.png"
         anchors.horizontalCenter: page.horizontalCenter
         anchors.verticalCenter: page.verticalCenter
         height: page.height * 0.5
@@ -220,7 +220,7 @@ Window {
 
     Image {
         id:backArrow
-        source: "images/left-arrow.png"
+        source: "AppImages/left-arrow.png"
         anchors.horizontalCenter: page.horizontalCenter
         anchors.verticalCenter: page.verticalCenter
         height: page.height * 0.5
@@ -236,7 +236,7 @@ Window {
 
     Image {
         id:typeChangeArrow
-        source: "images/restart-arrow.png"
+        source: "AppImages/restart-arrow.png"
         anchors.horizontalCenter: page.horizontalCenter
         anchors.verticalCenter: page.verticalCenter
         height: page.height * 0.8
