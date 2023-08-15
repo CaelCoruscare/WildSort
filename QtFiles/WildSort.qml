@@ -17,9 +17,6 @@ Window {
     visible: true
     title: qsTr("WildSort")
 
-   
-
-
     Connections{
         target: emitterBridge
 
@@ -32,8 +29,14 @@ Window {
         function onUpdatePhotoCounter(counterText){
             textPhotoCounter.text = counterText
         }
-        function onShowExplanation(explanation){
-            //explanation.text = explanation
+        function onShowFolderSelectionArea(){
+            folderSelectionArea.visible = true
+        }
+        function onShowNextCategory(){
+            explanation.visible = false
+        }
+        function onHideNextCategory(){
+            explanation.visible = false
         }
 
         function onFlashIcon(code){
@@ -59,13 +62,13 @@ Window {
         color: "lightgray"
         
         Rectangle {
-            id: imageHolder
+            id: photoHolder
             width: page.width
             height: page.height - 40
             anchors.top: page.top
             color: "#b7d1b6"
 
-           Image {
+            Image {
                 id: photo
                 width: page.width
                 height:parent.height
@@ -73,7 +76,52 @@ Window {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenter: parent.horizontalCenter
                 focus:true
-                source: "/Users/test/Pictures/elephant.jpeg"
+
+                ColumnLayout{
+                    id: folderSelectionArea
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    
+                    Button {
+                        id: folderButton
+                        text: qsTr("Select Folder")
+                        Layout.alignment: Qt.AlignCenter
+                        
+                        onClicked: {
+                            folderDialog.open();
+                            folderButton.visible = false;
+                        }
+                    }
+
+                    Rectangle {
+                        border.color:"green"
+                        Layout.minimumHeight: explanation.height + 20  
+                        Layout.preferredWidth: page.width * 0.3 + 20
+
+                        Text {
+                            id: explanation
+                            text: "Load a folder of photos from a single camera trap.\n\nThis program will sort all the photos into categories. For any photos where the AI is not sure, it will ask you for help. Your answers will be used to train the AI for future runs.\n\nPlease note that the AI will take a lot of training before it functions well. "
+                            wrapMode: Text.WordWrap
+                            width: page.width * 0.3
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
+                    }
+                }
+                
+
+                Text {
+                    id: nextCategoryText
+                    text: "Next Category will be Any Trigger"
+                    visible: false
+
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    height: 30
+                    horizontalAlignment: TextInput.AlignHCenter
+
+                }
+
                 Keys.onPressed: (event)=> { 
                     if (event.key == Qt.Key_L){
                         slotBridge.choiceMade("yes"); 
@@ -90,29 +138,21 @@ Window {
                         if (!popup.opened)
                         {
                             popup.open();
-                            notes.text = slotBridge.getNote() 
+                            notes.text = slotBridge.getNote() ;
                             notes.forceActiveFocus();
                         }
                     }
                 }
-           }
+            }
            
-
             FolderDialog {
                 id: folderDialog
                 currentFolder: StandardPaths.standardLocations(StandardPaths.PicturesLocation)[0]
-                //selectedFolder: viewer.folder
-                onAccepted: slotBridge.handleSetFolder(selectedFolder)
-            }
-
-            Button {
-                id: folderButton
-                text: qsTr("Select Folder")
-                onClicked: {
-                    folderDialog.open();
-                    folderButton.visible = false;
+                onAccepted: {
+                    slotBridge.handleSetFolder(selectedFolder);
+                    currentFolder = selectedFolder;
+                    folderSelectionArea.visible = false;
                 }
-                
             }
         }
 
@@ -152,84 +192,80 @@ Window {
                 leftPadding: 5
                 font.pointSize: 24; font.bold: true
             }
-
         }
 
-    }
+        Image {
+            id:checkMark
+            source: "AppImages/check-mark.png"
+            anchors.horizontalCenter: page.horizontalCenter
+            anchors.verticalCenter: page.verticalCenter
+            height: page.height * 0.5
+            width: page.height * 0.5
+            visible: false
 
-    Image {
-        id:checkMark
-        source: "AppImages/check-mark.png"
-        anchors.horizontalCenter: page.horizontalCenter
-        anchors.verticalCenter: page.verticalCenter
-        height: page.height * 0.5
-        width: page.height * 0.5
-        visible: false
-
-        Timer {
-            id: checkMarkTimer
-            interval: 100; 
-            onTriggered: parent.visible = false;
-        }
-    }
-
-    Image {
-        id:redX
-        source: "AppImages/x-circle.png"
-        anchors.horizontalCenter: page.horizontalCenter
-        anchors.verticalCenter: page.verticalCenter
-        height: page.height * 0.5
-        width: page.height * 0.5
-        visible: false
-
-        Timer {
-            id:redXTimer
-            interval: 100; 
-            onTriggered: parent.visible = false;
-        }
-    }
-
-    Image {
-        id:backArrow
-        source: "AppImages/left-arrow.png"
-        anchors.horizontalCenter: page.horizontalCenter
-        anchors.verticalCenter: page.verticalCenter
-        height: page.height * 0.5
-        width: page.height * 0.5
-        visible: false
-
-        Timer {
-            id:backArrowTimer
-            interval: 100; 
-            onTriggered: parent.visible = false;
-        }
-    }
-    
-
-    Popup {
-        id: popup
-        //anchors.centerIn: parent 
-        width: page.width - 20
-        y: page.height - 100
-        x:10
-
-        contentItem: TextField {
-            id: notes
-            placeholderText: qsTr("Put notes here...")
-            wrapMode: Text.WordWrap
-            //anchors.bottom: page.bottom
-            //anchors.horizontalCenter: page.horizontalCenter
-            focus:true
-            Keys.onPressed: (event)=> {
-                if (event.key == Qt.Key_Return && popup.opened) 
-                {
-                    imageLogic.recordNote(notes.text);
-                    notes.text = "";
-                    image.forceActiveFocus()
-                    popup.close();
-                }
+            Timer {
+                id: checkMarkTimer
+                interval: 100; 
+                onTriggered: parent.visible = false;
             }
         }
-    } 
-    
+
+        Image {
+            id:redX
+            source: "AppImages/x-circle.png"
+            anchors.horizontalCenter: page.horizontalCenter
+            anchors.verticalCenter: page.verticalCenter
+            height: page.height * 0.5
+            width: page.height * 0.5
+            visible: false
+
+            Timer {
+                id:redXTimer
+                interval: 100; 
+                onTriggered: parent.visible = false;
+            }
+        }
+
+        Image {
+            id:backArrow
+            source: "AppImages/left-arrow.png"
+            anchors.horizontalCenter: page.horizontalCenter
+            anchors.verticalCenter: page.verticalCenter
+            height: page.height * 0.5
+            width: page.height * 0.5
+            visible: false
+
+            Timer {
+                id:backArrowTimer
+                interval: 100; 
+                onTriggered: parent.visible = false;
+            }
+        }
+
+        Popup {
+            id: popup
+            //anchors.centerIn: parent 
+            width: page.width - 20
+            y: page.height - 100
+            x:10
+
+            contentItem: TextField {
+                id: notes
+                placeholderText: qsTr("Put notes here...")
+                wrapMode: Text.WordWrap
+                //anchors.bottom: page.bottom
+                //anchors.horizontalCenter: page.horizontalCenter
+                focus:true
+                Keys.onPressed: (event)=> {
+                    if (event.key == Qt.Key_Return && popup.opened) 
+                    {
+                        imageLogic.recordNote(notes.text);
+                        notes.text = "";
+                        image.forceActiveFocus()
+                        popup.close();
+                    }
+                }
+            }
+        } 
+    }
 }
