@@ -1,3 +1,4 @@
+import threading
 from PySide6.QtCore import QObject, Slot
 from PySide6.QtGui import QGuiApplication
 from PySide6.QtQml import QQmlApplicationEngine, QmlElement
@@ -53,7 +54,7 @@ class ISortLogic(QObject):
             pass
 
         else:
-            self.setPhoto()
+            threading.Timer(0.2, self.setPhoto).start()
             
 
     def photoBack(self):
