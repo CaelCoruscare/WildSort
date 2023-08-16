@@ -1,4 +1,5 @@
 import os
+import threading
 from PySide6.QtCore import QObject, Slot
 from PySide6.QtGui import QGuiApplication
 from PySide6.QtQml import QQmlApplicationEngine, QmlElement
@@ -27,7 +28,6 @@ class SlotBridge(QObject):
         self.emitterBridge = eBridge
         self.dataManager = DataManager()
         self.logic = ISortLogic(self.dataManager, self.emitterBridge)
-        self.emitterBridge.wtf()
 
     #Accept a folder URL
     @Slot(str)
@@ -46,37 +46,43 @@ class SlotBridge(QObject):
         #Make sure the pictures start from the beginning 
         #   (for once opening multiple folders is implemented)
         self.logic.picIndex = -1
-        self.logic.categoryIndex = 0
+        self.logic.categoryIndex = -1
 
         self.emitterBridge.updatePhotoCounter.emit("")
-        self.emitterBridge.showExplanation.emit("Use the L key and ; key as Yes and No, to cycle through the images. If you need to go back, use the \' key")
+        self.emitterBridge.showNextCategoryExplanation.emit("Use the L key and ; key as Yes and No, to cycle through the images. If you need to go back, use the \' key")
      
     @Slot(str)
     def choiceMade(self, choice):
+        #TODO: Need to add a shared resource here
+        #Claim Resource
+
+        #Need to make sure handling the choice is moved to ISortLogic
+
         #Make sure the list of pictures has been initialized.
         if not self.dataManager.photoURLs:
             raise ValueError("pictureURLs List has not been initialized.", self.dataManager.photoURLs)
         
         match choice.lower():
             case "yes":
-                if not self.logic.isOnBlankScreen():
-                    self.emitterBridge.flashIcon.emit("yes")
                 ###
-                self.logic.photoForward(1)
+                threading.Timer(0, self.logic.forward, [1]).start()
+                #self.logic.forward(1)
                 
             case "no":
-                if not self.logic.isOnBlankScreen():
-                    self.emitterBridge.flashIcon.emit("no")
                 ###
-                self.logic.photoForward(0)
+                threading.Timer(0, self.logic.forward, [0]).start()
+                #self.logic.forward(0)
 
             case "back":
                 ###
-                self.logic.photoBack()
+                threading.Timer(0, self.logic.back).start()
+                #self.logic.back()
 
             case _:
                 raise ValueError("user choice passed in is not valid. Should be \'yes\',\'no\', or \'back\' (case insensitive)" , choice)
 
+        #TODO:
+        #Release Resource
     
     @Slot(str)
     def recordNote(self, note):

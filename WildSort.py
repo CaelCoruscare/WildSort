@@ -11,15 +11,13 @@ from ImageSorting.EmitterBridge import EmitterBridge
 #from ImageSorting.ISortLogic import ISortLogic 
 from ImageSorting.SlotBridge import SlotBridge
 
-
+import ImageSorting.CallsToUI as callsToUI
 
 app = QGuiApplication(sys.argv)
 
-
-
 engine = QQmlApplicationEngine()
 
-emitterBridge = EmitterBridge()
+emitterBridge = callsToUI.emitterBridge
 engine.rootContext().setContextProperty("emitterBridge", emitterBridge)
 slotBridge = SlotBridge(emitterBridge)
 engine.rootContext().setContextProperty("slotBridge", slotBridge)

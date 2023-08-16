@@ -21,8 +21,8 @@ class EmitterBridge(QObject):
     updatePhotoCounter = Signal(str)
     flashIcon = Signal(str)
     showFolderSelectionArea = Signal()
-    showNextCategory = Signal()
-    hideNextCategory = Signal()
+    showNextCategoryExplanation = Signal(str)
+    hideNextCategoryExplanation = Signal()
 
     def __init__(self):
         QObject.__init__(self)

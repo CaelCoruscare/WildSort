@@ -32,11 +32,12 @@ Window {
         function onShowFolderSelectionArea(){
             folderSelectionArea.visible = true
         }
-        function onShowNextCategory(){
-            explanation.visible = false
+        function onShowNextCategoryExplanation(text){
+            nextCategoryText.text = text
+            nextCategoryArea.visible = true
         }
-        function onHideNextCategory(){
-            explanation.visible = false
+        function onHideNextCategoryExplanation(){
+            nextCategoryArea.visible = false
         }
 
         function onFlashIcon(code){
@@ -108,19 +109,25 @@ Window {
                         }
                     }
                 }
-                
 
-                Text {
-                    id: nextCategoryText
-                    text: "Next Category will be Any Trigger"
-                    visible: false
+                Rectangle {
+                        id: nextCategoryArea
+                        border.color:"blue"
+                        height: nextCategoryText.height + 20  
+                        width: page.width * 0.25 + 20
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        visible: false
 
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    height: 30
-                    horizontalAlignment: TextInput.AlignHCenter
-
-                }
+                        Text {
+                            id: nextCategoryText
+                            text: "This should not be seen"
+                            wrapMode: Text.WordWrap
+                            width: page.width * 0.25
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
+                    }
 
                 Keys.onPressed: (event)=> { 
                     if (event.key == Qt.Key_L){
