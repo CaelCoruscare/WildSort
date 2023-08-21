@@ -58,7 +58,7 @@ class SlotBridge(QObject):
 
             case "back":
                 ###
-                threading.Timer(0, logic.back).start()
+                threading.Timer(0, logic.tryBack).start()
                 #self.logic.back()
 
             case _:

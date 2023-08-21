@@ -49,8 +49,10 @@ def handleForwardEdgeCases(userResponse):
         return True
     
     elif edgeCase == EdgeCase.ENDOFCATEGORY:
-        recordData(userResponse)
-        ui.flashIcon(userResponse) 
+        #-2 is passed in as userResponse if SortLogic is in the process of skipping.
+        if userResponse != -2:
+            recordData(userResponse)
+            ui.flashIcon(userResponse) 
 
         if index.category == len(dataManager.dataList): #If end of categories
             ui.show_AreYouReadyToPrintReport()
@@ -60,10 +62,8 @@ def handleForwardEdgeCases(userResponse):
             ui.setPhotoCounter('-/' + str(dataManager.countPhotosInCategory(index.category + 1)))
             edgeCase = EdgeCase.SHOWINGNEXTCATEGORY
             
-        ui.setPhoto(None)
         ui.setCategory(None)
 
-        index.photo += 1
         return True
     
     elif edgeCase == EdgeCase.SHOWINGNEXTCATEGORY:
@@ -109,35 +109,8 @@ def forward(userResponse):
         ui.setPhotoCounter(
             str(dataManager.countPicsAsked(index)) + 
             '/' + 
-            str(dataManager.countPhotosInCategory(index.category))
-            )
+            str(dataManager.countPhotosInCategory(index.category)))
 
-
-def back():
-    # if handleBackEdgeCases()
-    # return
-
-    # Index.photo -= 1
-
-    # if index.photo == 0:
-    # backCategory()
-
-    # elif dM.checkSkip(index.photo):
-    # back()
-
-    # Else:
-    # flashIcon()
-    # showphoto()
-
-
-    index.photo -= 1
-    if index.photo == -1:
-        categoryBack()
-    else:
-        ui.flashIcon('back')
-        time.sleep(smallDelay)
-        ui.setPhoto(dataManager.photoURLs[index.photo])
-        ui.setPhotoCounter(str(dataManager.countPicsAsked(index)) + '/' + str(dataManager.countPhotosInCategory(index.category)))
 
 def categoryForward():
     """Handles moving the category forward, then calls Forward again"""
@@ -150,15 +123,80 @@ def categoryForward():
     index.photo = -1
     forward(-2)
 
+
+def tryBack():
+    if handleBackEdgeCases():
+        return
+
+    index.photo -= 1
+
+    if dataManager.checkForSkip(index):
+        tryBack()
+    else:
+        back()
+        
+
+def back():
+    ui.flashIcon('back')
+    ui.setPhoto(dataManager.getPhoto(index.photo))
+    ui.setPhotoCounter(
+        str(dataManager.countPicsAsked(index)) + 
+        '/' + 
+        str(dataManager.countPhotosInCategory(index.category)))
+
+def handleBackEdgeCases():
+    global edgeCase
+
+    if edgeCase == EdgeCase.ENDOFCATEGORY:
+        edgeCase = EdgeCase.NONE
+        tryBack()
+        return True
+
+    if edgeCase == EdgeCase.SHOWINGNEXTCATEGORY:
+        edgeCase = EdgeCase.ENDOFCATEGORY
+        ui.show_NextCategoryWillBe(None)
+        ui.setCategory(dataManager.getCategoryTitle(index.category))
+
+        #This is to avoid hitting handleBackEdgeCases() again
+        back()
+        if dataManager.checkForSkip(index):
+            tryBack()
+
+        return True
+    
+    if index.photo == 0:
+        categoryBack()
+        return True
+
+    return False
+
+
 def categoryBack():
-    if index.category > 0:
-        index.category -= 1
-        index.photo = len(dataManager.photoURLs)
-        ui.flashIcon('back')
-        ui.show_NextCategoryWillBe(
-            dataManager.dataList[index.category + 1]['title'], 
-            str(dataManager.countPicsInCategory(index.category + 1))
-            )
+    if index.category == 0:
+        return
+    
+    global edgeCase
+    edgeCase = EdgeCase.SHOWINGNEXTCATEGORY
+
+    index.category -= 1
+    ui.show_NextCategoryWillBe(dataManager.getCategoryTitle(index.category + 1))
+    ui.setPhotoCounter('-/' + str(dataManager.countPhotosInCategory(index.category + 1)))
+    ui.setCategory(None)
+    ui.flashIcon('back')
+
+    index.photo = len(dataManager.photoURLs) - 1
+
+
+    ###---
+
+    # if index.category > 0:
+    #     index.category -= 1
+    #     index.photo = len(dataManager.photoURLs)
+    #     ui.flashIcon('back')
+    #     ui.show_NextCategoryWillBe(
+    #         dataManager.dataList[index.category + 1]['title'], 
+    #         str(dataManager.countPicsInCategory(index.category + 1))
+    #         )
 ########
 
 #########Supporting Functions
