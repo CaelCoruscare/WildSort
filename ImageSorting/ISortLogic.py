@@ -59,6 +59,7 @@ def handleForwardEdgeCases(userResponse):
             edgeCase = EdgeCase.SHOWINGNEXTCATEGORY
             
         ui.setPhoto(None)
+        ui.setCategory(None)
         index.photo += 1
         return True
     

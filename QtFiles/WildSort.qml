@@ -22,12 +22,22 @@ Window {
 
         function onUpdateCategoryTracker(newCategory){
             textCategory.text = newCategory + "?"
+            textCategory.visible = true
+            textIsThereA.visible = true
+        }
+        function onHideCategoryTracker(newCategory){
+            textCategory.visible = false
+            textIsThereA.visible = false
         }
         function onUpdatePhoto(picURL){
             photo.source = picURL
         }
         function onUpdatePhotoCounter(counterText){
             textPhotoCounter.text = counterText
+            textPhotoCounter.visible = true
+        }
+        function onHidePhotoCounter(){
+            textPhotoCounter.visible = false
         }
         function onShowFolderSelectionArea(){
             folderSelectionArea.visible = true

@@ -13,8 +13,10 @@ def setPhotoCounter(photoCounter):
     emitter.updatePhotoCounter.emit(photoCounter)
 
 def setCategory(title):
-    #emitter.updateCategory.emit(dataManager.dataList[categoryIndex]['title'])
-    emitter.updateCategoryTracker.emit(title)
+    if title == None:
+        emitter.hideCategoryTracker.emit()
+    else:
+        emitter.updateCategoryTracker.emit(title)
 
 def show_NextCategoryWillBe(category):
     if category == None:

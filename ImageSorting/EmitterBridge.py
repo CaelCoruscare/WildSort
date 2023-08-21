@@ -17,8 +17,10 @@ class EmitterBridge(QObject):
     otherTest = "wut"
 
     updateCategoryTracker = Signal(str)
+    hideCategoryTracker = Signal()
     updatePhoto = Signal(str)
     updatePhotoCounter = Signal(str)
+    hidePhotoCounter = Signal()
     flashIcon = Signal(str)
     showFolderSelectionArea = Signal()
     hideFolderSelectionArea = Signal()
