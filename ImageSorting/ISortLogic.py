@@ -56,10 +56,13 @@ def handleForwardEdgeCases(userResponse):
             ui.show_AreYouReadyToPrintReport()
         else: 
             ui.show_NextCategoryWillBe(dataManager.getCategoryTitle(index.category + 1))
+            dataManager.findSkipsFromParentData(index.category + 1) # Need to do this so the next line functions
+            ui.setPhotoCounter('-/' + str(dataManager.countPhotosInCategory(index.category + 1)))
             edgeCase = EdgeCase.SHOWINGNEXTCATEGORY
             
         ui.setPhoto(None)
         ui.setCategory(None)
+
         index.photo += 1
         return True
     
