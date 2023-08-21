@@ -1,187 +1,185 @@
-import threading
+from dataclasses import dataclass
+from enum import Enum
 import time
-from PySide6.QtCore import QObject, Slot
-from PySide6.QtGui import QGuiApplication
-from PySide6.QtQml import QQmlApplicationEngine, QmlElement
-from PySide6.QtQuickControls2 import QQuickStyle
-from PySide6.QtCore import QObject, Signal, Property
+from types import SimpleNamespace
+
+from DataHandling import DataManager as dataManager
+import ImageSorting.CallsToUI as ui
 
 
-from DataHandling.DataManager import DataManager
-from DataHandling.ReportBuilder import reportBuilder
+#index = SimpleNamespace(photo = -1, category = 0)
+
+index = dataManager.Index(-1,0)
 
 
-from ImageSorting.EmitterBridge import EmitterBridge
+smallDelay = 0.2
+
+#index.photo is used to store notes in specific arrays here.
+notes = {-1:"You can write notes here when an image is open."}
+
+class EdgeCase(Enum):
+    SHOWINGTUTORIAL = 1
+    FIRSTSHOWINGNEXTCATEGORY = 2
+    SHOWINGNEXTCATEGORY = 3
+    ENDOFCATEGORY = 4
+    NONE = 5
+
+edgeCase = EdgeCase.SHOWINGTUTORIAL
 
 
+def handleForwardEdgeCases(userResponse):
+    global edgeCase
 
-class ISortLogic(QObject):
+    if edgeCase == EdgeCase.SHOWINGTUTORIAL:
+        ui.show_Explanation(None)#Hide the tutorial
+        ui.show_NextCategoryWillBe('Any Trigger')
+        ui.setPhotoCounter('-/' + str(dataManager.countPhotosInCategory(index.category)))
 
-    photoIndex = -1
-    categoryIndex = 0
-    typeIndex = 0
+        edgeCase = EdgeCase.FIRSTSHOWINGNEXTCATEGORY
 
-    smallDelay = 0.2
+        return True
+    
+    elif edgeCase == EdgeCase.FIRSTSHOWINGNEXTCATEGORY:
+        ui.hide_NextCategoryWillBe()
+        ui.setCategory('Any Trigger')
+        ui.setPhotoCounter('1/' +  str(dataManager.countPhotosInCategory(index.category)))
+        ui.setPhoto(dataManager.getPhoto(0))
+        edgeCase = EdgeCase.NONE
 
-    #photoIndex is used to store notes in specific arrays here.
-    notes = {-1:"You can write notes here when an image is open."}
+        return True
+    
+    elif edgeCase == EdgeCase.ENDOFCATEGORY:
+        recordData(userResponse)
+        ui.flashIcon(userResponse) 
 
-    #This just handles initialization
-    def __init__(self, dataMan: DataManager, eBridge: EmitterBridge):
-        QObject.__init__(self)
-        self.dataManager = dataMan
-        self.emitterBridge = eBridge
+        if index.category == len(dataManager.dataList): #If end of categories
+            ui.show_AreYouReadyToPrintReport()
+        else: 
+            ui.show_NextCategoryWillBe(dataManager.getCategoryTitle(index.category + 1))
+            edgeCase = EdgeCase.SHOWINGNEXTCATEGORY
+            
+        ui.setPhoto(None)
+        index.photo += 1
+        return True
+    
+    elif edgeCase == EdgeCase.SHOWINGNEXTCATEGORY:
+        ui.show_NextCategoryWillBe(None)
 
+        edgeCase = EdgeCase.NONE
 
-    def isCategoryFinished(self):
-        """Returns true if on the blank screen between categories or the blank screen at the end with the [Print Report] button"""
-        return self.photoIndex == len(self.dataManager.photoURLs) -1
-
-    def handleForwardEdgeCases(self, userResponse):
-        #Handle case: First picture is being shown
-        if self.categoryIndex == -1 and self.photoIndex == -1:
-            #Hide the tutorial & show Next Category for AnyTrigger
-            self.show_NextCategoryWillBe_InUI()
-            self.photoIndex = -2
-            return True
+        categoryForward()
         
-        #Handle case: The first "Next Category Will Be" screen is being shown
-        if self.categoryIndex == -1 and self.photoIndex == -2:
-            self.categoryIndex = 0
-            self.setCategory_InUI()
-            self.hide_NextCategoryWillBe_UI()
+        return True
+    
+    
+    
+    
 
-            #Doing this instead of calling setPhoto() because 
-            #   forward() contains the logic for skipping over unnecessary photos
-            self.photoIndex = -1
-            self.forward(-2)
-            return True
-        
-        #Handle case: all categories have been sorted.
-        elif self.isCategoryFinished() and self.categoryIndex == len(self.dataManager.dataList):
-            self.recordData(userResponse)
-            self.emitterBridge.hidePhoto.emit()
-            self.emitterBridge.showNextCategoryExplanation.emit("Report is now built to a spreadsheet (Need to implement)")
-            return True
-        
-        #Handle case: Finished sorting a category
-        elif self.isCategoryFinished():
-            self.recordData(userResponse)
-            self.flashIcon(userResponse)
-            #Show the Next Category on a blank screen
-            #self.doAfterSlightDelay(self.setPhotoIn_UI)
-            self.setPhoto_InUI()
-            self.photoIndex += 1
-            return True
-        
-        #Handle Case: On a "Next Category" screen
-        elif self.photoIndex == len(self.dataManager.photoURLs):
-            self.emitterBridge.hideNextCategoryExplanation.emit()
-            self.categoryForward()
-            return True
-
-        return False
-        
+    return False
+    
 
 
 
 ########## Forward & Back logic
+def forward(userResponse):
+    """Records data, increments the photo index until a non-skip photo is at the index, displays photo after delay"""
+    if handleForwardEdgeCases(userResponse):
+        return
 
-    def forward(self, userResponse):
-        """Records data, increments the photo index until a non-skip photo is at the index, displays photo after delay"""
-        if self.handleForwardEdgeCases(userResponse):
-            return
+    #"-2" allows forward() to be called without setting data or flashing an icon.
+    if userResponse != -2:
+        recordData(userResponse)
+        ui.flashIcon(userResponse)
 
-        if userResponse != -2:
-            self.recordData(userResponse)
+    index.photo +=1
 
-        self.photoIndex +=1
+    if index.photo == len(dataManager.photoURLs) - 1:
+        global edgeCase
+        edgeCase = EdgeCase.ENDOFCATEGORY
 
-        if self.dataManager.checkForSkip(self.photoIndex, self.categoryIndex):
-            self.forward(-1)
-            return
+    if dataManager.checkForSkip(index):
+        forward(-2)
+    else:
+        time.sleep(smallDelay)
+        ui.setPhoto(dataManager.getPhoto(index.photo))
+        ui.setPhotoCounter(
+            str(dataManager.countPicsAsked(index)) + 
+            '/' + 
+            str(dataManager.countPhotosInCategory(index.category))
+            )
 
-        else:
-            #threading.Timer(0, self.flashIcon, [userResponse]).start()
-            self.flashIcon(userResponse)
-            time.sleep(self.smallDelay)
-            self.setPhoto_InUI()
-            
 
-    def back(self):
-        self.photoIndex -= 1
-        if self.photoIndex == -1:
-            self.categoryBack()
-        else:
-            self.emitterBridge.flashIcon.emit('back')
-            time.sleep(self.smallDelay)
-            self.setPhoto_InUI()
+def back():
+    # if handleBackEdgeCases()
+    # return
 
-    def categoryForward(self):
-        """Handles moving the category forward, then calls Forward again"""
-        self.categoryIndex += 1
-        self.setCategory_InUI()
-        self.dataManager.copyParentData(self.categoryIndex) 
+    # Index.photo -= 1
 
-        #Doing this instead of calling setPhoto() because 
-        #   forward() contains the logic for skipping over unnecessary photos
-        self.photoIndex = -1
-        self.forward(-2)
+    # if index.photo == 0:
+    # backCategory()
 
-    def categoryBack(self):
-        if self.categoryIndex > 0:
-            self.categoryIndex -= 1
-            self.photoIndex = len(self.dataManager.photoURLs)
-            self.emitterBridge.flashIcon.emit('back')
-            self.show_NextCategoryWillBe_InUI()
+    # elif dM.checkSkip(index.photo):
+    # back()
+
+    # Else:
+    # flashIcon()
+    # showphoto()
+
+
+    index.photo -= 1
+    if index.photo == -1:
+        categoryBack()
+    else:
+        ui.flashIcon('back')
+        time.sleep(smallDelay)
+        ui.setPhoto(dataManager.photoURLs[index.photo])
+        ui.setPhotoCounter(str(dataManager.countPicsAsked(index)) + '/' + str(dataManager.countPhotosInCategory(index.category)))
+
+def categoryForward():
+    """Handles moving the category forward, then calls Forward again"""
+    index.category += 1
+    ui.setCategory(dataManager.getCategoryTitle(index.category))
+    dataManager.findSkipsFromParentData(index.category) 
+
+    #Doing this instead of calling setPhoto() because 
+    #   forward() contains the logic for skipping over unnecessary photos
+    index.photo = -1
+    forward(-2)
+
+def categoryBack():
+    if index.category > 0:
+        index.category -= 1
+        index.photo = len(dataManager.photoURLs)
+        ui.flashIcon('back')
+        ui.show_NextCategoryWillBe(
+            dataManager.dataList[index.category + 1]['title'], 
+            str(dataManager.countPicsInCategory(index.category + 1))
+            )
+########
 
 #########Supporting Functions
 
-   
-    def flashIcon(self, userAnswer):
-        match userAnswer:
-            case 1:
-                self.emitterBridge.flashIcon.emit('yes')
-            case 0:
-                self.emitterBridge.flashIcon.emit('no')
-            case _:
-                pass
-                
-
-    def setPhoto_InUI(self):
-        photo = self.dataManager.photoURLs[self.photoIndex]
-        self.emitterBridge.updatePhoto.emit(photo)
-
-    def setPhotoCounter_InUI(self):
-        photoCounter = str(self.photoIndex) + '/' + str(self.dataManager.countPicsInCategory(self.categoryIndex))
-        self.emitterBridge.updatePhotoCounter.emit(photoCounter)
 
 
-    def setCategory_InUI(self):
-        #TODO: Add a delay of 0.2 seconds
-        self.emitterBridge.updateCategory.emit(self.dataManager.dataList[self.categoryIndex]['title'])
-        
-    def clearPhotoIn_UI(self):
-        self.emitterBridge.updatePhoto.emit('')
-        self.emitterBridge.updatePhotoCounter.emit('-/-')
 
-    def show_NextCategoryWillBe_InUI(self):
-        #TODO: Add a delay of 0.2 seconds
-        self.emitterBridge.showNextCategoryExplanation.emit("Next Category will be: " + self.dataManager.dataList[self.categoryIndex + 1]['title'])
-        self.emitterBridge.updatePhoto.emit('AppImages/restart-arrow.png')
-        self.emitterBridge.updatePhotoCounter.emit('-/' + str(self.dataManager.countPicsInCategory(self.categoryIndex + 1)))
+def recordData(dataValue):
+    """Sets data based on the index.photo"""
+    if index.photo < len(dataManager.photoURLs) and index.photo > -1: #Skip if we are on a blank screen between categories
+        dataManager.dataList[index.category]['data'][index.photo] = dataValue
 
-    def hide_NextCategoryWillBe_UI(self):
-        self.emitterBridge.hideNextCategoryExplanation.emit()
+def folderChosen(folderURL):
+    #Datamanager handles the data
+    dataManager.folderChosen(folderURL)
 
-    def show_AreYouReadyToPrintReportButton_InUI(self):
-        #TODO: Add a delay of 0.2 seconds
-        #TODO IMPLEMENT button and showing button.
-        self.emitterBridge.updatePhoto.emit('')
-        self.emitterBridge.updatePhotoCounter.emit('')
+    ui.setCategory("Any Trigger")
+    ui.setPhotoCounter('0/' + str(len(dataManager.photoURLs)))
+    ui.show_Explanation(
+        "Use the [L] key and [;] key as Yes and No, to cycle through the images. If you need to go back, use the [\'] key"
+        )
     
-    def recordData(self, dataValue):
-        """Sets data based on the photoIndex"""
-        if self.photoIndex < len(self.dataManager.photoURLs) and self.photoIndex > -1: #Skip if we are on a blank screen between categories
-            self.dataManager.dataList[self.categoryIndex]['data'][self.photoIndex] = dataValue
+    index.photo = 0
+    index.category = 0
+    global edgeCase
+    edgeCase = EdgeCase.SHOWINGTUTORIAL
+    
     

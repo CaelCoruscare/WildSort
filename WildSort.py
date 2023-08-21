@@ -13,18 +13,23 @@ from ImageSorting.SlotBridge import SlotBridge
 
 import ImageSorting.CallsToUI as callsToUI
 
+print("")
+print("")
+print("")
+print("Starting...")
+
 app = QGuiApplication(sys.argv)
 
 engine = QQmlApplicationEngine()
 
-emitterBridge = callsToUI.emitterBridge
+emitterBridge = callsToUI.emitter
 engine.rootContext().setContextProperty("emitterBridge", emitterBridge)
-slotBridge = SlotBridge(emitterBridge)
+slotBridge = SlotBridge()
 engine.rootContext().setContextProperty("slotBridge", slotBridge)
 
 engine.quit.connect(app.quit)
 engine.load('QtFiles/WildSort.qml')
 
 
-
+ 
 sys.exit(app.exec())

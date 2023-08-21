@@ -16,13 +16,16 @@ class EmitterBridge(QObject):
     
     otherTest = "wut"
 
-    updateCategory = Signal(str)
+    updateCategoryTracker = Signal(str)
     updatePhoto = Signal(str)
     updatePhotoCounter = Signal(str)
     flashIcon = Signal(str)
     showFolderSelectionArea = Signal()
+    hideFolderSelectionArea = Signal()
     showNextCategoryExplanation = Signal(str)
     hideNextCategoryExplanation = Signal()
+    showExplanation = Signal(str)
+    hideExplanation = Signal()
 
     def __init__(self):
         QObject.__init__(self)

@@ -1,34 +1,86 @@
-import EmitterBridge as emitterBridge
+from ImageSorting.EmitterBridge import EmitterBridge
+emitter = EmitterBridge()
+           
 
-emitter = emitterBridge.EmitterBridge()
-
-def setPhoto_InUI(photoURL):
+def setPhoto(photoURL):
+    """Sets the photo source. Can also set the Photo Counter text obj."""
+    if photoURL == None:
+        photoURL = ''
     emitter.updatePhoto.emit(photoURL)
 
-def setPhotoCounter_InUI():
-    photoCounter = str(self.photoIndex) + '/' + str(self.dataManager.countPicsInCategory(self.categoryIndex))
+def setPhotoCounter(photoCounter):
+    #photoCounter = str(photoIndex) + '/' + str(dataManager.countPicsInCategory(categoryIndex))
     emitter.updatePhotoCounter.emit(photoCounter)
 
+def setCategory(title):
+    #emitter.updateCategory.emit(dataManager.dataList[categoryIndex]['title'])
+    emitter.updateCategoryTracker.emit(title)
 
-def setCategory_InUI():
-    #TODO: Add a delay of 0.2 seconds
-    emitter.updateCategory.emit(self.dataManager.dataList[self.categoryIndex]['title'])
-    
-def clearPhotoIn_UI():
-    emitter.updatePhoto.emit('')
-    emitter.updatePhotoCounter.emit('-/-')
+def show_NextCategoryWillBe(category):
+    if category == None:
+        emitter.hideNextCategoryExplanation.emit()
+    else:   
+        emitter.showNextCategoryExplanation.emit("Next Category will be: " + category)
+        emitter.updatePhoto.emit('AppImages/restart-arrow.png')
 
-def show_NextCategoryWillBe_InUI():
-    #TODO: Add a delay of 0.2 seconds
-    emitter.showNextCategoryExplanation.emit("Next Category will be: " + self.dataManager.dataList[self.categoryIndex + 1]['title'])
-    emitter.updatePhoto.emit('AppImages/restart-arrow.png')
-    emitter.updatePhotoCounter.emit('-/' + str(self.dataManager.countPicsInCategory(self.categoryIndex + 1)))
-
-def hide_NextCategoryWillBe_UI():
+def hide_NextCategoryWillBe():
     emitter.hideNextCategoryExplanation.emit()
 
-def show_AreYouReadyToPrintReportButton_InUI():
-    #TODO: Add a delay of 0.2 seconds
+
+def flashIcon(userAnswer):
+    match userAnswer:
+        case 1:
+            emitter.flashIcon.emit('yes')
+        case 0:
+            emitter.flashIcon.emit('no')
+        case _:
+            emitter.flashIcon.emit(userAnswer)
+
+
+
+def show_Explanation(explanation):
+    if explanation == None:
+        emitter.hideExplanation.emit()
+    else:
+        emitter.showExplanation.emit(explanation)
+
+def hideExplanation():
+    emitter.hideExplanation.emit()
+
+def show_AreYouReadyToPrintReport():
     #TODO IMPLEMENT button and showing button.
     emitter.updatePhoto.emit('')
     emitter.updatePhotoCounter.emit('')
+    emitter.showNextCategoryExplanation.emit("Report is now built to a spreadsheet (Need to implement)")
+
+
+##---This is cool so I'm leaving it as a comment to reference for later.---
+# def flashIcon(answer):
+#     """Takes int (0,1) or string('yes', 'no', 'back')"""
+#     _flashIcon_Map[type(answer)](answer)
+
+
+# def _flashIcon_Int(userAnswer: int):
+#     match userAnswer:
+#         case 1:
+#             emitter.flashIcon.emit('yes')
+#         case 0:
+#             emitter.flashIcon.emit('no')
+#         case _:
+#             pass
+
+# def _flashIcon_Str(code: str):
+#     match code:
+#         case 'yes':
+#             emitter.flashIcon.emit('yes')
+#         case 'no':
+#             emitter.flashIcon.emit('no')
+#         case 'back':
+#             emitter.flashIcon.emit('back')
+#         case _:
+#             pass
+
+# _flashIcon_Map = {
+#             int : _flashIcon_Int,
+#             str : _flashIcon_Str
+# }

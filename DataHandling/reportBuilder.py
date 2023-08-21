@@ -2,9 +2,16 @@ import csv
 from datetime import datetime
 
 import exifread
-from DataHandling.DataManager import DataManager as dataManager
+import DataHandling.DataManager as dataManager
 
 class reportBuilder():
+
+    #This will hold all the report headers for the final human report
+    reportHeaders_Human = ['Corridor', 'Camera', 'Link To File', 'Date', 'Time', 'Note']#Data columns will be appended
+
+    #This is a list of all the columns in the final human report. File columns, notes, data columns, etc. Everything.
+    reportData_Human = []
+    #
 
     def writeReport_Human(self):
         """Collects all relevant data for the human report and prints it to spreadsheet called transactData.csv"""

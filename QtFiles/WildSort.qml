@@ -20,7 +20,7 @@ Window {
     Connections{
         target: emitterBridge
 
-        function onUpdateCategory(newCategory){
+        function onUpdateCategoryTracker(newCategory){
             textCategory.text = newCategory + "?"
         }
         function onUpdatePhoto(picURL){
@@ -32,6 +32,9 @@ Window {
         function onShowFolderSelectionArea(){
             folderSelectionArea.visible = true
         }
+        function onHideFolderSelectionArea(){
+            folderSelectionArea.visible = false
+        }
         function onShowNextCategoryExplanation(text){
             nextCategoryText.text = text
             nextCategoryArea.visible = true
@@ -39,6 +42,14 @@ Window {
         function onHideNextCategoryExplanation(){
             nextCategoryArea.visible = false
         }
+        function onShowExplanation(text){
+            genericExplanationText.text = text
+            genericExplanation.visible = true
+        }
+        function onHideExplanation(){
+            genericExplanation.visible = false
+        }
+
 
         function onFlashIcon(code){
             if (code == "yes"){
@@ -90,7 +101,7 @@ Window {
                         
                         onClicked: {
                             folderDialog.open();
-                            folderButton.visible = false;
+                            folderSelectionArea.visible = false;
                         }
                     }
 
@@ -111,23 +122,44 @@ Window {
                 }
 
                 Rectangle {
-                        id: nextCategoryArea
-                        border.color:"blue"
-                        height: nextCategoryText.height + 20  
-                        width: page.width * 0.25 + 20
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        visible: false
+                    id: genericExplanation
+                    border.color:"orange"
+                    height: nextCategoryText.height + 20  
+                    width: page.width * 0.30 + 20
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    visible: false
 
-                        Text {
-                            id: nextCategoryText
-                            text: "This should not be seen"
-                            wrapMode: Text.WordWrap
-                            width: page.width * 0.25
-                            anchors.horizontalCenter: parent.horizontalCenter
-                            anchors.verticalCenter: parent.verticalCenter
-                        }
+                    Text {
+                        id: genericExplanationText
+                        text: "Generic"
+                        wrapMode: Text.WordWrap
+                        width: page.width * 0.30
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.verticalCenter: parent.verticalCenter
+                        horizontalAlignment: Text.AlignHCenter
                     }
+                }
+
+                Rectangle {
+                    id: nextCategoryArea
+                    border.color:"blue"
+                    height: nextCategoryText.height + 20  
+                    width: page.width * 0.20 + 20
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    visible: false
+
+                    Text {
+                        id: nextCategoryText
+                        text: "The next category will be: [Category Here]"
+                        wrapMode: Text.WordWrap
+                        width: page.width * 0.20
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.verticalCenter: parent.verticalCenter
+                        horizontalAlignment: Text.AlignHCenter
+                    }
+                }
 
                 Keys.onPressed: (event)=> { 
                     if (event.key == Qt.Key_L){
@@ -156,7 +188,7 @@ Window {
                 id: folderDialog
                 currentFolder: StandardPaths.standardLocations(StandardPaths.PicturesLocation)[0]
                 onAccepted: {
-                    slotBridge.handleSetFolder(selectedFolder);
+                    slotBridge.folderChosen(selectedFolder);
                     currentFolder = selectedFolder;
                     folderSelectionArea.visible = false;
                 }
