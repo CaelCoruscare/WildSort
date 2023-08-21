@@ -143,7 +143,7 @@ Window {
 
                 Rectangle {
                     id: nextCategoryArea
-                    border.color:"blue"
+                    //border.color:"blue"
                     height: nextCategoryText.height + 20  
                     width: page.width * 0.20 + 20
                     anchors.verticalCenter: parent.verticalCenter
@@ -151,13 +151,22 @@ Window {
                     visible: false
 
                     Text {
-                        id: nextCategoryText
-                        text: "The next category will be: [Category Here]"
+                        id: nextCategoryTextPrepend
+                        text: qsTr("Next category:")
                         wrapMode: Text.WordWrap
-                        width: page.width * 0.20
-                        anchors.horizontalCenter: parent.horizontalCenter
                         anchors.verticalCenter: parent.verticalCenter
                         horizontalAlignment: Text.AlignHCenter
+                        font.pointSize: 18;
+                        leftPadding: 5
+                    }
+
+                    Text {
+                        id: nextCategoryText
+                        text: qsTr("...?")
+                        anchors.left: nextCategoryTextPrepend.right
+                        anchors.verticalCenter: parent.verticalCenter
+                        leftPadding: 5
+                        font.pointSize: 18; font.bold: true
                     }
                 }
 

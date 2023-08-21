@@ -20,7 +20,7 @@ def show_NextCategoryWillBe(category):
     if category == None:
         emitter.hideNextCategoryExplanation.emit()
     else:   
-        emitter.showNextCategoryExplanation.emit("Next Category will be: " + category)
+        emitter.showNextCategoryExplanation.emit(category)
         emitter.updatePhoto.emit('AppImages/restart-arrow.png')
 
 def hide_NextCategoryWillBe():
