@@ -35,9 +35,11 @@ Window {
         function onUpdatePhotoCounter(counterText){
             textPhotoCounter.text = counterText
             textPhotoCounter.visible = true
+            textPhotoNum.visible = true
         }
         function onHidePhotoCounter(){
             textPhotoCounter.visible = false
+            textPhotoNum.visible = false
         }
         function onShowFolderSelectionArea(){
             folderSelectionArea.visible = true
@@ -222,13 +224,25 @@ Window {
             color:"lightgrey"
 
             Text {
+                id: textPhotoNum
+                text: qsTr("Photo Num: ")
+                height: 30
+                anchors.right: textPhotoCounter.left
+                anchors.verticalCenter: parent.verticalCenter
+                rightPadding: 5
+                font.pointSize: 24;
+                visible: false
+            }
+
+            Text {
                 id: textPhotoCounter
-                text: "Photo 0/0"
+                text: qsTr("-/-")
                 height: 30
                 anchors.right: infoBar.right
                 anchors.verticalCenter: parent.verticalCenter
                 rightPadding: 5
                 font.pointSize: 24; font.bold: true
+                visible: false
             }
 
             Text {
@@ -239,6 +253,7 @@ Window {
                 anchors.verticalCenter: parent.verticalCenter
                 leftPadding: 5
                 font.pointSize: 24;
+                visible: false
             }
 
             Text {
@@ -249,6 +264,7 @@ Window {
                 anchors.verticalCenter: parent.verticalCenter
                 leftPadding: 5
                 font.pointSize: 24; font.bold: true
+                visible: false
             }
         }
 

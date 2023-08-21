@@ -175,8 +175,6 @@ def folderChosen(folderURL):
     #Datamanager handles the data
     dataManager.folderChosen(folderURL)
 
-    ui.setCategory("Any Trigger")
-    ui.setPhotoCounter('0/' + str(len(dataManager.photoURLs)))
     ui.show_Explanation(
         "Use the [L] key and [;] key as Yes and No, to cycle through the images. If you need to go back, use the [\'] key"
         )
