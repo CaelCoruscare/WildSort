@@ -68,10 +68,10 @@ class SlotBridge(QObject):
         #Release Resource
     
     @Slot(str)
-    def recordNote(self, note):
+    def setNote(self, note):
         print(note)
-        logic.dataManager.notes[self.picIndex] = note
+        logic.setNote(note)
 
     @Slot(result=str)
     def getNote(self):
-        return logic.dataManager.notes.get(self.picIndex, "")
+        return logic.getNote()

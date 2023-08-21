@@ -333,9 +333,9 @@ Window {
                 Keys.onPressed: (event)=> {
                     if (event.key == Qt.Key_Return && popup.opened) 
                     {
-                        imageLogic.recordNote(notes.text);
+                        slotBridge.setNote(notes.text);
                         notes.text = "";
-                        image.forceActiveFocus()
+                        photo.forceActiveFocus()
                         popup.close();
                     }
                 }

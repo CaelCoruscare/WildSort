@@ -9,22 +9,11 @@ class Index():
     photo: int
     category: int
 
+###---
+
 #The urls of all the pictures that have been loaded in.
 photoURLs = []
-
-def recursiveDictionarySearch( dict_ToFind, dict_ToSearch):
-    for key in dict_ToSearch.keys():
-        if key == dict_ToFind:
-            return dict_ToSearch[key]
-        elif type(dict_ToSearch[key]) is dict:
-            r = recursiveDictionarySearch(dict_ToFind, dict_ToSearch[key])
-            if r != None:
-                return r
     
-    return None
-
-#########
-
 def folderChosen(folderURL):
     #Get all files in the directory
     global photoURLs
@@ -37,6 +26,7 @@ def folderChosen(folderURL):
     #Initialize the data[] for the first category (top of the data tree) to the correct length. 
     #   The data[] for the other categories will all be created based on the filled out data[] of their parent.
     dataList[0]["data"] = [1] * len(photoURLs)
+
 
 dataList = []
 """
@@ -55,8 +45,19 @@ def fillDataList(dict_OfTypes, parent=None):
         dataList.append({'title':key, 'parent': parent, 'data': []})
         if len(dict_OfTypes[key]) > 0:
             fillDataList(dict_OfTypes[key], dataList[-1])
+          
+###---
 
-            
+notes = {-1:"You can put notes here when a picture is loaded."}
+
+def setNote(photoIndex, note):
+    notes[photoIndex] = note
+
+def getNote(photoIndex):
+    return notes.get(photoIndex, "")
+
+
+###---
 def findSkipsFromParentData(categoryIndex):
     """By copying the parent's data and setting each \"NO\" in the parent's data as a \"-1\" in the child's data, we allow skipping those."""
     parentList = dataList[categoryIndex]['parent']['data']

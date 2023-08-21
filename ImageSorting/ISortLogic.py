@@ -221,5 +221,18 @@ def folderChosen(folderURL):
     index.category = 0
     global edgeCase
     edgeCase = EdgeCase.SHOWINGTUTORIAL
+
+def setNote(text):
+    if edgeCase == EdgeCase.NONE or edgeCase == EdgeCase.ENDOFCATEGORY:
+        dataManager.setNote(index.photo, text)
+    else:
+        dataManager.setNote(-1, text)
+        
+
+def getNote():
+    if edgeCase == EdgeCase.NONE or edgeCase == EdgeCase.ENDOFCATEGORY:
+        return dataManager.getNote(index.photo)
+    else:
+        return dataManager.getNote(-1)
     
     
