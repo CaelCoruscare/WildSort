@@ -237,6 +237,6 @@ def getNote():
         return dataManager.getNote(-1)
     
 def setAreaAndCamera(area, camera):
-    reportBuilder.fillLocationAndCameraData("implement location gathering", "implement camera name gathering", len(dataManager.photoURLs))
+    reportBuilder.fillLocationAndCameraData(area, camera, len(dataManager.photoURLs))
     
     
