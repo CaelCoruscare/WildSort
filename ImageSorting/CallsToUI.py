@@ -9,7 +9,6 @@ def setPhoto(photoURL):
     emitter.updatePhoto.emit(photoURL)
 
 def setPhotoCounter(photoCounter):
-    #photoCounter = str(photoIndex) + '/' + str(dataManager.countPicsInCategory(categoryIndex))
     emitter.updatePhotoCounter.emit(photoCounter)
 
 def setCategory(title):

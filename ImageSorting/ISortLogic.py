@@ -5,6 +5,7 @@ from types import SimpleNamespace
 
 from DataHandling import DataManager as dataManager
 import ImageSorting.CallsToUI as ui
+import DataHandling.ReportBuilder as reportBuilder
 
 
 #index = SimpleNamespace(photo = -1, category = 0)
@@ -54,7 +55,7 @@ def handleForwardEdgeCases(userResponse):
             recordData(userResponse)
             ui.flashIcon(userResponse) 
 
-        if index.category == len(dataManager.dataList): #If end of categories
+        if index.category == len(dataManager.dataList) - 1: #If end of categories
             ui.show_AreYouReadyToPrintReport()
         else: 
             ui.show_NextCategoryWillBe(dataManager.getCategoryTitle(index.category + 1))
@@ -194,7 +195,7 @@ def categoryBack():
     #     index.photo = len(dataManager.photoURLs)
     #     ui.flashIcon('back')
     #     ui.show_NextCategoryWillBe(
-    #         dataManager.dataList[index.category + 1]['title'], 
+    #         dataManager.dataList[index.category + 1]['category'], 
     #         str(dataManager.countPicsInCategory(index.category + 1))
     #         )
 ########
@@ -234,5 +235,8 @@ def getNote():
         return dataManager.getNote(index.photo)
     else:
         return dataManager.getNote(-1)
+    
+def setAreaAndCamera(area, camera):
+    reportBuilder.fillLocationAndCameraData("implement location gathering", "implement camera name gathering", len(dataManager.photoURLs))
     
     
