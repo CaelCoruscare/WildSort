@@ -30,19 +30,19 @@ def folderChosen(folderURL):
 
 dataList = []
 """
-Holds data on which pictures each type appears in. \n
+Holds data on which pictures each category appears in. \n
 1='in picture' , 0='not in picture' , -1='parent type not in picture, so don't need to check'\n
 Example: 
-    [{'type':'any', 'parent': None,     'data': [0,1,0,0,1,1]}, \n
-    {'type':'domestic', 'parent': *any, 'data': [-1,0,-1,-1,1,0]}, \n
-    {'type':'wild', 'parent': *any,     'data': [-1,1,-1,-1,0,1]} \n
-    {'type':'cheetah', 'parent': *wild, 'data': [-1,0,-1,-1,-1,1]}]
+    [{'category':'any', 'parent': None,     'data': [0,1,0,0,1,1]}, \n
+    {'category':'domestic', 'parent': *any, 'data': [-1,0,-1,-1,1,0]}, \n
+    {'category':'wild', 'parent': *any,     'data': [-1,1,-1,-1,0,1]} \n
+    {'category':'cheetah', 'parent': *wild, 'data': [-1,0,-1,-1,-1,1]}]
 """
 
 def fillDataList(dict_OfTypes, parent=None):
     """Recursively fills dataList from a tree-structure nested-dictionary of image trigger types"""
     for key in dict_OfTypes:
-        dataList.append({'title':key, 'parent': parent, 'data': []})
+        dataList.append({'category':key, 'parent': parent, 'data': []})
         if len(dict_OfTypes[key]) > 0:
             fillDataList(dict_OfTypes[key], dataList[-1])
           
@@ -69,7 +69,7 @@ def checkForSkip(index: Index):
     return dataList[index.category]['data'][index.photo] == -1
 
 def getCategoryTitle(categoryIndex):
-    return dataList[categoryIndex]['title']
+    return dataList[categoryIndex]['category']
 
 def getPhoto(photoIndex):
     return photoURLs[photoIndex]
@@ -84,3 +84,4 @@ def countPicsAsked(index: Index):
     slicedData = dataList[index.category]['data'][0:index.photo]
     return len(slicedData) - slicedData.count(-1) + 1
 #######
+
