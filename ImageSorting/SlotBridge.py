@@ -1,13 +1,9 @@
-import os
 import threading
 from PySide6.QtCore import QObject, Slot
-from PySide6.QtGui import QGuiApplication
-from PySide6.QtQml import QQmlApplicationEngine, QmlElement
-from PySide6.QtQuickControls2 import QQuickStyle
-from PySide6.QtCore import QObject, Signal, Property
+from PySide6.QtQml import QmlElement
 
 import DataHandling.DataManager as dataManager
-from DataHandling.ReportBuilder import reportBuilder
+import DataHandling.ReportBuilder as reportBuilder
 
 
 import ImageSorting.ISortLogic as logic
