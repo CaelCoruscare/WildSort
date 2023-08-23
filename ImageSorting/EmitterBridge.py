@@ -28,6 +28,7 @@ class EmitterBridge(QObject):
     hideNextCategoryExplanation = Signal()
     showExplanation = Signal(str)
     hideExplanation = Signal()
+    showPrintArea = Signal()
 
     def __init__(self):
         QObject.__init__(self)

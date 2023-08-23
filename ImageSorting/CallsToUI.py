@@ -52,7 +52,7 @@ def show_AreYouReadyToPrintReport():
     #TODO IMPLEMENT button and showing button.
     emitter.updatePhoto.emit('')
     emitter.updatePhotoCounter.emit('')
-    emitter.showNextCategoryExplanation.emit("Report is now built to a spreadsheet (Need to implement)")
+    emitter.showPrintArea.emit()
 
 
 ##---This is cool so I'm leaving it as a comment to reference for later.---

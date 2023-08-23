@@ -63,6 +63,10 @@ class SlotBridge(QObject):
         #TODO:
         #Release Resource
     
+    @Slot()
+    def printReport(self):    
+        logic.writeReport()
+
     @Slot(str)
     def setNote(self, note):
         print(note)

@@ -4,6 +4,7 @@ import time
 from types import SimpleNamespace
 
 from DataHandling import DataManager as dataManager
+
 import ImageSorting.CallsToUI as ui
 import DataHandling.ReportBuilder as reportBuilder
 
@@ -239,4 +240,6 @@ def getNote():
 def setAreaAndCamera(area, camera):
     reportBuilder.fillLocationAndCameraData(area, camera, len(dataManager.photoURLs))
     
+def writeReport():
+    reportBuilder.writeReport_Human(dataManager.dataList, dataManager.countPhotosInCategory, dataManager.notes)
     
