@@ -109,17 +109,3 @@ def getNotesData(photoURLs, notes):
 ##################----------------------------
 ###TESTING BELOW
 ##################----------------------------
-
-# # The test based on unittest module
-# class TestWriteReport(unittest.TestCase):
-#     def runTest(self):
-#         fillLocationAndCameraData("test location", "test camera name", 8)
-
-
-#         testHeaders = []
-#         testData = [[],[],[]]
-#         self.assertEqual(reportHeaders_Human, , "incorrect area")
-#         self.assertEqual(reportData_Human, , "incorrect area")
- 
-# # run the test
-# unittest.main()
