@@ -59,6 +59,7 @@ def handleForwardEdgeCases(userResponse):
 
         if index.category == len(dataManager.dataList) - 1: #If end of categories
             ui.show_AreYouReadyToPrintReport()
+            ui.setPhotoCounter(None)
         else: 
             ui.show_NextCategoryWillBe(dataManager.getCategoryTitle(index.category + 1))
             dataManager.findSkipsFromParentData(index.category + 1) # Need to do this so the next line functions
