@@ -67,6 +67,14 @@ class SlotBridge(QObject):
     def printReport(self):    
         logic.writeReport()
 
+    @Slot(str, str)
+    def setCameraAndLocation(self, camera, location):
+        logic.setCameraAndLocation(camera, location)
+
+    @Slot()
+    def showTutorial(self):
+        logic.showTutorial()
+
     @Slot(str)
     def setNote(self, note):
         print(note)

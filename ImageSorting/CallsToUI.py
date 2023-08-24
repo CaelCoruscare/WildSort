@@ -54,6 +54,9 @@ def show_AreYouReadyToPrintReport():
     emitter.updatePhotoCounter.emit('')
     emitter.showPrintArea.emit()
 
+def showCamAndLocForm(camera, location):
+    emitter.showCamAndLocForm.emit(camera, location)
+
 
 ##---This is cool so I'm leaving it as a comment to reference for later.---
 # def flashIcon(answer):

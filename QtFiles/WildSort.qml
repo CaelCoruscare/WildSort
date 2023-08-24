@@ -64,6 +64,14 @@ Window {
         function onShowPrintArea(){
             printReportArea.visible = true
         }
+        function onShowCamAndLocForm(camera, location){
+            cameraAndLocationLayout.visible = true
+            cameraField.text = camera
+            locationField.text = location
+            locationField.forceActiveFocus()
+        }
+
+        
 
 
         function onFlashIcon(code){
@@ -136,6 +144,55 @@ Window {
                     }
                 }
 
+                ColumnLayout {
+                id: cameraAndLocationLayout
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.horizontalCenter: parent.horizontalCenter
+                visible: false
+                focus: true
+
+                    Text {
+                        text: qsTr("Camera Used")
+                    }
+                    TextField {
+                        id: cameraField
+                        placeholderText: qsTr("This should be filled by SlotBridge.SetFolder()")
+                    }
+                    
+                    Text {
+                        text: qsTr("Location")
+                    }
+                    TextField {
+                        id: locationField
+                        placeholderText: qsTr("")
+                        focus:true
+                        Keys.forwardTo: [cameraAndLocationButton]
+                    }
+
+                    Button {
+                        id: cameraAndLocationButton
+                        text: qsTr("Confirm")
+                        Layout.alignment: Qt.AlignCenter
+                        
+                        onClicked: {
+                            slotBridge.setCameraAndLocation(cameraField.text, locationField.text);
+                            photo.forceActiveFocus();
+                            cameraAndLocationLayout.visible = false;
+                            slotBridge.showTutorial();
+                        }
+                    }
+
+                    Keys.onPressed: (event)=> {
+                        if (event.key == Qt.Key_Return && cameraAndLocationLayout.visible == true) 
+                        {
+                            slotBridge.setCameraAndLocation(cameraField.text, locationField.text);
+                            photo.forceActiveFocus();
+                            cameraAndLocationLayout.visible = false;
+                            slotBridge.showTutorial();
+                        }
+                    }
+                }
+
                 ColumnLayout{
                     id: printReportArea
                     anchors.verticalCenter: parent.verticalCenter
@@ -144,7 +201,7 @@ Window {
                     
                     Button {
                         id: printButton
-                        text: qsTr("Select Folder")
+                        text: qsTr("Print Report")
                         Layout.alignment: Qt.AlignCenter
                         
                         onClicked: {
@@ -232,10 +289,19 @@ Window {
 
                     if (event.key == Qt.Key_Return) 
                     {
-                        if (!popup.opened)
+                        if (!notesPopup.opened && !cameraAndLocationLayout.visible)
                         {
-                            popup.open();
+                            notesPopup.open();
                             notes.text = slotBridge.getNote() ;
+                            notes.forceActiveFocus();
+                        }
+                    }
+
+                    if (event.key == Qt.Key_Q) 
+                    {
+                        if (!cameraAndLocationLayout.opened)
+                        {
+                            cameraAndLocationLayout.visible = true;
                             notes.forceActiveFocus();
                         }
                     }
@@ -249,6 +315,7 @@ Window {
                     slotBridge.folderChosen(selectedFolder);
                     currentFolder = selectedFolder;
                     folderSelectionArea.visible = false;
+                    cameraAndLocationLayout.visible = true;
                 }
             }
         }
@@ -354,7 +421,7 @@ Window {
         }
 
         Popup {
-            id: popup
+            id: notesPopup
             //anchors.centerIn: parent 
             width: page.width - 20
             y: page.height - 100
@@ -368,15 +435,16 @@ Window {
                 //anchors.horizontalCenter: page.horizontalCenter
                 focus:true
                 Keys.onPressed: (event)=> {
-                    if (event.key == Qt.Key_Return && popup.opened) 
+                    if (event.key == Qt.Key_Return && notesPopup.opened) 
                     {
                         slotBridge.setNote(notes.text);
                         notes.text = "";
                         photo.forceActiveFocus()
-                        popup.close();
+                        notesPopup.close();
                     }
                 }
             }
-        } 
+        }
+        
     }
 }

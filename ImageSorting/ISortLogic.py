@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from enum import Enum
+import os
 import time
 from types import SimpleNamespace
 
@@ -211,18 +212,26 @@ def recordData(dataValue):
     if index.photo < len(dataManager.photoURLs) and index.photo > -1: #Skip if we are on a blank screen between categories
         dataManager.dataList[index.category]['data'][index.photo] = dataValue
 
+def showTutorial():
+    ui.show_Explanation(
+        "Use the [L] key and [;] key as Yes and No, to cycle through the images. If you need to go back, use the [\'] key"
+        )
+    global edgeCase
+    edgeCase = EdgeCase.SHOWINGTUTORIAL
+
 def folderChosen(folderURL):
     #Datamanager handles the data
     dataManager.folderChosen(folderURL)
 
-    ui.show_Explanation(
-        "Use the [L] key and [;] key as Yes and No, to cycle through the images. If you need to go back, use the [\'] key"
-        )
-    
     index.photo = 0
     index.category = 0
-    global edgeCase
-    edgeCase = EdgeCase.SHOWINGTUTORIAL
+
+    cam = os.path.basename(folderURL)
+    ui.showCamAndLocForm(str(cam), reportBuilder.location)
+
+def setCameraAndLocation(camera, location):
+    reportBuilder.camera = camera
+    reportBuilder.location = location
 
 def setNote(text):
     if edgeCase == EdgeCase.NONE or edgeCase == EdgeCase.ENDOFCATEGORY:
@@ -238,8 +247,8 @@ def getNote():
         return dataManager.getNote(-1)
     
 def setAreaAndCamera(area, camera):
-    reportBuilder.fillLocationAndCameraData(area, camera, len(dataManager.photoURLs))
+    reportBuilder.getLocAndCamera(area, camera, len(dataManager.photoURLs))
     
 def writeReport():
-    reportBuilder.writeReport_Human(dataManager.dataList, dataManager.countPhotosInCategory, dataManager.notes)
+    reportBuilder.writeReport_Human(dataManager.dataList, dataManager.photoURLs, dataManager.notes)
     

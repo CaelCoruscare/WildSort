@@ -5,6 +5,22 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Sandbox",
+            "type": "python",
+            "request": "launch",
+            "program": "Sandbox.py",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Testing",
+            "type": "python",
+            "request": "launch",
+            "program": "TestingStart.py",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
             "name": "WildSort",
             "type": "python",
             "request": "launch",

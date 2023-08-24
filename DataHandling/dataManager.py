@@ -22,7 +22,6 @@ def folderChosen(folderURL):
     #Add the rest of the filepath to them & cut out any that aren't jpeg
     photoURLs = [folderURL + '/' + file for file in photoURLs if file.endswith(('.jpeg', '.JPEG', '.jpg', '.JPG'))]
 
-    fillDataList(DataSortingCategories.typesToLook4)
     #Initialize the data[] for the first category (top of the data tree) to the correct length. 
     #   The data[] for the other categories will all be created based on the filled out data[] of their parent.
     dataList[0]["data"] = [1] * len(photoURLs)
@@ -46,6 +45,7 @@ def fillDataList(dict_OfTypes, parent=None):
         if len(dict_OfTypes[key]) > 0:
             fillDataList(dict_OfTypes[key], dataList[-1])
           
+fillDataList(DataSortingCategories.typesToLook4)
 ###---
 
 notes = {-1:"You can put notes here when a picture is loaded."}
