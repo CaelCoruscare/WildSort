@@ -1,8 +1,32 @@
+import random
+
+prizes = ['trophy','stuffed animal','money','candy','vacation']
+print()
+prize = random.sample(prizes,1) 
+print(f'Your prize is {prize}')
 
 
-# import random
-# prizes = ['trophy','stuffed animal','money','candy','vacation']
-# print(random.sample(prizes,2))
+#>>>Your prize is {}
+
+
+
+
+# print('What is your first name?')
+# firstName = input()
+
+# print('What is your last name?')
+# lastName = input()
+
+# print()
+
+#print(f'Your fullname is {lastName} Poopybutt {lastName}')
+
+
+
+
+
+
+
 
 
 

@@ -4,6 +4,8 @@ import DataSortingCategories
 from natsort import natsorted
 from types import SimpleNamespace
 
+
+
 @dataclass
 class Index():
     photo: int
@@ -17,15 +19,24 @@ photoURLs = []
 def folderChosen(folderURL):
     #Get all files in the directory
     global photoURLs
-    photoURLs = natsorted(os.listdir(folderURL))
-
-    #Add the rest of the filepath to them & cut out any that aren't jpeg
-    photoURLs = [folderURL + '/' + file for file in photoURLs if file.endswith(('.jpeg', '.JPEG', '.jpg', '.JPG'))]
-
+    photoURLs = recursiveGetFiles(folderURL)
+    #Cut out any that aren't jpeg
+    photoURLs = [file for file in photoURLs if file.endswith(('.jpeg', '.JPEG', '.jpg', '.JPG'))]
+    #Sort 
+    photoURLs = natsorted(photoURLs)
+    
     #Initialize the data[] for the first category (top of the data tree) to the correct length. 
     #   The data[] for the other categories will all be created based on the filled out data[] of their parent.
     dataList[0]["data"] = [1] * len(photoURLs)
 
+def recursiveGetFiles(folderURL):
+    #os.listdir(folderURL)
+    allFiles = []
+    for folderPath, subfolders, files in os.walk(folderURL):
+        #Make sure it is the full URL, not just the filename
+        allFiles.extend([(folderPath + '/' + file) for file in files]) 
+
+    return allFiles
 
 dataList = []
 """
