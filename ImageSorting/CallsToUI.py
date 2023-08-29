@@ -39,14 +39,11 @@ def flashIcon(userAnswer):
 
 
 
-def show_Explanation(explanation):
-    if explanation == None:
-        emitter.hideExplanation.emit()
-    else:
-        emitter.showExplanation.emit(explanation)
+def show_KeysTutorial():
+    emitter.showKeysTutorial.emit()
 
-def hideExplanation():
-    emitter.hideExplanation.emit()
+def hide_KeysTutorial():
+    emitter.hideKeysTutorial.emit()
 
 def show_AreYouReadyToPrintReport():
     #TODO IMPLEMENT button and showing button.

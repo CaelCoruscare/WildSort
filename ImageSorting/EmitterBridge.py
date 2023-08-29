@@ -26,8 +26,8 @@ class EmitterBridge(QObject):
     hideFolderSelectionArea = Signal()
     showNextCategoryExplanation = Signal(str)
     hideNextCategoryExplanation = Signal()
-    showExplanation = Signal(str)
-    hideExplanation = Signal()
+    showKeysTutorial = Signal()
+    hideKeysTutorial = Signal()
     showPrintArea = Signal()
     showCamAndLocForm = Signal(str, str)
 

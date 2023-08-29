@@ -34,7 +34,7 @@ def handleForwardEdgeCases(userResponse):
     global edgeCase
 
     if edgeCase == EdgeCase.SHOWINGTUTORIAL:
-        ui.show_Explanation(None)#Hide the tutorial
+        ui.hide_KeysTutorial()#Hide the tutorial
         ui.show_NextCategoryWillBe('Any Trigger')
         ui.setPhotoCounter('-/' + str(dataManager.countPhotosInCategory(index.category)))
 
@@ -214,9 +214,7 @@ def recordData(dataValue):
         dataManager.dataList[index.category]['data'][index.photo] = dataValue
 
 def showTutorial():
-    ui.show_Explanation(
-        "Use the [L] key and [;] key as Yes and No, to cycle through the images. If you need to go back, use the [\'] key\n\nPress any key to continue."
-        )
+    ui.show_KeysTutorial()
     global edgeCase
     edgeCase = EdgeCase.SHOWINGTUTORIAL
 

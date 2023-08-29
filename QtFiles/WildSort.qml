@@ -54,12 +54,12 @@ Window {
         function onHideNextCategoryExplanation(){
             nextCategoryArea.visible = false
         }
-        function onShowExplanation(text){
-            genericExplanationText.text = text
-            genericExplanation.visible = true
+        function onShowKeysTutorial(){
+            //keysTutorial_Text.text = text
+            keysTutorial_Area.visible = true
         }
-        function onHideExplanation(){
-            genericExplanation.visible = false
+        function onHideKeysTutorial(){
+            keysTutorial_Area.visible = false
         }
         function onShowPrintArea(){
             printReportArea.visible = true
@@ -113,20 +113,42 @@ Window {
                 focus:true
 
                 ColumnLayout{
+                    id: keysTutorial_Area
+                    anchors.top: parent.top
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    height: parent.height * 0.65
+                    visible: false
+
+                    Image {
+                        id: keysTutorial_Pic
+                        source: "AppImages/tutorial-keys.png"
+                        fillMode: Image.PreserveAspectFit
+                        Layout.alignment: Qt.AlignCenter
+                        Layout.fillHeight: true
+                    }
+
+                    Rectangle {
+                        id: keysTutorial_Rect
+                        border.color:"orange"
+                        Layout.preferredHeight: keysTutorial_Text.implicitHeight + 20 
+                        Layout.preferredWidth: keysTutorial_Text.implicitWidth + 20
+                        Layout.alignment: Qt.AlignCenter
+
+                        Text {
+                            id: keysTutorial_Text
+                            text: "Use the <b><font color=\"green\">[L]</font></b> and <b><font color=\"red\">[;]</font></b> keys as <b><font color=\"green\">Yes</font></b> and <b><font color=\"red\">No</font></b>, to Sort the Photos.<br><br>Use the <b><font color=\"blue\">[']</font></b> key to go <b><font color=\"blue\">Back</font></b> to the last Photo.<br><br>Press the <b><font color=\"green\">[L]</font></b> key now to start sorting."
+                            wrapMode: Text.WordWrap
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
+                    }
+
+                }
+
+                ColumnLayout{
                     id: folderSelectionArea
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.horizontalCenter: parent.horizontalCenter
-                    
-                    Button {
-                        id: folderButton
-                        text: qsTr("Select Folder")
-                        Layout.alignment: Qt.AlignCenter
-                        
-                        onClicked: {
-                            folderDialog.open();
-                            folderSelectionArea.visible = false;
-                        }
-                    }
 
                     Rectangle {
                         border.color:"green"
@@ -140,6 +162,17 @@ Window {
                             width: page.width * 0.3
                             anchors.horizontalCenter: parent.horizontalCenter
                             anchors.verticalCenter: parent.verticalCenter
+                        }
+                    }
+
+                    Button {
+                        id: folderButton
+                        text: qsTr("Select Folder")
+                        Layout.alignment: Qt.AlignCenter
+                        
+                        onClicked: {
+                            folderDialog.open();
+                            folderSelectionArea.visible = false;
                         }
                     }
                 }
@@ -227,25 +260,7 @@ Window {
                     }
                 }
 
-                Rectangle {
-                    id: genericExplanation
-                    border.color:"orange"
-                    height: genericExplanationText.height + 20  
-                    width: page.width * 0.30 + 20
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    visible: false
-
-                    Text {
-                        id: genericExplanationText
-                        text: "Generic"
-                        wrapMode: Text.WordWrap
-                        width: page.width * 0.30
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        anchors.verticalCenter: parent.verticalCenter
-                        horizontalAlignment: Text.AlignHCenter
-                    }
-                }
+                
 
                 Rectangle {
                     id: nextCategoryArea
