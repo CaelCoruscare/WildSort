@@ -213,7 +213,7 @@ Window {
 
                     Rectangle {
                         border.color:"green"
-                        Layout.minimumHeight: explanation.height + 20  
+                        Layout.minimumHeight: printReportExplanation.height + 20  
                         Layout.preferredWidth: page.width * 0.3 + 20
 
                         Text {
@@ -230,7 +230,7 @@ Window {
                 Rectangle {
                     id: genericExplanation
                     border.color:"orange"
-                    height: nextCategoryText.height + 20  
+                    height: genericExplanationText.height + 20  
                     width: page.width * 0.30 + 20
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.horizontalCenter: parent.horizontalCenter
@@ -256,6 +256,8 @@ Window {
                     anchors.horizontalCenter: parent.horizontalCenter
                     visible: false
 
+                    
+
                     Text {
                         id: nextCategoryTextPrepend
                         text: qsTr("Next category:")
@@ -275,6 +277,11 @@ Window {
                         font.pointSize: 18; font.bold: true
                     }
                 }
+
+                
+
+                    
+                
 
                 Keys.onPressed: (event)=> { 
                     if (event.key == Qt.Key_L){
