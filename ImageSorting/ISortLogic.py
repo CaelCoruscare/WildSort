@@ -215,7 +215,7 @@ def recordData(dataValue):
 
 def showTutorial():
     ui.show_Explanation(
-        "Use the [L] key and [;] key as Yes and No, to cycle through the images. If you need to go back, use the [\'] key"
+        "Use the [L] key and [;] key as Yes and No, to cycle through the images. If you need to go back, use the [\'] key\n\nPress any key to continue."
         )
     global edgeCase
     edgeCase = EdgeCase.SHOWINGTUTORIAL
