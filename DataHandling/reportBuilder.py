@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import csv
 from dataclasses import dataclass
 from datetime import datetime
@@ -13,9 +15,7 @@ class ReportParts():
     headers: []
     columns: [[]]
 
-    def add(self, newParts): #Why does declaring type, ie: "newParts: reportParts" not work?
-        if ReportParts != type(newParts):
-             raise TypeError
+    def add(self, newParts: ReportParts):
         self.headers.extend(newParts.headers)
         self.columns.extend(newParts.columns)
 
