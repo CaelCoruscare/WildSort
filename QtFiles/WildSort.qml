@@ -314,7 +314,8 @@ Window {
                         }
                         else if (folderSelectionArea.visible)
                         {
-                            //Do nothing
+                            folderDialog.open();
+                            folderSelectionArea.visible = false;
                         }
                         else if (!notesPopup.opened)
                         {
