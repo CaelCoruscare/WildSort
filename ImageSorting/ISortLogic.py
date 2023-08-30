@@ -43,7 +43,10 @@ def __handleAtEndOfCategory(userResponse):
             ui.set_Category(None)
 
             nextCategory = dataManager.getCategory(index.category + 1)
+
+            time.sleep(smallDelay)
             ui.set_NextCategoryWillBe(nextCategory.title)
+
             nextCategory.initializeData() # Need to do this here so the next line functions
             ui.set_PhotoCounter('-/' + str(nextCategory.countPhotos()))
 
