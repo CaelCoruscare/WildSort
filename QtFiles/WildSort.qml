@@ -216,17 +216,6 @@ Window {
                             slotBridge.showTutorial();
                         }
                     }
-
-                    Keys.onPressed: (event)=> {
-                        if ((event.key == Qt.Key_Return || event.key == Qt.Key_Enter) && cameraAndLocationLayout.visible) 
-                        {
-                            console.log("testingCael")
-                            // slotBridge.setCameraAndLocation(cameraField.text, locationField.text);
-                            // photo.forceActiveFocus();
-                            // cameraAndLocationLayout.visible = false;
-                            // slotBridge.showTutorial();
-                        }
-                    }
                 }
 
                 ColumnLayout{
@@ -295,7 +284,7 @@ Window {
                 
 
                 Keys.onPressed: (event)=> { 
-                    console.log("Key pressed: " + event.key)
+                    //console.log("Key pressed: " + event.key)
                     if (event.key == Qt.Key_L){
                         slotBridge.choiceMade("yes"); 
                     }
