@@ -83,7 +83,7 @@ def __convertToHiddenBackup(fileURL):
     """Example: Renames '/folder/file.csv' -> '/folder/.file_backup.csv'"""
     head, tail = os.path.split(fileURL)
     fileName, fileType = tail.split('.')
-    backupURL = head + '.' + fileName + '_backup.' + fileType
+    backupURL = head + '/.' + fileName + '_backup.' + fileType
     os.rename(fileURL, backupURL)
 
 def __getDataColumns(dataList: list[data.Category]):
