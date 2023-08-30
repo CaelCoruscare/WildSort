@@ -2,7 +2,7 @@ import threading
 from PySide6.QtCore import QObject, Slot
 from PySide6.QtQml import QmlElement
 
-import DataHandling.DataManager as dataManager
+import DataHandling.DataManager as data
 
 
 import ImageSorting.ISortLogic as logic
@@ -37,8 +37,8 @@ class SlotBridge(QObject):
         #Need to make sure handling the choice is moved to ISortLogic
 
         #Make sure the list of pictures has been initialized.
-        if not dataManager.photoURLs:
-            raise ValueError("pictureURLs List has not been initialized.", dataManager.photoURLs)
+        if not data.photoURLs:
+            raise ValueError("pictureURLs List has not been initialized.", data.photoURLs)
         
         match choice.lower():
             case "yes":

@@ -63,10 +63,10 @@ class TestWriteReport(unittest.TestCase):
         
     def test_cleanDataColumn(self):
         testDataColumn = [0,1,-1,0,1,-1]
-        cleaned = reportBuilder.cleanDataColumn(testDataColumn)
+        cleaned = reportBuilder.__cleanDataColumn(testDataColumn)
         self.assertEqual(cleaned, [0,1,0,0,1,0], 'cleaning column did not work as expected')
 
-        self.assertRaises(ValueError,reportBuilder.cleanDataColumn,[0,1,-1,-2])
+        self.assertRaises(ValueError,reportBuilder.__cleanDataColumn,[0,1,-1,-2])
 
 
     def test_getData(self):
@@ -77,9 +77,9 @@ class TestWriteReport(unittest.TestCase):
         for category in data.dataList:
             randomData = random.sample([-1,0,1],counts=[4,4,4],k=4)
             category['data'] = randomData
-            expectedData.append(reportBuilder.cleanDataColumn(randomData)) #cleanDataColumn is tested elsewhere
+            expectedData.append(reportBuilder.__cleanDataColumn(randomData)) #cleanDataColumn is tested elsewhere
 
-        result = reportBuilder.getDataColumns(data.dataList)
+        result = reportBuilder.__getDataColumns(data.dataList)
 
         #Assertions
         self.assertEqual(expectedHeaders, result.headers, 'headers wrong')

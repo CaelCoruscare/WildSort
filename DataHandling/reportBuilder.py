@@ -3,12 +3,17 @@ from __future__ import annotations
 import csv
 from dataclasses import dataclass
 from datetime import datetime
+import os
+from typing import Tuple
 
 import exifread
+
+import DataHandling.DataManager as data
 
 
 location = ''
 camera = ''
+folderOfPhotos = 'this is the folder url where the photos were pulled from'
 
 @dataclass
 class ReportParts():
@@ -20,9 +25,34 @@ class ReportParts():
         self.columns.extend(newParts.columns)
 
 
-def writeReport_Human(dataList, photoURLs, notes):
-    """Collects all relevant data for the human report and prints it to spreadsheet called transactData.csv"""
+def buildReports_Human(dataList:list[data.Category], photoURLs:list[str], notes:list[str]):
+    """
+Converts all relevant data into a human-readable and visualization-friendly report. 
+\nBacks up any existing 'cameraTrapData.csv' file in the folder of photos.
+\nPrints to a spreadsheet called 'cameraTrapData.csv' in the folder of photos.
+\nTODO: Adds all rows to an 'ALL_cameraTrapData_DO_NOT_EDIT.csv' file in the working directory.
+    """
+    report = __collateReport(dataList, photoURLs, notes)
 
+    #Flip data sideways before printing the report. 
+    #   B/c you can't print columns to a spreadsheet
+    rows = zip(*report.columns)
+
+    target = folderOfPhotos + '/cameraTrapData.csv'
+
+    if os.path.exists(target):
+        __convertToHiddenBackup(target)
+
+    printReport(report.headers, rows, target)
+    #TODO: also extend to a 'cameraTrapData_AllData_doNOTedit' in the application folder
+
+
+def buildReport_AI():
+    """Collects all relevant data for the human report and prints it to a file called..."""
+    raise NotImplementedError("Not written yet")
+
+def __collateReport(dataList:list[data.Category], photoURLs:list[str], notes:list[str]) -> ReportParts:
+    
     fullReport = ReportParts([],[])
     #Columns 1 & 2
     fullReport.add( 
@@ -42,40 +72,39 @@ def writeReport_Human(dataList, photoURLs, notes):
 
     #Add the Data Columns (Any Trigger, Human, Domestic, Donkey, Wild Animal, etc)
     fullReport.add( 
-        getDataColumns(dataList)
+        __getDataColumns(dataList)
     )
 
-
-    #Flip data sideways before printing the report. 
-    #   B/c you can't print columns to a spreadsheet
-    rows = zip(*fullReport.columns)
-    
-
-    printReport(fullReport.headers, rows, 'transactData.csv')
-    #TODO: also print to a 'transactData_AllData_doNOTedit' and a hidden one (.transactData_AllData)
+    return (fullReport)
 
 
-def getDataColumns(dataList):
+
+def __convertToHiddenBackup(fileURL):
+    """Example: Renames '/folder/file.csv' -> '/folder/.file_backup.csv'"""
+    head, tail = os.path.split(fileURL)
+    fileName, fileType = tail.split('.')
+    backupURL = head + '.' + fileName + '_backup.' + fileType
+    os.rename(fileURL, backupURL)
+
+def __getDataColumns(dataList: list[data.Category]):
     headers=[]
     columns=[]
-    for datachunk in dataList:
-        headers.append(datachunk['category'])
-        columns.append(cleanDataColumn(datachunk['data']))
+    for category in dataList:
+        headers.append(category.title)
+        columns.append(__cleanDataColumn(category.data))
 
     return ReportParts(headers, columns)
 
-def cleanDataColumn(dataColumn):
-    '''Converts the -1s used by SortLogic.py to skip pictures, into 0s, so that the report is pretty'''
-    cleaned = [0 if (data == -1) else data for data in dataColumn]
+def __cleanDataColumn(dataColumn):
+    '''Converts the 'skip's used by SortLogic.py to skip pictures, into 0s, so that the report is pretty'''
+    cleaned = [0 if (data == 'skip') else data for data in dataColumn]
 
     if 0 < len([data for data in cleaned if (data != 1 and data != 0)]):
         raise ValueError(cleaned, 'dataColumn should have only 1s and 0s')
 
     return cleaned
 
-def writeReport_AI():
-    """Collects all relevant data for the human report and prints it to the spreadsheet called aiData.csv"""
-    raise NotImplementedError("Not written yet")
+
 
 
 

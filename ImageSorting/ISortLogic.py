@@ -267,5 +267,5 @@ def getNote():
         return dataManager.getNote(-1)
     
 def writeReport():
-    reportBuilder.writeReport_Human(dataManager.dataList, dataManager.photoURLs, dataManager.notes)
+    reportBuilder.buildReports_Human(dataManager.dataList, dataManager.photoURLs, dataManager.notes)
     
