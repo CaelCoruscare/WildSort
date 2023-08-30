@@ -327,11 +327,7 @@ Window {
 
                     if (event.key == Qt.Key_Q) 
                     {
-                        if (!cameraAndLocationLayout.opened)
-                        {
-                            cameraAndLocationLayout.visible = true;
-                            notes.forceActiveFocus();
-                        }
+                        //Test things here
                     }
                 }
             }
