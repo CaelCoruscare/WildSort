@@ -3,7 +3,6 @@ from PySide6.QtCore import QObject, Slot
 from PySide6.QtQml import QmlElement
 
 import DataHandling.DataManager as dataManager
-import DataHandling.ReportBuilder as reportBuilder
 
 
 import ImageSorting.ISortLogic as logic
@@ -44,12 +43,17 @@ class SlotBridge(QObject):
         match choice.lower():
             case "yes":
                 ###
-                threading.Timer(0, logic.forward, [1]).start()
+                threading.Timer(0, logic.tryForward, [1]).start()
                 #self.logic.forward(1)
                 
             case "no":
                 ###
-                threading.Timer(0, logic.forward, [0]).start()
+                threading.Timer(0, logic.tryForward, [0]).start()
+                #self.logic.forward(0)
+
+            case "continue":
+                ###
+                threading.Timer(0, logic.tryForward, ['continue']).start()
                 #self.logic.forward(0)
 
             case "back":

@@ -1,31 +1,66 @@
+from enum import Enum
 from ImageSorting.EmitterBridge import EmitterBridge
 emitter = EmitterBridge()
            
+class SimpleElement(Enum):
+    DIALOG_LOAD_FOLDER = 1
+    TUTORIAL_KEYS = 2
+    DIALOG_PRINT_REPORT = 3
 
-def setPhoto(photoURL):
+
+def showSimple(element: SimpleElement):
+    match element:
+            case SimpleElement.DIALOG_LOAD_FOLDER:
+                __show_LoadFolder()
+            case SimpleElement.TUTORIAL_KEYS:
+                __show_KeysTutorial()
+            case SimpleElement.DIALOG_PRINT_REPORT:
+                __show_PrintReportArea()
+            case _:
+                raise ValueError(element, "Unexpected Element")
+        
+def hideSimple(element: SimpleElement):
+    match element:
+            case SimpleElement.DIALOG_LOAD_FOLDER:
+                __hide_LoadFolder()
+            case SimpleElement.TUTORIAL_KEYS:
+                __hide_KeysTutorial()
+            case SimpleElement.DIALOG_PRINT_REPORT:
+                __hide_PrintReportArea()
+            case _:
+                raise ValueError(element, "Unexpected Element")
+
+
+def set_Photo(photoURL):
     """Sets the photo source. Can also set the Photo Counter text obj."""
     if photoURL == None:
         photoURL = ''
     emitter.updatePhoto.emit(photoURL)
 
-def setPhotoCounter(photoCounter):
+def set_PhotoCounter(photoCounter):
+    if photoCounter == None:
+        photoCounter = ''
     emitter.updatePhotoCounter.emit(photoCounter)
 
-def setCategory(title):
+def set_Category(title):
     if title == None:
         emitter.hideCategoryTracker.emit()
     else:
         emitter.updateCategoryTracker.emit(title)
 
-def show_NextCategoryWillBe(category):
+def set_CamAndLocForm(camera, location):
+    if camera == None:
+        emitter.hideCamAndLocForm.emit()
+    else:
+        emitter.showCamAndLocForm.emit(camera, location)
+    #This form hides itself upon the button being clicked
+
+def set_NextCategoryWillBe(category):
     if category == None:
         emitter.hideNextCategoryExplanation.emit()
     else:   
         emitter.showNextCategoryExplanation.emit(category)
         emitter.updatePhoto.emit('AppImages/restart-arrow.png')
-
-def hide_NextCategoryWillBe():
-    emitter.hideNextCategoryExplanation.emit()
 
 
 def flashIcon(userAnswer):
@@ -34,25 +69,30 @@ def flashIcon(userAnswer):
             emitter.flashIcon.emit('yes')
         case 0:
             emitter.flashIcon.emit('no')
+        case 'continue':
+            pass
         case _:
             emitter.flashIcon.emit(userAnswer)
 
-
-
-def show_KeysTutorial():
+###Show() methods
+def __show_KeysTutorial():
     emitter.showKeysTutorial.emit()
 
-def hide_KeysTutorial():
-    emitter.hideKeysTutorial.emit()
+def __show_LoadFolder():
+    emitter.showKeysTutorial.emit()
 
-def show_AreYouReadyToPrintReport():
-    #TODO IMPLEMENT button and showing button.
-    emitter.updatePhoto.emit('')
-    emitter.updatePhotoCounter.emit('')
+def __show_PrintReportArea():
     emitter.showPrintArea.emit()
 
-def showCamAndLocForm(camera, location):
-    emitter.showCamAndLocForm.emit(camera, location)
+###Hide() methods
+def __hide_KeysTutorial():
+    emitter.hideKeysTutorial.emit()
+
+def __hide_PrintReportArea():
+    emitter.showPrintArea.emit()
+
+def __hide_LoadFolder():
+    emitter.hide_loadFolder.emit()
 
 
 ##---This is cool so I'm leaving it as a comment to reference for later.---

@@ -48,11 +48,12 @@ Window {
             folderSelectionArea.visible = false
         }
         function onShowNextCategoryExplanation(text){
-            nextCategoryText.text = text
+            nextCategoryText.text = "Next category: <b>" + text + "</b>"
             nextCategoryArea.visible = true
         }
         function onHideNextCategoryExplanation(){
             nextCategoryArea.visible = false
+            photo.forceActiveFocus()
         }
         function onShowKeysTutorial(){
             //keysTutorial_Text.text = text
@@ -70,9 +71,9 @@ Window {
             locationField.text = location
             locationField.forceActiveFocus()
         }
-
-        
-
+        function onHideCamAndLocForm(){
+            cameraAndLocationLayout.visible = false
+        }
 
         function onFlashIcon(code){
             if (code == "yes"){
@@ -136,7 +137,7 @@ Window {
 
                         Text {
                             id: keysTutorial_Text
-                            text: "Use the <b><font color=\"green\">[L]</font></b> and <b><font color=\"red\">[;]</font></b> keys as <b><font color=\"green\">Yes</font></b> and <b><font color=\"red\">No</font></b>, to Sort the Photos.<br><br>Use the <b><font color=\"blue\">[']</font></b> key to go <b><font color=\"blue\">Back</font></b> to the last Photo.<br><br>Press the <b><font color=\"green\">[L]</font></b> key now to start sorting."
+                            text: "Use the <b><font color=\"green\">[L]</font></b> and <b><font color=\"red\">[;]</font></b> keys as <b><font color=\"green\">Yes</font></b> and <b><font color=\"red\">No</font></b>, to Sort the Photos.<br><br>Use the <b><font color=\"blue\">[']</font></b> key to go <b><font color=\"blue\">Back</font></b> to the last Photo.<br><br>Press the <b>[return]</b> or <b>[Enter]</b> key now to start sorting."
                             wrapMode: Text.WordWrap
                             anchors.horizontalCenter: parent.horizontalCenter
                             anchors.verticalCenter: parent.verticalCenter
@@ -178,11 +179,11 @@ Window {
                 }
 
                 ColumnLayout {
-                id: cameraAndLocationLayout
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.horizontalCenter: parent.horizontalCenter
-                visible: false
-                focus: true
+                    id: cameraAndLocationLayout
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    visible: false
+                    focus: true
 
                     Text {
                         text: qsTr("Camera Used")
@@ -216,12 +217,13 @@ Window {
                     }
 
                     Keys.onPressed: (event)=> {
-                        if (event.key == Qt.Key_Return && cameraAndLocationLayout.visible == true) 
+                        if ((event.key == Qt.Key_Return || event.key == Qt.Key_Enter) && cameraAndLocationLayout.visible) 
                         {
-                            slotBridge.setCameraAndLocation(cameraField.text, locationField.text);
-                            photo.forceActiveFocus();
-                            cameraAndLocationLayout.visible = false;
-                            slotBridge.showTutorial();
+                            console.log("testingCael")
+                            // slotBridge.setCameraAndLocation(cameraField.text, locationField.text);
+                            // photo.forceActiveFocus();
+                            // cameraAndLocationLayout.visible = false;
+                            // slotBridge.showTutorial();
                         }
                     }
                 }
@@ -261,7 +263,6 @@ Window {
                 }
 
                 
-
                 Rectangle {
                     id: nextCategoryArea
                     //border.color:"blue"
@@ -271,34 +272,27 @@ Window {
                     anchors.horizontalCenter: parent.horizontalCenter
                     visible: false
 
-                    
+                    ColumnLayout{
+                        Text {
+                            id: nextCategoryText
+                            text: qsTr("...?")
+                            leftPadding: 5
+                            font.pointSize: 18
+                        }
 
-                    Text {
-                        id: nextCategoryTextPrepend
-                        text: qsTr("Next category:")
-                        wrapMode: Text.WordWrap
-                        anchors.verticalCenter: parent.verticalCenter
-                        horizontalAlignment: Text.AlignHCenter
-                        font.pointSize: 18;
-                        leftPadding: 5
-                    }
-
-                    Text {
-                        id: nextCategoryText
-                        text: qsTr("...?")
-                        anchors.left: nextCategoryTextPrepend.right
-                        anchors.verticalCenter: parent.verticalCenter
-                        leftPadding: 5
-                        font.pointSize: 18; font.bold: true
+                        Text {
+                            id: nextCategoryTextPrepend
+                            text: qsTr("Press <b>[return]</b> or <b>[Enter]</b> key to continue")
+                            font.pointSize: 14
+                            leftPadding: 5
+                        }
                     }
                 }
 
                 
 
-                    
-                
-
                 Keys.onPressed: (event)=> { 
+                    console.log("Key pressed: " + event.key)
                     if (event.key == Qt.Key_L){
                         slotBridge.choiceMade("yes"); 
                     }
@@ -309,9 +303,20 @@ Window {
                         slotBridge.choiceMade("back"); 
                     }
 
-                    if (event.key == Qt.Key_Return) 
+                    if (event.key == Qt.Key_Return || event.key == Qt.Key_Enter) 
                     {
-                        if (!notesPopup.opened && !cameraAndLocationLayout.visible)
+                        if (cameraAndLocationLayout.visible
+                            || nextCategoryArea.visible
+                            || keysTutorial_Area.visible)
+                        {
+                            console.log("ABCD")
+                            slotBridge.choiceMade("continue")
+                        }
+                        else if (folderSelectionArea.visible)
+                        {
+                            //Do nothing
+                        }
+                        else if (!notesPopup.opened)
                         {
                             notesPopup.open();
                             notes.text = slotBridge.getNote() ;

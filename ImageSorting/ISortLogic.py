@@ -1,16 +1,11 @@
-from dataclasses import dataclass
 from enum import Enum
 import os
 import time
-from types import SimpleNamespace
 
 from DataHandling import DataManager as dataManager
 
 import ImageSorting.CallsToUI as ui
 import DataHandling.ReportBuilder as reportBuilder
-
-
-#index = SimpleNamespace(photo = -1, category = 0)
 
 index = dataManager.Index(-1,0)
 
@@ -21,80 +16,52 @@ smallDelay = 0.2
 notes = {-1:"You can write notes here when an image is open."}
 
 class EdgeCase(Enum):
-    SHOWINGTUTORIAL = 1
-    FIRSTSHOWINGNEXTCATEGORY = 2
-    SHOWINGNEXTCATEGORY = 3
-    ENDOFCATEGORY = 4
-    NONE = 5
+    SHOWING_FOLDER_AREA = 0
+    SHOWING_CAMERA_AND_LOCATION_FORM = 1
+    SHOWING_TUTORIAL = 2
+    FIRST_SHOWING_NEXT_CATEGORY = 3
+    SHOWING_NEXT_CATEGORY_WILL_BE = 4
+    AT_END_OF_CATEGORY = 5
+    NONE = 6
 
-edgeCase = EdgeCase.SHOWINGTUTORIAL
+edgeCase = EdgeCase.SHOWING_FOLDER_AREA
 
 
-def handleForwardEdgeCases(userResponse):
-    global edgeCase
-
-    if edgeCase == EdgeCase.SHOWINGTUTORIAL:
-        ui.hide_KeysTutorial()#Hide the tutorial
-        ui.show_NextCategoryWillBe('Any Trigger')
-        ui.setPhotoCounter('-/' + str(dataManager.countPhotosInCategory(index.category)))
-
-        edgeCase = EdgeCase.FIRSTSHOWINGNEXTCATEGORY
-
-        return True
-    
-    elif edgeCase == EdgeCase.FIRSTSHOWINGNEXTCATEGORY:
-        ui.hide_NextCategoryWillBe()
-        ui.setCategory('Any Trigger')
-        ui.setPhotoCounter('1/' +  str(dataManager.countPhotosInCategory(index.category)))
-        ui.setPhoto(dataManager.getPhoto(0))
-        edgeCase = EdgeCase.NONE
-
-        return True
-    
-    elif edgeCase == EdgeCase.ENDOFCATEGORY:
-        #-2 is passed in as userResponse if SortLogic is in the process of skipping.
+def __handleAtEndOfCategory(userResponse):
+    #-2 is passed in as userResponse if SortLogic is in the process of skipping.
         if userResponse != -2:
             recordData(userResponse)
             ui.flashIcon(userResponse) 
 
-        if index.category == len(dataManager.dataList) - 1: #If end of categories
-            ui.show_AreYouReadyToPrintReport()
-            ui.setPhotoCounter(None)
-        else: 
-            ui.show_NextCategoryWillBe(dataManager.getCategoryTitle(index.category + 1))
-            dataManager.findSkipsFromParentData(index.category + 1) # Need to do this so the next line functions
-            ui.setPhotoCounter('-/' + str(dataManager.countPhotosInCategory(index.category + 1)))
-            edgeCase = EdgeCase.SHOWINGNEXTCATEGORY
-            
-        ui.setCategory(None)
+        if index.category == len(dataManager.dataList) - 1: #If that was the last category
+            ui.set_Photo(None)
+            ui.set_Category(None)
+            ui.set_PhotoCounter(None)
+            ui.showSimple(ui.SimpleElement.DIALOG_PRINT_REPORT)
 
-        return True
-    
-    elif edgeCase == EdgeCase.SHOWINGNEXTCATEGORY:
-        ui.show_NextCategoryWillBe(None)
+        else: #Default EndOfCategory behavior 
+            ui.set_Category(None)
 
-        edgeCase = EdgeCase.NONE
+            nextCategory = dataManager.getCategory(index.category + 1)
+            ui.set_NextCategoryWillBe(nextCategory.title)
+            nextCategory.initializeData() # Need to do this here so the next line functions
+            ui.set_PhotoCounter('-/' + str(nextCategory.countPhotos()))
 
-        categoryForward()
-        
-        return True
-    
-    
-    
-    
+            global edgeCase
+            edgeCase = EdgeCase.SHOWING_NEXT_CATEGORY_WILL_BE
+  
 
-    return False
     
 
 
 
 ########## Forward & Back logic
-def forward(userResponse):
+def tryForward(userResponse):
     """Records data, increments the photo index until a non-skip photo is at the index, displays photo after delay"""
-    if handleForwardEdgeCases(userResponse):
+    if __handleForwardEdgeCases(userResponse):
         return
 
-    #"-2" allows forward() to be called without setting data or flashing an icon.
+    #"-2" allows tryForward() to be called without setting data or flashing an icon.
     if userResponse != -2:
         recordData(userResponse)
         ui.flashIcon(userResponse)
@@ -103,33 +70,92 @@ def forward(userResponse):
 
     if index.photo == len(dataManager.photoURLs) - 1:
         global edgeCase
-        edgeCase = EdgeCase.ENDOFCATEGORY
+        edgeCase = EdgeCase.AT_END_OF_CATEGORY
 
     if dataManager.checkForSkip(index):
-        forward(-2)
+        tryForward(-2)
     else:
-        time.sleep(smallDelay)
-        ui.setPhoto(dataManager.getPhoto(index.photo))
-        ui.setPhotoCounter(
-            str(dataManager.countPicsAsked(index)) + 
-            '/' + 
-            str(dataManager.countPhotosInCategory(index.category)))
+        __forward()
 
+def __forward():
+    time.sleep(smallDelay)
+    ui.set_Photo(dataManager.getPhoto(index.photo))
+    
+    currentCategory = dataManager.getCategory(index.category)
+    ui.set_PhotoCounter(currentCategory.getPhotoCounter(index.photo))
 
-def categoryForward():
+def __categoryForward():
     """Handles moving the category forward, then calls Forward again"""
     index.category += 1
-    ui.setCategory(dataManager.getCategoryTitle(index.category))
-    dataManager.findSkipsFromParentData(index.category) 
+    ui.set_Category(dataManager.getCategory(index.category).title)
 
     #Doing this instead of calling setPhoto() because 
-    #   forward() contains the logic for skipping over unnecessary photos
+    #   tryForward() contains the logic for skipping over unnecessary photos
     index.photo = -1
-    forward(-2)
+    tryForward(-2)
+
+def __handleForwardEdgeCases(userResponse):
+    global edgeCase
+
+    match edgeCase:
+        case EdgeCase.NONE:
+            return False
+        
+        case EdgeCase.SHOWING_FOLDER_AREA: 
+            return True #Ignore user input on this screen
+
+        case EdgeCase.AT_END_OF_CATEGORY:
+            __handleAtEndOfCategory(userResponse)
+            return True
+    
+    #For cases below this no action should be taken unless user clicked the return/enter key
+    if userResponse != 'continue':
+        return True
+
+    match edgeCase:
+        case EdgeCase.SHOWING_CAMERA_AND_LOCATION_FORM:
+            ui.set_CamAndLocForm(None, 'hide this')
+            ui.showSimple(ui.SimpleElement.TUTORIAL_KEYS)
+            
+            edgeCase = EdgeCase.SHOWING_TUTORIAL
+
+            return True
+
+        case EdgeCase.SHOWING_TUTORIAL:
+            ui.hideSimple(ui.SimpleElement.TUTORIAL_KEYS)
+            ui.set_NextCategoryWillBe('Any Trigger')
+            ui.set_PhotoCounter('-/' + str(len(dataManager.photoURLs)))
+
+            edgeCase = EdgeCase.FIRST_SHOWING_NEXT_CATEGORY
+
+            return True
+        
+        case EdgeCase.FIRST_SHOWING_NEXT_CATEGORY:
+            ui.set_NextCategoryWillBe(None)
+            ui.set_Category('Any Trigger')
+            ui.set_PhotoCounter('1/' +  str(len(dataManager.photoURLs)))
+            ui.set_Photo(dataManager.getPhoto(0))
+
+            edgeCase = EdgeCase.NONE
+
+            return True
+        
+        
+        case EdgeCase.SHOWING_NEXT_CATEGORY_WILL_BE:
+            ui.set_NextCategoryWillBe(None)
+
+            edgeCase = EdgeCase.NONE
+
+            __categoryForward()
+            
+            return True
+        
+        case _:
+            raise ValueError(edgeCase, 'No edgeCase match found')
 
 
 def tryBack():
-    if handleBackEdgeCases():
+    if __handleBackEdgeCases():
         return
 
     index.photo -= 1
@@ -137,86 +163,74 @@ def tryBack():
     if dataManager.checkForSkip(index):
         tryBack()
     else:
-        back()
+        __back()
         
 
-def back():
-    ui.flashIcon('back')
-    ui.setPhoto(dataManager.getPhoto(index.photo))
-    ui.setPhotoCounter(
-        str(dataManager.countPicsAsked(index)) + 
-        '/' + 
-        str(dataManager.countPhotosInCategory(index.category)))
+def __back():
+    #Edge cases are handled in tryBack()
 
-def handleBackEdgeCases():
+    ui.flashIcon('back')
+    ui.set_Photo(dataManager.getPhoto(index.photo))
+
+    currentCategory = dataManager.getCategory(index.category)
+    ui.set_PhotoCounter(currentCategory.getPhotoCounter(index.photo))
+
+def __categoryBack():
+    if index.category == 0:
+        return
+    
+    global edgeCase
+    edgeCase = EdgeCase.SHOWING_NEXT_CATEGORY_WILL_BE
+
+    index.category -= 1
+    nextCategory = dataManager.getCategory(index.category + 1)
+    ui.set_NextCategoryWillBe(nextCategory.title)
+    ui.set_PhotoCounter('-/' + str(nextCategory.countPhotos()))
+    ui.set_Category(None)
+    ui.flashIcon('back')
+
+    index.photo = len(dataManager.photoURLs) - 1
+
+def __handleBackEdgeCases():
     global edgeCase
 
-    if edgeCase == EdgeCase.ENDOFCATEGORY:
+    if edgeCase == EdgeCase.SHOWING_FOLDER_AREA or edgeCase == EdgeCase.SHOWING_TUTORIAL or edgeCase == EdgeCase.FIRST_SHOWING_NEXT_CATEGORY:
+        return True #Ignore user input before sorting starts
+
+    if edgeCase == EdgeCase.AT_END_OF_CATEGORY:
         edgeCase = EdgeCase.NONE
         tryBack()
         return True
 
-    if edgeCase == EdgeCase.SHOWINGNEXTCATEGORY:
-        edgeCase = EdgeCase.ENDOFCATEGORY
-        ui.show_NextCategoryWillBe(None)
-        ui.setCategory(dataManager.getCategoryTitle(index.category))
+    if edgeCase == EdgeCase.SHOWING_NEXT_CATEGORY_WILL_BE:
+        edgeCase = EdgeCase.AT_END_OF_CATEGORY
+        ui.set_NextCategoryWillBe(None)
+        ui.set_Category(dataManager.getCategory(index.category).title)
 
         #This is to avoid hitting handleBackEdgeCases() again
-        back()
+        __back()
         if dataManager.checkForSkip(index):
             tryBack()
 
         return True
     
     if index.photo == 0:
-        categoryBack()
+        __categoryBack()
         return True
 
     return False
 
 
-def categoryBack():
-    if index.category == 0:
-        return
-    
-    global edgeCase
-    edgeCase = EdgeCase.SHOWINGNEXTCATEGORY
-
-    index.category -= 1
-    ui.show_NextCategoryWillBe(dataManager.getCategoryTitle(index.category + 1))
-    ui.setPhotoCounter('-/' + str(dataManager.countPhotosInCategory(index.category + 1)))
-    ui.setCategory(None)
-    ui.flashIcon('back')
-
-    index.photo = len(dataManager.photoURLs) - 1
-
-
-    ###---
-
-    # if index.category > 0:
-    #     index.category -= 1
-    #     index.photo = len(dataManager.photoURLs)
-    #     ui.flashIcon('back')
-    #     ui.show_NextCategoryWillBe(
-    #         dataManager.dataList[index.category + 1]['category'], 
-    #         str(dataManager.countPicsInCategory(index.category + 1))
-    #         )
-########
 
 #########Supporting Functions
-
-
-
 
 def recordData(dataValue):
     """Sets data based on the index.photo"""
     if index.photo < len(dataManager.photoURLs) and index.photo > -1: #Skip if we are on a blank screen between categories
-        dataManager.dataList[index.category]['data'][index.photo] = dataValue
+        dataManager.getCategory(index.category).data[index.photo] = dataValue
 
-def showTutorial():
-    ui.show_KeysTutorial()
-    global edgeCase
-    edgeCase = EdgeCase.SHOWINGTUTORIAL
+###Pass-Alongs--------
+#TODO: I think it may be best to remove any of these that do not directly impact Sort Logic
 
 def folderChosen(folderURL):
     #Datamanager handles the data
@@ -225,28 +239,29 @@ def folderChosen(folderURL):
     index.photo = 0
     index.category = 0
 
-    cam = os.path.basename(folderURL)
-    ui.showCamAndLocForm(str(cam), reportBuilder.location)
+    camera = os.path.basename(folderURL) # Camera name is assumed to be the name of the folder
+    ui.set_CamAndLocForm(str(camera), reportBuilder.location)
+
+    global edgeCase
+    edgeCase = EdgeCase.SHOWING_CAMERA_AND_LOCATION_FORM
 
 def setCameraAndLocation(camera, location):
     reportBuilder.camera = camera
     reportBuilder.location = location
 
 def setNote(text):
-    if edgeCase == EdgeCase.NONE or edgeCase == EdgeCase.ENDOFCATEGORY:
+    #TODO: I think notes when there's no pictures is now fully handled by the QML file just not calling for notes when a picture is not showing. Should double check and maybe clean it up
+    if edgeCase == EdgeCase.NONE or edgeCase == EdgeCase.AT_END_OF_CATEGORY: 
         dataManager.setNote(index.photo, text)
     else:
         dataManager.setNote(-1, text)
         
-
 def getNote():
-    if edgeCase == EdgeCase.NONE or edgeCase == EdgeCase.ENDOFCATEGORY:
+    #TODO: I think notes when there's no pictures is now fully handled by the QML file just not calling for notes when a picture is not showing. Should double check and maybe clean it up
+    if edgeCase == EdgeCase.NONE or edgeCase == EdgeCase.AT_END_OF_CATEGORY:
         return dataManager.getNote(index.photo)
     else:
         return dataManager.getNote(-1)
-    
-def setAreaAndCamera(area, camera):
-    reportBuilder.getLocAndCamera(area, camera, len(dataManager.photoURLs))
     
 def writeReport():
     reportBuilder.writeReport_Human(dataManager.dataList, dataManager.photoURLs, dataManager.notes)
