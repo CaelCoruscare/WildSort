@@ -306,8 +306,7 @@ Window {
 
                     if (event.key == Qt.Key_Return || event.key == Qt.Key_Enter) 
                     {
-                        if (nextCategoryArea.visible
-                            || keysTutorial_Area.visible)
+                        if (nextCategoryArea.visible)
                         {
                             slotBridge.choiceMade("continue")
                         }
