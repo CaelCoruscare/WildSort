@@ -245,6 +245,8 @@ def folderChosen(folderURL):
     camera = os.path.basename(folderURL) # Camera name is assumed to be the name of the folder
     ui.set_CamAndLocForm(str(camera), reportBuilder.location)
 
+    reportBuilder.folderOfPhotos = folderURL
+
     global edgeCase
     edgeCase = EdgeCase.SHOWING_CAMERA_AND_LOCATION_FORM
 

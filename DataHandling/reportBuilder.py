@@ -43,7 +43,7 @@ Converts all relevant data into a human-readable and visualization-friendly repo
     if os.path.exists(target):
         __convertToHiddenBackup(target)
 
-    printReport(report.headers, rows, target)
+    __printReport(report.headers, rows, target)
     #TODO: also extend to a 'cameraTrapData_AllData_doNOTedit' in the application folder
 
 
@@ -108,7 +108,7 @@ def __cleanDataColumn(dataColumn):
 
 
 
-def printReport(headers, data, filename):
+def __printReport(headers, data, filename):
     with open(filename, 'w', encoding='UTF8', newline='') as f:
         writer = csv.writer(f)
 

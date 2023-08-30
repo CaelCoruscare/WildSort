@@ -36,6 +36,7 @@ def set_Photo(photoURL):
     if photoURL == None:
         photoURL = ''
     emitter.updatePhoto.emit(photoURL)
+    #print(f'photo: {photoURL}')
 
 def set_PhotoCounter(photoCounter):
     if photoCounter == None:

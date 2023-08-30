@@ -58,6 +58,7 @@ Window {
         function onShowKeysTutorial(){
             //keysTutorial_Text.text = text
             keysTutorial_Area.visible = true
+            photo.forceActiveFocus()
         }
         function onHideKeysTutorial(){
             keysTutorial_Area.visible = false
@@ -130,14 +131,14 @@ Window {
 
                     Rectangle {
                         id: keysTutorial_Rect
-                        border.color:"orange"
+                        border.color:"green"
                         Layout.preferredHeight: keysTutorial_Text.implicitHeight + 20 
                         Layout.preferredWidth: keysTutorial_Text.implicitWidth + 20
                         Layout.alignment: Qt.AlignCenter
 
                         Text {
                             id: keysTutorial_Text
-                            text: "Use the <b><font color=\"green\">[L]</font></b> and <b><font color=\"red\">[;]</font></b> keys as <b><font color=\"green\">Yes</font></b> and <b><font color=\"red\">No</font></b>, to Sort the Photos.<br><br>Use the <b><font color=\"blue\">[']</font></b> key to go <b><font color=\"blue\">Back</font></b> to the last Photo.<br><br>Press the <b>[return]</b> or <b>[Enter]</b> key now to start sorting."
+                            text: "Use the <b><font color=\"green\">[L]</font></b> and <b><font color=\"red\">[;]</font></b> keys as <b><font color=\"green\">Yes</font></b> and <b><font color=\"red\">No</font></b>, to Sort the Photos.<br><br>Use the <b><font color=\"blue\">[']</font></b> key to go <b><font color=\"blue\">Back</font></b> to the last Photo.<br><br>Use the <b><font color=\"#E19133\">[return]</font></b> or <b><font color=\"#E19133\">[Enter]</font></b> key to open <b><font color=\"#E19133\">Notes</font></b>.<br><br>Press the <b><font color=\"#B942EC\">[K]</font></b> key to start sorting."
                             wrapMode: Text.WordWrap
                             anchors.horizontalCenter: parent.horizontalCenter
                             anchors.verticalCenter: parent.verticalCenter
@@ -265,7 +266,7 @@ Window {
                 
                 Rectangle {
                     id: nextCategoryArea
-                    border.color:"purple"
+                    border.color:"#B942EC"
                     height: nextCategoryText.height + nextCategoryTextPrepend.height + 18
                     width: page.width * 0.20 + 20
                     anchors.verticalCenter: parent.verticalCenter
@@ -284,7 +285,7 @@ Window {
 
                         Text {
                             id: nextCategoryTextPrepend
-                            text: qsTr("Press <b>[return]</b> or <b>[Enter]</b> key to continue")
+                            text: qsTr("Press the <b><font color=\"#B942EC\">[K]</font></b> key to continue")
                             font.pointSize: 14
                             leftPadding: 5
                         }
@@ -305,19 +306,31 @@ Window {
                         slotBridge.choiceMade("back"); 
                     }
 
-                    if (event.key == Qt.Key_Return || event.key == Qt.Key_Enter) 
+                    if (event.key == Qt.Key_K) 
                     {
-                        if (cameraAndLocationLayout.visible
-                            || nextCategoryArea.visible
+                        if (nextCategoryArea.visible
                             || keysTutorial_Area.visible)
                         {
-                            console.log("ABCD")
+                            slotBridge.choiceMade("continue")
+                        }
+                    }
+
+                    if (event.key == Qt.Key_Return || event.key == Qt.Key_Enter) 
+                    {
+                        if (nextCategoryArea.visible
+                            || keysTutorial_Area.visible)
+                        {
                             slotBridge.choiceMade("continue")
                         }
                         else if (folderSelectionArea.visible)
                         {
                             folderDialog.open();
                             folderSelectionArea.visible = false;
+                        }
+                        else if (cameraAndLocationLayout.visible)
+                        {
+                            slotBridge.setCameraAndLocation(cameraField.text, locationField.text)
+                            slotBridge.choiceMade("continue")
                         }
                         else if (!notesPopup.opened)
                         {
