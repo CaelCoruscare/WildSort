@@ -31,9 +31,9 @@ class SlotBridge(QObject):
         
     @Slot(str)
     def choiceMade(self, choice):
-        #TODO: Need to add a shared resource here
-        #Claim Resource
-
+        mutex = threading.Lock()
+        if not mutex.acquire(blocking=False):
+            return #Thread should end itself if the mutex is not available.
         #Need to make sure handling the choice is moved to ISortLogic
 
         #Make sure the list of pictures has been initialized.
@@ -44,28 +44,29 @@ class SlotBridge(QObject):
             case "yes":
                 ###
                 threading.Timer(0, logic.tryForward, [1]).start()
-                #self.logic.forward(1)
+                #logic.tryForward(1)
                 
             case "no":
                 ###
                 threading.Timer(0, logic.tryForward, [0]).start()
-                #self.logic.forward(0)
+                #logic.tryForward(0)
 
             case "continue":
                 ###
                 threading.Timer(0, logic.tryForward, ['continue']).start()
-                #self.logic.forward(0)
+                #logic.tryForward('continue')
 
             case "back":
                 ###
                 threading.Timer(0, logic.tryBack).start()
-                #self.logic.back()
+                #logic.tryBack()
 
             case _:
                 raise ValueError("user choice passed in is not valid. Should be \'yes\',\'no\', or \'back\' (case insensitive)" , choice)
 
         #TODO:
         #Release Resource
+        mutex.release()
     
     @Slot()
     def printReport(self):    
