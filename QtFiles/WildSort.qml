@@ -265,17 +265,19 @@ Window {
                 
                 Rectangle {
                     id: nextCategoryArea
-                    //border.color:"blue"
-                    height: nextCategoryText.height + 20  
+                    border.color:"purple"
+                    height: nextCategoryText.height + nextCategoryTextPrepend.height + 18
                     width: page.width * 0.20 + 20
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.horizontalCenter: parent.horizontalCenter
                     visible: false
 
                     ColumnLayout{
+
                         Text {
                             id: nextCategoryText
                             text: qsTr("...?")
+                            topPadding: 10
                             leftPadding: 5
                             font.pointSize: 18
                         }
