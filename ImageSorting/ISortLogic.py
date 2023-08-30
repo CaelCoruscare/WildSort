@@ -210,9 +210,10 @@ def __handleBackEdgeCases():
         ui.set_Category(dataManager.getCategory(index.category).title)
 
         #This is to avoid hitting handleBackEdgeCases() again
-        __back()
         if dataManager.checkForSkip(index):
             tryBack()
+        else:
+            __back()
 
         return True
     
