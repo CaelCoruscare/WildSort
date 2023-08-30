@@ -16,6 +16,8 @@ QML_IMPORT_MAJOR_VERSION = 1
 @QmlElement
 class SlotBridge(QObject):
 
+    mutex = threading.Lock()
+
     def __init__(self):
         QObject.__init__(self)
 
@@ -31,8 +33,7 @@ class SlotBridge(QObject):
         
     @Slot(str)
     def choiceMade(self, choice):
-        mutex = threading.Lock()
-        if not mutex.acquire(blocking=False):
+        if not self.mutex.acquire(blocking=False):
             return #Thread should end itself if the mutex is not available.
         #Need to make sure handling the choice is moved to ISortLogic
 
@@ -66,7 +67,7 @@ class SlotBridge(QObject):
 
         #TODO:
         #Release Resource
-        mutex.release()
+        self.mutex.release()
     
     @Slot()
     def printReport(self):    

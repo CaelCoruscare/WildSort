@@ -105,9 +105,6 @@ def __cleanDataColumn(dataColumn):
     return cleaned
 
 
-
-
-
 def __printReport(headers, data, filename):
     with open(filename, 'w', encoding='UTF8', newline='') as f:
         writer = csv.writer(f)
