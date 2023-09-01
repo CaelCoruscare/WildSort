@@ -62,12 +62,12 @@ def __collateReport(dataList:list[data.Category], photoURLs:list[str], notes:lis
     #This fills the columns 3-5 of the report: 
     #   'Link To File', 'Date', 'Time'
     fullReport.add( 
-        getAllFiledata(photoURLs)
+        __getAllFiledata(photoURLs)
     )
 
     #Get Notes
     fullReport.add( 
-        getNoteColumn(photoURLs, notes)
+        __getNoteColumn(photoURLs, notes)
     )
 
     #Add the Data Columns (Any Trigger, Human, Domestic, Donkey, Wild Animal, etc)
@@ -130,27 +130,32 @@ def getLocAndCamera(location, camera, numPhotos):
 
 #This fills the columns 3-5 of the report: 
 #   'Link To File', 'Date', 'Time'
-def getAllFiledata(photoURLs):
+def __getAllFiledata(photoURLs):
+    fileLink_Column = []
     dateTaken_Column = []
     timeTaken_Column = []
 
     for url in photoURLs:
-        fileData = getFileData(url)
+        fileData = __getFileData(url)
         
         dateTaken_Column.append(fileData[0])
         timeTaken_Column.append(fileData[1])
 
+
+        shortenedURL = url.split(folderOfPhotos,1)[1]
+        fileLink_Column.append(f"=HYPERLINK(\"\"{url}\"\";\"\"{shortenedURL}\"\")")
+
     return ReportParts(
         headers=['Link To File', 'Date', 'Time'],
         columns=[
-            photoURLs, 
+            fileLink_Column, 
             dateTaken_Column, 
             timeTaken_Column
         ]
     )
 
 
-def getFileData(fileURL):
+def __getFileData(fileURL):
     with open(fileURL, 'rb') as fh:
         tags = exifread.process_file(fh)
         dateTimeTaken = tags.get("EXIF DateTimeOriginal")
@@ -173,7 +178,7 @@ def getFileData(fileURL):
         return (dateTaken, timeTaken)
     
 
-def getNoteColumn(photoURLs, notes):
+def __getNoteColumn(photoURLs, notes):
     notesColumn = [''] * len(photoURLs)
 
     del notes[-1]

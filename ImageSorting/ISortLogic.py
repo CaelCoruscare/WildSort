@@ -10,7 +10,7 @@ import DataHandling.ReportBuilder as reportBuilder
 index = dataManager.Index(-1,0)
 
 
-smallDelay = 0.2
+smallDelay = 0.05
 
 #index.photo is used to store notes in specific arrays here.
 notes = {-1:"You can write notes here when an image is open."}

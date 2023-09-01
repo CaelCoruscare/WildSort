@@ -37,7 +37,7 @@ class TestWriteReport(unittest.TestCase):
         ])
 
         #Run Function
-        result = reportBuilder.getAllFiledata(self.photoURLs)
+        result = reportBuilder.__getAllFiledata(self.photoURLs)
         
         #Assertions
         self.assertEqual(expectedColumns, result.columns, 'filedata columns wrong')
@@ -55,7 +55,7 @@ class TestWriteReport(unittest.TestCase):
         #Run Function
         data.setNote(1, 'elephant')
         data.setNote(3, 'hyena')
-        result = reportBuilder.getNoteColumn(self.photoURLs, data.notes)
+        result = reportBuilder.__getNoteColumn(self.photoURLs, data.notes)
 
         #Assertions
         self.assertEqual(expectedColumns, result.columns, 'note column wrong')
