@@ -138,7 +138,7 @@ Window {
 
                         Text {
                             id: keysTutorial_Text
-                            text: "Use the <b><font color=\"green\">[L]</font></b> and <b><font color=\"red\">[;]</font></b> keys as <b><font color=\"green\">Yes</font></b> and <b><font color=\"red\">No</font></b>, to Sort the Photos.<br><br>Use the <b><font color=\"blue\">[']</font></b> key to go <b><font color=\"blue\">Back</font></b> to the last Photo.<br><br>Use the <b><font color=\"#E19133\">[return]</font></b> or <b><font color=\"#E19133\">[Enter]</font></b> key to open <b><font color=\"#E19133\">Notes</font></b>.<br><br>Press the <b><font color=\"#B942EC\">[K]</font></b> key to start sorting."
+                            text: "Use the <b><font color=\"green\">[L]</font></b> and <b><font color=\"red\">[;]</font></b> keys as <b><font color=\"green\">Yes</font></b> and <b><font color=\"red\">No</font></b>, to Sort the Photos.<br><br>Use the <b><font color=\"blue\">[']</font></b> key to go <b><font color=\"blue\">Back</font></b> to the previous Photo.<br><br>Use the <b><font color=\"#E19133\">[return]</font></b> or <b><font color=\"#E19133\">[Enter]</font></b> key to open <b><font color=\"#E19133\">Notes</font></b>.<br><br>Press the <b><font color=\"#B942EC\">[K]</font></b> key to start sorting."
                             wrapMode: Text.WordWrap
                             anchors.horizontalCenter: parent.horizontalCenter
                             anchors.verticalCenter: parent.verticalCenter
