@@ -293,3 +293,6 @@ def setCategoriesScreen():
 
     for category in dataManager.dataList:
         category.title
+
+def showTutorial():
+    text = ""
