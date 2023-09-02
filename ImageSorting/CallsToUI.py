@@ -5,7 +5,9 @@ emitter = EmitterBridge()
 class SimpleElement(Enum):
     DIALOG_LOAD_FOLDER = 1
     TUTORIAL_KEYS = 2
-    DIALOG_PRINT_REPORT = 3
+    TUTORIAL_CATEGORIES = 3
+    TUTORIAL_IMAGES = 4
+    DIALOG_PRINT_REPORT = 5
 
 
 def showSimple(element: SimpleElement):
@@ -63,6 +65,9 @@ def set_NextCategoryWillBe(category):
         emitter.showNextCategoryExplanation.emit(category)
         emitter.updatePhoto.emit('AppImages/restart-arrow.png')
 
+def set_CategoriesScreen(text):
+    """This should be called only once, at start-up of the app"""
+    emitter.setCategoriesTutorial.emit(text)
 
 def flashIcon(userAnswer):
     match userAnswer:

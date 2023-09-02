@@ -31,6 +31,7 @@ class EmitterBridge(QObject):
     showPrintArea = Signal()
     showCamAndLocForm = Signal(str, str)
     hideCamAndLocForm = Signal()
+    setCategoriesTutorial = Signal(str)
 
     def __init__(self):
         QObject.__init__(self)

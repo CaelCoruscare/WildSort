@@ -18,11 +18,13 @@ notes = {-1:"You can write notes here when an image is open."}
 class EdgeCase(Enum):
     SHOWING_FOLDER_AREA = 0
     SHOWING_CAMERA_AND_LOCATION_FORM = 1
-    SHOWING_TUTORIAL = 2
-    FIRST_SHOWING_NEXT_CATEGORY = 3
-    SHOWING_NEXT_CATEGORY_WILL_BE = 4
-    AT_END_OF_CATEGORY = 5
-    NONE = 6
+    SHOWING_TUTORIAL_KEYS = 2
+    SHOWING_TUTORIAL_CATEGORIES = 3
+    SHOWING_TUTORIAL_IMAGES = 4
+    FIRST_SHOWING_NEXT_CATEGORY = 5
+    SHOWING_NEXT_CATEGORY_WILL_BE = 6
+    AT_END_OF_CATEGORY = 7
+    NONE = 8
 
 edgeCase = EdgeCase.SHOWING_FOLDER_AREA
 
@@ -119,12 +121,20 @@ def __handleForwardEdgeCases(userResponse):
             ui.set_CamAndLocForm(None, 'hide this')
             ui.showSimple(ui.SimpleElement.TUTORIAL_KEYS)
             
-            edgeCase = EdgeCase.SHOWING_TUTORIAL
+            edgeCase = EdgeCase.SHOWING_TUTORIAL_KEYS
 
             return True
 
-        case EdgeCase.SHOWING_TUTORIAL:
+        case EdgeCase.SHOWING_TUTORIAL_KEYS:
             ui.hideSimple(ui.SimpleElement.TUTORIAL_KEYS)
+            ui.showSimple(ui.SimpleElement.TUTORIAL_CATEGORIES)
+
+            edgeCase = EdgeCase.SHOWING_TUTORIAL_CATEGORIES
+
+            return True
+        
+        case EdgeCase.SHOWING_TUTORIAL_CATEGORIES:
+            ui.hideSimple(ui.SimpleElement.TUTORIAL_CATEGORIES) #TODO: Replace
             ui.set_NextCategoryWillBe('Any Trigger')
             ui.set_PhotoCounter('-/' + str(len(dataManager.photoURLs)))
 
@@ -196,7 +206,7 @@ def __categoryBack():
 def __handleBackEdgeCases():
     global edgeCase
 
-    if edgeCase == EdgeCase.SHOWING_FOLDER_AREA or edgeCase == EdgeCase.SHOWING_TUTORIAL or edgeCase == EdgeCase.FIRST_SHOWING_NEXT_CATEGORY:
+    if edgeCase == EdgeCase.SHOWING_FOLDER_AREA or edgeCase == EdgeCase.SHOWING_TUTORIAL_KEYS or edgeCase == EdgeCase.FIRST_SHOWING_NEXT_CATEGORY:
         return True #Ignore user input before sorting starts
 
     if edgeCase == EdgeCase.AT_END_OF_CATEGORY:
@@ -271,3 +281,9 @@ def getNote():
 def writeReport():
     reportBuilder.buildReports_Human(dataManager.dataList, dataManager.photoURLs, dataManager.notes)
     
+
+def setCategoriesScreen():
+    text = ""
+
+    for category in dataManager.dataList:
+        category.title

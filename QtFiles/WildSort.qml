@@ -454,6 +454,16 @@ Window {
             y: page.height - 100
             x:10
 
+            CheckBox {
+                id: checkBox
+                checked: true
+                text: qsTr("Any Trigger")
+                onToggled: {
+                    console.log(text)
+                    console.log(checked)
+                }
+            }
+
             contentItem: TextField {
                 id: notes
                 placeholderText: qsTr("Put notes here...")
