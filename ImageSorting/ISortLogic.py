@@ -127,12 +127,18 @@ def __handleForwardEdgeCases(userResponse):
 
         case EdgeCase.SHOWING_TUTORIAL_KEYS:
             ui.hideSimple(ui.SimpleElement.TUTORIAL_KEYS)
-            ui.showSimple(ui.SimpleElement.TUTORIAL_CATEGORIES)
+            # ui.showSimple(ui.SimpleElement.TUTORIAL_CATEGORIES)
 
-            edgeCase = EdgeCase.SHOWING_TUTORIAL_CATEGORIES
+            # edgeCase = EdgeCase.SHOWING_TUTORIAL_CATEGORIES
 
+            # return True
+            ui.set_NextCategoryWillBe('Any Trigger')
+            ui.set_PhotoCounter('-/' + str(len(dataManager.photoURLs)))
+
+            edgeCase = EdgeCase.FIRST_SHOWING_NEXT_CATEGORY
             return True
-        
+
+
         case EdgeCase.SHOWING_TUTORIAL_CATEGORIES:
             ui.hideSimple(ui.SimpleElement.TUTORIAL_CATEGORIES) #TODO: Replace
             ui.set_NextCategoryWillBe('Any Trigger')
