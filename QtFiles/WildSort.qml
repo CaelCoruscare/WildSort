@@ -24,7 +24,7 @@ Window {
             textCategory.text = newCategory + "?"
             textCategory.visible = true
             textIsThereA.visible = true
-        }
+        } //test
         function onHideCategoryTracker(newCategory){
             textCategory.visible = false
             textIsThereA.visible = false
