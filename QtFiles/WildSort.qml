@@ -449,18 +449,37 @@ Window {
 
         Popup {
             id: notesPopup
-            //anchors.centerIn: parent 
             width: page.width - 20
             y: page.height - 100
             x:10
 
-            CheckBox {
-                id: checkBox
-                checked: true
-                text: qsTr("Any Trigger")
-                onToggled: {
-                    console.log(text)
-                    console.log(checked)
+            ColumnLayout{
+                id: categoryCheckboxesLayout
+                anchors.bottom: notes.top
+
+                CheckBox {
+                    id: checkBox_AnyTrigger
+                    checked: true
+                    text: qsTr("Any Trigger")
+                    onToggled: {
+                        console.log(text)
+                        console.log(checked)
+                    }
+                }
+
+                CheckBox {
+                    id: checkBox_WildAnimal
+                    checked: true
+                    text: qsTr("Wild Animal")
+                    onToggled: {
+                        console.log(text)
+                        console.log(checked)
+                    }
+                }
+
+                Item {
+                    id: spacer
+                    height: 10
                 }
             }
 
