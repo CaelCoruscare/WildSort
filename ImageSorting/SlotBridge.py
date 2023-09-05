@@ -26,7 +26,7 @@ class SlotBridge(QObject):
     def folderChosen(self, folderURL):
         #Fix for QT Filepath:  
         #   file:///Users/test/Pictures --> /Users/test/Pictures
-        folderURLFixed = folderURL[7:]
+        folderURLFixed = folderURL[8:]
 
         logic.folderChosen(folderURLFixed)
 

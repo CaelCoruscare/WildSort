@@ -191,7 +191,7 @@ Window {
                     }
                     TextField {
                         id: cameraField
-                        placeholderText: qsTr("This should be filled by SlotBridge.SetFolder()")
+                        text: qsTr("This should be filled by SlotBridge.SetFolder()")
                     }
                     
                     Text {
@@ -199,7 +199,6 @@ Window {
                     }
                     TextField {
                         id: locationField
-                        placeholderText: qsTr("")
                         focus:true
                         Keys.forwardTo: [cameraAndLocationButton]
                     }
@@ -210,10 +209,8 @@ Window {
                         Layout.alignment: Qt.AlignCenter
                         
                         onClicked: {
-                            slotBridge.setCameraAndLocation(cameraField.text, locationField.text);
-                            photo.forceActiveFocus();
-                            cameraAndLocationLayout.visible = false;
-                            slotBridge.showTutorial();
+                            slotBridge.setCameraAndLocation(cameraField.text, locationField.text)
+                            slotBridge.choiceMade("continue")
                         }
                     }
                 }
