@@ -6,11 +6,11 @@ import DataSortingCategories
 import DataHandling.ImageExtractor as ImageExtractor
 
 
-
 @dataclass
 class Index():
     photo: int
     category: int
+index = Index(-1,0)
 
 @dataclass
 class Category():
@@ -107,4 +107,30 @@ def getNote(photoIndex):
 
 
 #######
+
+def flipValueInCategory(categoryIndex):
+    category = getCategory(categoryIndex)
+
+    if category.data[index.photo] == 1:
+        category.data[index.photo] = 0
+        for child in category.children:
+            __flipChildrenRecursively(child)
+        
+
+    else: #(if 0 or 'skip' or None)
+        category.data = 1
+        __flipParentsRecursively(category.parent)
+
+        
+
+def __flipChildrenRecursively(category: Category):
+    for child in category.children:
+            if child.data[index.photo] == 1:
+                child.data[index.photo] = 0
+                __flipChildrenRecursively(child)
+
+def __flipParentsRecursively(category: Category):
+    if category.parent.data[index.photo] != 1:
+            category.parent.data[index.photo] = 1
+            __flipParentsRecursively(category.parent)
 

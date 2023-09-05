@@ -90,6 +90,35 @@ Window {
                 backArrowTimer.restart()
             }
         }
+
+        function onFillCategoryCheckboxes(listOfCheckedOrNot){
+            for (var i = 0; i < listOfCheckedOrNot.length; i++) {
+                listOfCheckboxes[i] = listOfCheckedOrNot[i];
+            }
+                
+        }
+
+        function onCreateCategoryCheckboxes(listOfCategories){
+            for (var i = 0; i < listOfCategories.length; i++){
+                Qt.createQmlObject(`
+                    import QtQuick 2.0
+                    import QtQuick.Controls
+
+                    CheckBox {
+                        checked: true
+                        text: qsTr("Any Trigger")
+                        onToggled: {
+                            console.log(text)
+                            console.log(checked)
+                            slotBridge.flipValueInCategory(0)
+                        }
+                    }
+                    `,
+                    categoryCheckboxesLayout,
+                    listOfCategories[i]
+                );
+            }
+        }
     }
 
 
@@ -461,6 +490,7 @@ Window {
                     onToggled: {
                         console.log(text)
                         console.log(checked)
+                        slotBridge.flipValueInCategory(0)
                     }
                 }
 
@@ -471,6 +501,7 @@ Window {
                     onToggled: {
                         console.log(text)
                         console.log(checked)
+                        slotBridge.flipValueInCategory(1)
                     }
                 }
 

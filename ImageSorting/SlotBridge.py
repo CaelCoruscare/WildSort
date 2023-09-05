@@ -26,7 +26,7 @@ class SlotBridge(QObject):
     def folderChosen(self, folderURL):
         #Fix for QT Filepath:  
         #   file:///Users/test/Pictures --> /Users/test/Pictures
-        folderURLFixed = folderURL[8:]
+        folderURLFixed = folderURL[7:]
 
         logic.folderChosen(folderURLFixed)
 
@@ -95,3 +95,8 @@ class SlotBridge(QObject):
     @Slot(result=str)
     def getNote(self):
         return logic.getNote()
+    
+    @Slot(int)
+    def flipValueInCategory(self, categoryIndex):
+        print('IMPLEMENT FLIP VALUE: ' + str(categoryIndex))
+        #data.flipValueInCategory(categoryIndex)

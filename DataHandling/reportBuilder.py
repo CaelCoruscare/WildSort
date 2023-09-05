@@ -4,7 +4,6 @@ import csv
 from dataclasses import dataclass
 from datetime import datetime
 import os
-from typing import Tuple
 
 import exifread
 

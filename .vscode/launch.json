@@ -27,6 +27,14 @@
             "program": "WildSort.py",
             "console": "integratedTerminal",
             "justMyCode": true
+        },
+        {
+            "name": "TestQMLGeneration",
+            "type": "python",
+            "request": "launch",
+            "program": "./TestingQMLGeneration/app.py",
+            "console": "integratedTerminal",
+            "justMyCode": true
         }
     ]
 }

@@ -13,11 +13,6 @@ Item {
         anchors.fill: parent
     }
 
-    MouseArea {
-        anchors.fill: parent
-        onClicked: container.clicked(container.cellColor)
-    }
-
     CheckBox {
         checkBox
         checked: true

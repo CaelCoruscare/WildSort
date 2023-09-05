@@ -100,6 +100,9 @@ def __hide_PrintReportArea():
 def __hide_LoadFolder():
     emitter.hide_loadFolder.emit()
 
+def createCategoryCheckboxes():
+    emitter.createCategoryCheckboxes.emit(['test 1', 'test 2', 'test 3'])
+
 
 ##---This is cool so I'm leaving it as a comment to reference for later.---
 # def flashIcon(answer):

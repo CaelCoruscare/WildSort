@@ -32,6 +32,7 @@ class EmitterBridge(QObject):
     showCamAndLocForm = Signal(str, str)
     hideCamAndLocForm = Signal()
     setCategoriesTutorial = Signal(str)
+    createCategoryCheckboxes = Signal(list)
 
     def __init__(self):
         QObject.__init__(self)

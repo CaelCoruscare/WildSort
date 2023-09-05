@@ -7,7 +7,7 @@ from DataHandling import DataManager as dataManager
 import ImageSorting.CallsToUI as ui
 import DataHandling.ReportBuilder as reportBuilder
 
-index = dataManager.Index(-1,0)
+index = dataManager.index
 
 
 smallDelay = 0.05
@@ -255,6 +255,8 @@ def folderChosen(folderURL):
     #Datamanager handles the data
     dataManager.folderChosen(folderURL)
 
+    ui.createCategoryCheckboxes()
+
     index.photo = 0
     index.category = 0
 
@@ -289,10 +291,5 @@ def writeReport():
     
 
 def setCategoriesScreen():
-    text = ""
-
     for category in dataManager.dataList:
         category.title
-
-def showTutorial():
-    text = ""
