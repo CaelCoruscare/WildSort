@@ -50,13 +50,16 @@ class Category():
 
 photoURLs = list[str]
     
-def folderChosen(folderURL):
+def initializeFromFolder(folderURL):
     global photoURLs
     photoURLs = ImageExtractor.getImages(folderURL)
 
     #Initialize the data[] for the first category (top of the data tree) to the correct length. 
     #   The data[] for the other categories will all be created based on the filled out data[] of their parent.
     getCategory(0).data = [None] * len(photoURLs)
+
+    index.photo = 0
+    index.category = 0
 
 
 def getPhoto(photoIndex):

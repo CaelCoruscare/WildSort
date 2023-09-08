@@ -21,6 +21,7 @@ class SlotBridge(QObject):
     def __init__(self):
         QObject.__init__(self)
 
+
     #Accept a folder URL
     @Slot(str)
     def folderChosen(self, folderURL):
@@ -35,10 +36,10 @@ class SlotBridge(QObject):
     def choiceMade(self, choice):
         #This needs to thread and return, so that the UI can continue updating. 
         # Otherwise the picture will freeze between rapid clicks
-        thread = threading.Thread(target=self.__handleChoice,args=[choice])
+        thread = threading.Thread(target=self._handleChoice,args=[choice])
         thread.start()
 
-    def __handleChoice(self, choice):
+    def _handleChoice(self, choice):
         #Mutex needs to be used or there will be data issues.
         if not self.mutex.acquire(blocking=False):
             return #Thread should end itself if the mutex is not available.

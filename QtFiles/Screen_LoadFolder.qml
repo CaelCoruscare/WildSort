@@ -1,7 +1,32 @@
+import QtQuick
+import QtQuick.Layouts
+import QtQuick.Controls
+import QtQuick.Dialogs
+import QtCore
+
 ColumnLayout{
-    id: folderSelectionArea
+    id: head
     anchors.verticalCenter: parent.verticalCenter
     anchors.horizontalCenter: parent.horizontalCenter
+    focus: true
+
+    ShowerHider {
+        code: "screen_loadfolder"
+    }
+
+    Focuser {
+        code: "screen_loadfolder"
+    }
+
+    Keys.onPressed: (event)=> { 
+        if (event.key == Qt.Key_Return || event.key == Qt.Key_Enter) {
+            openDialog()
+        }
+    }
+
+    function openDialog(){
+        folderDialog.open();
+    }
 
     Rectangle {
         border.color:"green"
@@ -24,8 +49,16 @@ ColumnLayout{
         Layout.alignment: Qt.AlignCenter
         
         onClicked: {
-            folderDialog.open();
-            folderSelectionArea.visible = false;
+            head.openDialog()
+        }
+    }
+
+    FolderDialog {
+        id: folderDialog
+        currentFolder: StandardPaths.standardLocations(StandardPaths.PicturesLocation)[0]
+        onAccepted: {
+            slotBridge.folderChosen(selectedFolder);
+            currentFolder = selectedFolder;
         }
     }
 }

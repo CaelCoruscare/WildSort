@@ -13,24 +13,28 @@ QML_IMPORT_MAJOR_VERSION = 1
 
 @QmlElement
 class EmitterBridge(QObject):
-    
-    otherTest = "wut"
 
+    #Reuseables
+    showElement = Signal(str)
+    hideElement = Signal(str)
+    focusElement = Signal(str)
+
+    #Setters
     updateCategoryTracker = Signal(str)
-    hideCategoryTracker = Signal()
     updatePhoto = Signal(str)
     updatePhotoCounter = Signal(str)
-    hidePhotoCounter = Signal()
-    flashIcon = Signal(str)
-    showFolderSelectionArea = Signal()
-    hideFolderSelectionArea = Signal()
     showNextCategoryExplanation = Signal(str)
+    fillCamAndLocForm = Signal(str, str)
+
+    #Necessary?
+    hideCategoryTracker = Signal()
+    hidePhotoCounter = Signal()
     hideNextCategoryExplanation = Signal()
-    showKeysTutorial = Signal()
-    hideKeysTutorial = Signal()
-    showPrintArea = Signal()
-    showCamAndLocForm = Signal(str, str)
-    hideCamAndLocForm = Signal()
+
+    #Icon
+    flashIcon = Signal(str)
+
+    #TO IMPLEMENT
     setCategoriesTutorial = Signal(str)
     createCategoryCheckboxes = Signal(list)
 

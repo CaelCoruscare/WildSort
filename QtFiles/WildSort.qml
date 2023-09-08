@@ -41,40 +41,7 @@ Window {
             textPhotoCounter.visible = false
             textPhotoNum.visible = false
         }
-        function onShowFolderSelectionArea(){
-            folderSelectionArea.visible = true
-        }
-        function onHideFolderSelectionArea(){
-            folderSelectionArea.visible = false
-        }
-        function onShowNextCategoryExplanation(text){
-            nextCategoryText.text = "Next category: <b>" + text + "</b>"
-            nextCategoryArea.visible = true
-        }
-        function onHideNextCategoryExplanation(){
-            nextCategoryArea.visible = false
-            photo.forceActiveFocus()
-        }
-        function onShowKeysTutorial(){
-            //keysTutorial_Text.text = text
-            keysTutorial_Area.visible = true
-            photo.forceActiveFocus()
-        }
-        function onHideKeysTutorial(){
-            keysTutorial_Area.visible = false
-        }
-        function onShowPrintArea(){
-            printReportArea.visible = true
-        }
-        function onShowCamAndLocForm(camera, location){
-            cameraAndLocationLayout.visible = true
-            cameraField.text = camera
-            locationField.text = location
-            locationField.forceActiveFocus()
-        }
-        function onHideCamAndLocForm(){
-            cameraAndLocationLayout.visible = false
-        }
+    
 
         function onFlashIcon(code){
             if (code == "yes"){
@@ -141,170 +108,20 @@ Window {
                 fillMode: Image.PreserveAspectFit
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenter: parent.horizontalCenter
-                focus:true
 
-                ColumnLayout{
-                    id: keysTutorial_Area
-                    anchors.top: parent.top
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    height: parent.height * 0.65
-                    visible: false
-
-                    Image {
-                        id: keysTutorial_Pic
-                        source: "AppImages/tutorial-keys.png"
-                        fillMode: Image.PreserveAspectFit
-                        Layout.alignment: Qt.AlignCenter
-                        Layout.fillHeight: true
-                    }
-
-                    Rectangle {
-                        id: keysTutorial_Rect
-                        border.color:"green"
-                        Layout.preferredHeight: keysTutorial_Text.implicitHeight + 20 
-                        Layout.preferredWidth: keysTutorial_Text.implicitWidth + 20
-                        Layout.alignment: Qt.AlignCenter
-
-                        Text {
-                            id: keysTutorial_Text
-                            text: "Use the <b><font color=\"green\">[L]</font></b> and <b><font color=\"red\">[;]</font></b> keys as <b><font color=\"green\">Yes</font></b> and <b><font color=\"red\">No</font></b>, to Sort the Photos.<br><br>Use the <b><font color=\"blue\">[']</font></b> key to go <b><font color=\"blue\">Back</font></b> to the previous Photo.<br><br>Use the <b><font color=\"#E19133\">[return]</font></b> or <b><font color=\"#E19133\">[Enter]</font></b> key to open <b><font color=\"#E19133\">Notes</font></b>.<br><br>Press the <b><font color=\"#B942EC\">[K]</font></b> key to start sorting."
-                            wrapMode: Text.WordWrap
-                            anchors.horizontalCenter: parent.horizontalCenter
-                            anchors.verticalCenter: parent.verticalCenter
-                        }
-                    }
-
+                Screen_Tutorial_Keys {
                 }
 
-                ColumnLayout{
-                    id: folderSelectionArea
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.horizontalCenter: parent.horizontalCenter
-
-                    Rectangle {
-                        border.color:"green"
-                        Layout.minimumHeight: explanation.height + 20  
-                        Layout.preferredWidth: page.width * 0.3 + 20
-
-                        Text {
-                            id: explanation
-                            text: "Load a folder of photos from a single camera trap.\n\nThis program will sort all the photos into categories. For any photos where the AI is not sure, it will ask you for help. Your answers will be used to train the AI for future runs.\n\nPlease note that the AI will take a lot of training before it functions well. "
-                            wrapMode: Text.WordWrap
-                            width: page.width * 0.3
-                            anchors.horizontalCenter: parent.horizontalCenter
-                            anchors.verticalCenter: parent.verticalCenter
-                        }
-                    }
-
-                    Button {
-                        id: folderButton
-                        text: qsTr("Select Folder")
-                        Layout.alignment: Qt.AlignCenter
-                        
-                        onClicked: {
-                            folderDialog.open();
-                            folderSelectionArea.visible = false;
-                        }
-                    }
+                Screen_LoadFolder {
                 }
 
-                ColumnLayout {
-                    id: cameraAndLocationLayout
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    visible: false
-                    focus: true
-
-                    Text {
-                        text: qsTr("Camera Used")
-                    }
-                    TextField {
-                        id: cameraField
-                        text: qsTr("This should be filled by SlotBridge.SetFolder()")
-                    }
-                    
-                    Text {
-                        text: qsTr("Location")
-                    }
-                    TextField {
-                        id: locationField
-                        focus:true
-                        Keys.forwardTo: [cameraAndLocationButton]
-                    }
-
-                    Button {
-                        id: cameraAndLocationButton
-                        text: qsTr("Confirm")
-                        Layout.alignment: Qt.AlignCenter
-                        
-                        onClicked: {
-                            slotBridge.setCameraAndLocation(cameraField.text, locationField.text)
-                            slotBridge.choiceMade("continue")
-                        }
-                    }
+                Screen_CameraAndLocationForm {
                 }
 
-                ColumnLayout{
-                    id: printReportArea
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    visible: false
-                    
-                    Button {
-                        id: printButton
-                        text: qsTr("Print Report")
-                        Layout.alignment: Qt.AlignCenter
-                        
-                        onClicked: {
-                            slotBridge.printReport();
-                            printReportArea.visible = false;
-                            folderSelectionArea.visible = true;
-                        }
-                    }
-
-                    Rectangle {
-                        border.color:"green"
-                        Layout.minimumHeight: printReportExplanation.height + 20  
-                        Layout.preferredWidth: page.width * 0.3 + 20
-
-                        Text {
-                            id: printReportExplanation
-                            text: "Report is ready to print."
-                            wrapMode: Text.WordWrap
-                            width: page.width * 0.3
-                            anchors.horizontalCenter: parent.horizontalCenter
-                            anchors.verticalCenter: parent.verticalCenter
-                        }
-                    }
+                Screen_PrintReport {
                 }
 
-                
-                Rectangle {
-                    id: nextCategoryArea
-                    border.color:"#B942EC"
-                    height: nextCategoryText.height + nextCategoryTextPrepend.height + 18
-                    width: page.width * 0.20 + 20
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    visible: false
-
-                    ColumnLayout{
-
-                        Text {
-                            id: nextCategoryText
-                            text: qsTr("...?")
-                            topPadding: 10
-                            leftPadding: 5
-                            font.pointSize: 18
-                        }
-
-                        Text {
-                            id: nextCategoryTextPrepend
-                            text: qsTr("Press the <b><font color=\"#B942EC\">[K]</font></b> key to continue")
-                            font.pointSize: 14
-                            leftPadding: 5
-                        }
-                    }
+                Screen_NextCategory {
                 }
 
                 
@@ -312,45 +129,23 @@ Window {
                 Keys.onPressed: (event)=> { 
                     //console.log("Key pressed: " + event.key)
                     if (event.key == Qt.Key_L){
-                        slotBridge.choiceMade("yes"); 
+                        slotBridge.choiceMade("yes") 
                     }
                     if (event.key == Qt.Key_Semicolon){
-                        slotBridge.choiceMade("no"); 
+                        slotBridge.choiceMade("no")
                     } 
                     if (event.key == Qt.Key_Apostrophe){ 
-                        slotBridge.choiceMade("back"); 
+                        slotBridge.choiceMade("back")
                     }
-
-                    if (event.key == Qt.Key_K) 
-                    {
-                        if (nextCategoryArea.visible
-                            || keysTutorial_Area.visible)
-                        {
-                            slotBridge.choiceMade("continue")
-                        }
-                    }
-
-                    if (event.key == Qt.Key_Return || event.key == Qt.Key_Enter) 
-                    {
-                        if (nextCategoryArea.visible)
-                        {
-                            slotBridge.choiceMade("continue")
-                        }
-                        else if (folderSelectionArea.visible)
-                        {
-                            folderDialog.open();
-                            folderSelectionArea.visible = false;
-                        }
-                        else if (cameraAndLocationLayout.visible)
-                        {
-                            slotBridge.setCameraAndLocation(cameraField.text, locationField.text)
-                            slotBridge.choiceMade("continue")
-                        }
-                        else if (!notesPopup.opened)
-                        {
-                            notesPopup.open();
-                            notes.text = slotBridge.getNote() ;
-                            notes.forceActiveFocus();
+                    
+                    if (event.key == Qt.Key_Return || event.key == Qt.Key_Enter){
+                        if (!notesPopup.opened){
+                            var note = slotBridge.getNote()
+                            if (note != "NULL") //TODO: implement proper
+                            
+                            notesPopup.open()
+                            notes.text = slotBridge.getNote() 
+                            notes.forceActiveFocus()
                         }
                     }
 
@@ -358,17 +153,6 @@ Window {
                     {
                         //Test things here
                     }
-                }
-            }
-           
-            FolderDialog {
-                id: folderDialog
-                currentFolder: StandardPaths.standardLocations(StandardPaths.PicturesLocation)[0]
-                onAccepted: {
-                    slotBridge.folderChosen(selectedFolder);
-                    currentFolder = selectedFolder;
-                    folderSelectionArea.visible = false;
-                    cameraAndLocationLayout.visible = true;
                 }
             }
         }
@@ -515,8 +299,6 @@ Window {
                 id: notes
                 placeholderText: qsTr("Put notes here...")
                 wrapMode: Text.WordWrap
-                //anchors.bottom: page.bottom
-                //anchors.horizontalCenter: page.horizontalCenter
                 focus:true
                 Keys.onPressed: (event)=> {
                     if (event.key == Qt.Key_Return && notesPopup.opened) 
