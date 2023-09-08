@@ -42,7 +42,7 @@ Converts all relevant data into a human-readable and visualization-friendly repo
     if os.path.exists(target):
         __convertToHiddenBackup(target)
 
-    __printReport(report.headers, rows, target)
+    _printReport(report.headers, rows, target)
     #TODO: also extend to a 'cameraTrapData_AllData_doNOTedit' in the application folder
 
 
@@ -61,17 +61,17 @@ def __collateReport(dataList:list[data.Category], photoURLs:list[str], notes:lis
     #This fills the columns 3-5 of the report: 
     #   'Link To File', 'Date', 'Time'
     fullReport.add( 
-        __getAllFiledata(photoURLs)
+        _getAllFiledata(photoURLs)
     )
 
     #Get Notes
     fullReport.add( 
-        __getNoteColumn(photoURLs, notes)
+        _getNoteColumn(photoURLs, notes)
     )
 
     #Add the Data Columns (Any Trigger, Human, Domestic, Donkey, Wild Animal, etc)
     fullReport.add( 
-        __getDataColumns(dataList)
+        _getDataColumns(dataList)
     )
 
     return (fullReport)
@@ -85,16 +85,16 @@ def __convertToHiddenBackup(fileURL):
     backupURL = head + '/.' + fileName + '_backup.' + fileType
     os.rename(fileURL, backupURL)
 
-def __getDataColumns(dataList: list[data.Category]):
+def _getDataColumns(dataList: list[data.Category]):
     headers=[]
     columns=[]
     for category in dataList:
         headers.append(category.title)
-        columns.append(__cleanDataColumn(category.data))
+        columns.append(_cleanDataColumn(category.data))
 
     return ReportParts(headers, columns)
 
-def __cleanDataColumn(dataColumn):
+def _cleanDataColumn(dataColumn):
     '''Converts the 'skip's used by SortLogic.py to skip pictures, into 0s, so that the report is pretty'''
     cleaned = [0 if (data == 'skip') else data for data in dataColumn]
 
@@ -104,7 +104,7 @@ def __cleanDataColumn(dataColumn):
     return cleaned
 
 
-def __printReport(headers, data, filename):
+def _printReport(headers, data, filename):
     with open(filename, 'w', encoding='UTF8', newline='') as f:
         writer = csv.writer(f)
 
@@ -129,7 +129,7 @@ def getLocAndCamera(location, camera, numPhotos):
 
 #This fills the columns 3-5 of the report: 
 #   'Link To File', 'Date', 'Time'
-def __getAllFiledata(photoURLs):
+def _getAllFiledata(photoURLs):
     fileLink_Column = []
     dateTaken_Column = []
     timeTaken_Column = []
@@ -140,8 +140,12 @@ def __getAllFiledata(photoURLs):
         dateTaken_Column.append(fileData[0])
         timeTaken_Column.append(fileData[1])
 
+        splitURL = url.split(folderOfPhotos,1)
 
-        shortenedURL = url.split(folderOfPhotos,1)[1]
+        if len(splitURL) == 1:
+            raise ValueError(url, folderOfPhotos, 'folderOfPhotos should be found in the middle of the url')
+        else:
+            shortenedURL = splitURL[1]
         fileLink_Column.append(f"=HYPERLINK(\"\"{url}\"\";\"\"{shortenedURL}\"\")")
 
     return ReportParts(
@@ -177,7 +181,7 @@ def __getFileData(fileURL):
         return (dateTaken, timeTaken)
     
 
-def __getNoteColumn(photoURLs, notes):
+def _getNoteColumn(photoURLs, notes):
     notesColumn = [''] * len(photoURLs)
 
     del notes[-1]

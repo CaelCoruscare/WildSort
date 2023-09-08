@@ -5,6 +5,8 @@ from natsort import natsorted
 
 def getImages(folderURL: str) -> list[str]:
     """Gets the URLs of all 'jpeg' images in the folder and subfolders, natsorted."""
+    cleaned = _cleanURL(folderURL)
+
     #Get all files in the directory
     photoURLs = __recursiveGetFiles(folderURL)
     #Cut out any that aren't jpeg
@@ -23,3 +25,7 @@ def __recursiveGetFiles(folderURL):
         allFiles.extend([(folderPath + '/' + file) for file in files]) 
 
     return allFiles
+
+def _cleanURL(dirty: str) -> str:
+    #TODO: This should return a useable URL based on the operating system. It should pass the associated test in /Testing/Test_ImageExtractor
+    return dirty

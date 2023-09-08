@@ -13,26 +13,10 @@
             "justMyCode": true
         },
         {
-            "name": "Testing",
-            "type": "python",
-            "request": "launch",
-            "program": "TestingStart.py",
-            "console": "integratedTerminal",
-            "justMyCode": true
-        },
-        {
             "name": "WildSort",
             "type": "python",
             "request": "launch",
             "program": "WildSort.py",
-            "console": "integratedTerminal",
-            "justMyCode": true
-        },
-        {
-            "name": "TestQMLGeneration",
-            "type": "python",
-            "request": "launch",
-            "program": "./TestingQMLGeneration/app.py",
             "console": "integratedTerminal",
             "justMyCode": true
         }

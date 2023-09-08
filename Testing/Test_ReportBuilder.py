@@ -5,7 +5,7 @@ import DataHandling.ReportBuilder as reportBuilder
 import DataHandling.DataManager as data
 
 # The test based on unittest module
-class TestWriteReport(unittest.TestCase):
+class Test_WriteReport(unittest.TestCase):
     photoURLs = [
         './Testing/testingMaterial/dirt.JPG',
         './Testing/testingMaterial/elephant.jpeg',
@@ -30,14 +30,21 @@ class TestWriteReport(unittest.TestCase):
 
     def test_getFiledata(self):
         #Expected Result
+        expectedURLColumn = [
+            '=HYPERLINK(\"\"./Testing/testingMaterial/dirt.JPG\"\";\"\"/dirt.JPG\"\")',
+            '=HYPERLINK(\"\"./Testing/testingMaterial/elephant.jpeg\"\";\"\"/elephant.jpeg\"\")',
+            '=HYPERLINK(\"\"./Testing/testingMaterial/feet.JPG\"\";\"\"/feet.JPG\"\")',
+            '=HYPERLINK(\"\"./Testing/testingMaterial/hyena.jpeg\"\";\"\"/hyena.jpeg\"\")'
+        ]
         expectedColumns = ([
-            self.photoURLs,
+            expectedURLColumn,
             ['2021/08/12', '2004/06/03', '2021/08/06', ''],
             ['07:09:48', '16:53:30', '11:56:39', '']
         ])
 
         #Run Function
-        result = reportBuilder.__getAllFiledata(self.photoURLs)
+        reportBuilder.folderOfPhotos = './Testing/testingMaterial'
+        result = reportBuilder._getAllFiledata(self.photoURLs)
         
         #Assertions
         self.assertEqual(expectedColumns, result.columns, 'filedata columns wrong')
@@ -55,18 +62,20 @@ class TestWriteReport(unittest.TestCase):
         #Run Function
         data.setNote(1, 'elephant')
         data.setNote(3, 'hyena')
-        result = reportBuilder.__getNoteColumn(self.photoURLs, data.notes)
+        result = reportBuilder._getNoteColumn(self.photoURLs, data.notes)
 
         #Assertions
         self.assertEqual(expectedColumns, result.columns, 'note column wrong')
 
         
     def test_cleanDataColumn(self):
-        testDataColumn = [0,1,-1,0,1,-1]
-        cleaned = reportBuilder.__cleanDataColumn(testDataColumn)
+        testDataColumn = [0,1,'skip',0,1,'skip']
+        cleaned = reportBuilder._cleanDataColumn(testDataColumn)
         self.assertEqual(cleaned, [0,1,0,0,1,0], 'cleaning column did not work as expected')
 
-        self.assertRaises(ValueError,reportBuilder.__cleanDataColumn,[0,1,-1,-2])
+        self.assertRaises(ValueError,reportBuilder._cleanDataColumn,[0,1,'skip',-1])
+        self.assertRaises(ValueError,reportBuilder._cleanDataColumn,[0,1,'skip',-2])
+        self.assertRaises(ValueError,reportBuilder._cleanDataColumn,[0,1,'skip',None])
 
 
     def test_getData(self):
@@ -75,22 +84,24 @@ class TestWriteReport(unittest.TestCase):
         expectedData = []
 
         for category in data.dataList:
-            randomData = random.sample([-1,0,1],counts=[4,4,4],k=4)
-            category['data'] = randomData
-            expectedData.append(reportBuilder.__cleanDataColumn(randomData)) #cleanDataColumn is tested elsewhere
+            randomData = random.sample(['skip',0,1],counts=[4,4,4],k=4)
+            category.data = randomData
+            expectedData.append(reportBuilder._cleanDataColumn(randomData)) #cleanDataColumn is tested elsewhere
 
-        result = reportBuilder.__getDataColumns(data.dataList)
+        result = reportBuilder._getDataColumns(data.dataList)
 
         #Assertions
         self.assertEqual(expectedHeaders, result.headers, 'headers wrong')
         self.assertEqual(expectedData, result.columns, 'data wrong')
 
-    
+if __name__ == '__main__':
+    unittest.main()
+
  
-tests = TestWriteReport()
-tests.test_getLocationAndCamera()
-tests.test_getFiledata()
-tests.test_getNotes()
-tests.test_cleanDataColumn()
-tests.test_getData()
+# tests = Test_WriteReport()
+# tests.test_getLocationAndCamera()
+# tests.test_getFiledata()
+# tests.test_getNotes()
+# tests.test_cleanDataColumn()
+# tests.test_getData()
 
