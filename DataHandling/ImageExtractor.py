@@ -29,3 +29,4 @@ def __recursiveGetFiles(folderURL):
 def _cleanURL(dirty: str) -> str:
     #TODO: This should return a useable URL based on the operating system. It should pass the associated test in /Testing/Test_ImageExtractor
     return dirty
+

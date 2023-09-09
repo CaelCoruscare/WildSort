@@ -306,6 +306,7 @@ def getNote():
     
 def writeReport():
     reportBuilder.buildReports_Human(dataManager.dataList, dataManager.photoURLs, dataManager.notes)
+    ui.showScreen(Screen.SCREEN_LOAD_FOLDER)
     
 
 def setCategoriesScreen():

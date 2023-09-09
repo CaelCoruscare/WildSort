@@ -45,6 +45,8 @@ Converts all relevant data into a human-readable and visualization-friendly repo
     _printReport(report.headers, rows, target)
     #TODO: also extend to a 'cameraTrapData_AllData_doNOTedit' in the application folder
 
+    addCategoriesToPhotoName(data.dataList)
+
 
 def buildReport_AI():
     """Collects all relevant data for the human report and prints it to a file called..."""
@@ -198,3 +200,22 @@ def _getNoteColumn(photoURLs, notes):
 ##################----------------------------
 ###TESTING BELOW
 ##################----------------------------
+
+def addCategoriesToPhotoName(dataList: list[data.Category]):
+    for category in dataList:
+        for index, photoURL in enumerate(data.photoURLs):
+            if category.data[index] == 1:
+                head, tail = os.path.split(photoURL)
+                fileName, fileType = tail.split('.')
+                newName = head + '/' + fileName + '_' + category.title + '.' + fileType
+                os.rename(photoURL, newName)
+                data.photoURLs[index] = newName
+
+    for index, photoURL in enumerate(data.photoURLs):
+        note = data.notes.get(index, None)
+        if note != None:
+            head, tail = os.path.split(photoURL)
+            fileName, fileType = tail.split('.')
+            newName = head + '/' + fileName + '_' + note + '.' + fileType
+            os.rename(photoURL, newName)
+            data.photoURLs[index] = newName

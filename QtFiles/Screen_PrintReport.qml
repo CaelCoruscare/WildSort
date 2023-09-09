@@ -24,7 +24,6 @@ ColumnLayout{
         onClicked: {
             slotBridge.printReport();
             head.visible = false;
-            folderSelectionArea.visible = true;
         }
     }
 
