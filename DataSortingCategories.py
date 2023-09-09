@@ -25,8 +25,8 @@ typesACKGeneral = {
         ,'DikDiks':{}
         ,'Gerenuks':{}
         ,'Birds':{
-            'Ostritches':{}
-            ,'Corey Busterds':{}
+            'Ostriches':{}
+            ,'Kori Bustards':{}
         }
     } 
     ,'Domestic Animals': { 
