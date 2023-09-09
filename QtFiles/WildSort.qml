@@ -118,7 +118,9 @@ Window {
                         if (!notesPopup.opened){
                             var note = slotBridge.getNote()
                             if (note != "NULL"){ //TODO: implement proper
-                                //categoryCheckboxHolder.fillCategoryCheckboxes()
+                                var categoryData = slotBridge.getDataForPhoto()
+                                console.log("categoryData " + categoryData) 
+                                categoryCheckboxHolder.fillCategoryCheckboxes(categoryData)
                                 
                                 notesPopup.open()
                                 notes.text = slotBridge.getNote() 
@@ -245,7 +247,7 @@ Window {
             x:10
 
             CategoryBoxHolder {
-                id: categoryCheckboxeHolder
+                id: categoryCheckboxHolder
                 anchors.bottom: spacer.top
                 
             }

@@ -101,3 +101,11 @@ class SlotBridge(QObject):
     def flipValueInCategory(self, categoryIndex):
         print(f'Flip photo: {data.photoURLs[data.index.photo]} value for category: {data.dataList[categoryIndex].title}')
         #data.flipValueInCategory(categoryIndex)
+
+    @Slot(result=list)
+    def getDataForPhoto(self):
+        photoData = data.getPhotoData()
+
+        photoData = [dat if (dat == 1) else 0 for dat in photoData]
+
+        return photoData

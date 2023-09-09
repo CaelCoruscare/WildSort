@@ -17,7 +17,7 @@ class Category():
     title: str
     parent: Category
     
-    data: list  = field(init=False)
+    data: list = field(init=False) #This gets filled with [None] during folderInitialization, then filled with useful data when the category is reached
     """1 = Found in photo,
     \n 0 = Not found in photo,
     \n None = Not answered yet,
@@ -60,7 +60,8 @@ def initializeFromFolder(folderURL):
 
     #Initialize the data[] for the first category (top of the data tree) to the correct length. 
     #   The data[] for the other categories will all be created based on the filled out data[] of their parent.
-    getCategory(0).data = [None] * len(photoURLs)
+    for category in dataList:
+        category.data = [None] * len(photoURLs)
 
     index.photo = 0
     index.category = 0
@@ -111,7 +112,13 @@ def getNote(photoIndex):
 ###----------------------------
 
 
+def getPhotoData():
+    photoData = []
 
+    for category in dataList:
+        photoData.append(category.data[index.photo])
+
+    return photoData
 
 #######
 
@@ -140,4 +147,3 @@ def __flipParentsRecursively(category: Category):
     if category.parent.data[index.photo] != 1:
             category.parent.data[index.photo] = 1
             __flipParentsRecursively(category.parent)
-
