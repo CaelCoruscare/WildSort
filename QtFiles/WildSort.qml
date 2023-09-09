@@ -66,24 +66,13 @@ Window {
         }
 
         function onCreateCategoryCheckboxes(listOfCategories){
-            for (var i = 0; i < listOfCategories.length; i++){
-                Qt.createQmlObject(`
-                    import QtQuick 2.0
-                    import QtQuick.Controls
+            var component = Qt.createComponent("CategoryBox.qml");
 
-                    CheckBox {
-                        checked: true
-                        text: qsTr("Any Trigger")
-                        onToggled: {
-                            console.log(text)
-                            console.log(checked)
-                            slotBridge.flipValueInCategory(0)
-                        }
-                    }
-                    `,
-                    categoryCheckboxesLayout,
-                    listOfCategories[i]
-                );
+            for (var i = 0; i < listOfCategories.length; i++){
+                console.log(listOfCategories[i])
+                var checkBox = component.createObject(categoryCheckboxesLayout)
+                checkBox.text = listOfCategories[i]
+                checkBox.categoryIndex = i
             }
         }
     }
@@ -265,35 +254,17 @@ Window {
 
             ColumnLayout{
                 id: categoryCheckboxesLayout
-                anchors.bottom: notes.top
-
-                CheckBox {
-                    id: checkBox_AnyTrigger
-                    checked: true
-                    text: qsTr("Any Trigger")
-                    onToggled: {
-                        console.log(text)
-                        console.log(checked)
-                        slotBridge.flipValueInCategory(0)
-                    }
-                }
-
-                CheckBox {
-                    id: checkBox_WildAnimal
-                    checked: true
-                    text: qsTr("Wild Animal")
-                    onToggled: {
-                        console.log(text)
-                        console.log(checked)
-                        slotBridge.flipValueInCategory(1)
-                    }
-                }
-
-                Item {
-                    id: spacer
-                    height: 10
-                }
+                anchors.bottom: spacer.top
+                
             }
+
+            Item {
+                id: spacer
+                height: 20
+                anchors.bottom: notes.top
+            }
+
+            
 
             contentItem: TextField {
                 id: notes

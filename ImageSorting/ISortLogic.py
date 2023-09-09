@@ -138,7 +138,7 @@ def _handleForwardEdgeCases(userResponse) -> bool:
             #Hide UI
             ui.hideScreen(ui.Screen.TUTORIAL_KEYS)
             #Show UI
-            ui.set_NextCategoryWillBe('Any Trigger')
+            ui.set_NextCategoryWillBe(dataManager.getCategory(0).title)
             ui.set_PhotoCounter('-/' + str(len(dataManager.photoURLs)))
             #Update Edge Case
             edgeCase = EdgeCase.FIRST_SHOWING_NEXT_CATEGORY
@@ -150,7 +150,7 @@ def _handleForwardEdgeCases(userResponse) -> bool:
             #Hide UI
             ui.hideScreen(Screen.TUTORIAL_CATEGORIES)
             #Show UI
-            ui.set_NextCategoryWillBe('Any Trigger')
+            ui.set_NextCategoryWillBe(dataManager.getCategory(0).title)
             ui.set_PhotoCounter('-/' + str(len(dataManager.photoURLs)))
             #Update Edge Case
             edgeCase = EdgeCase.FIRST_SHOWING_NEXT_CATEGORY
@@ -161,7 +161,7 @@ def _handleForwardEdgeCases(userResponse) -> bool:
             #Hide UI
             ui.set_NextCategoryWillBe(None)
             #Show UI
-            ui.set_Category('Any Trigger')
+            ui.set_Category(dataManager.getCategory(0).title)
             ui.set_PhotoCounter('1/' +  str(len(dataManager.photoURLs)))
             ui.set_Photo(dataManager.getPhoto(0))
             #Update Edge Case
@@ -269,7 +269,8 @@ def folderChosen(folderURL):
     dataManager.initializeFromFolder(folderURL)
 
     #This is for the Notes popup
-    ui.createCategoryCheckboxes()
+    listOfTitles = [category.title for category in dataManager.dataList]
+    ui.createCategoryCheckboxes(listOfTitles)
 
     #UI Hide
     ui.hideScreen(Screen.SCREEN_LOAD_FOLDER)

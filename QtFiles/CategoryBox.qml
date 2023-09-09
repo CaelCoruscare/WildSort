@@ -1,24 +1,11 @@
 import QtQuick
+import QtQuick.Controls
 
-Item {
-    id: categoryBox
-    property alias cellColor: rectangle.color
-    signal clicked(cellColor: color)
+CheckBox {
+    property int categoryIndex
+    checked: false
 
-    width: checkBox.width; height: 25
-
-    Rectangle {
-        id: rectangle
-        border.color: "white"
-        anchors.fill: parent
-    }
-
-    CheckBox {
-        checkBox
-        checked: true
-        text: qsTr("First")
-        onToggled: {
-
-        }
+    onToggled: {
+        slotBridge.flipValueInCategory(categoryIndex)
     }
 }

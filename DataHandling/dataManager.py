@@ -25,8 +25,12 @@ class Category():
 
     def initializeData(self):
         """initializes the category based on the data of the parent category."""
+        if self.parent == None:
+            self.data = [None] * len(photoURLs)
+            return
         if None in self.parent.data:
             raise ValueError(self.parent.data, 'parent\'s data is not filled.')
+        
         self.data = [None if x == 1 else 'skip' for x in self.parent.data]
 
     def getPhotoCounter(self, photoIndex) -> str:
@@ -81,7 +85,7 @@ def fillDataList(dict_OfTypes, parent=None):
         if len(dict_OfTypes[key]) > 0:
             fillDataList(dict_OfTypes[key], dataList[-1])
           
-fillDataList(DataSortingCategories.typesToLook4)
+fillDataList(DataSortingCategories.typesACKGeneral)
 
 def getCategory(categoryIndex)->Category:
     return dataList[categoryIndex]

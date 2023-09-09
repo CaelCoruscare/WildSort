@@ -1,9 +1,6 @@
-import os
-from PySide6.QtCore import QObject, Slot
-from PySide6.QtGui import QGuiApplication
-from PySide6.QtQml import QQmlApplicationEngine, QmlElement
-from PySide6.QtQuickControls2 import QQuickStyle
-from PySide6.QtCore import QObject, Signal, Property
+from PySide6.QtCore import QObject
+from PySide6.QtQml import QmlElement
+from PySide6.QtCore import QObject, Signal
 
 
 # To be used on the @QmlElement decorator

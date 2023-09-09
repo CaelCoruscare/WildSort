@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import sys
 
 from PySide6.QtGui import QGuiApplication

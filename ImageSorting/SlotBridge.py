@@ -99,5 +99,5 @@ class SlotBridge(QObject):
     
     @Slot(int)
     def flipValueInCategory(self, categoryIndex):
-        print('IMPLEMENT FLIP VALUE: ' + str(categoryIndex))
+        print(f'Flip photo: {data.photoURLs[data.index.photo]} value for category: {data.dataList[categoryIndex].title}')
         #data.flipValueInCategory(categoryIndex)

@@ -72,8 +72,8 @@ def set_CategoriesScreen(text):
 
 
 
-def createCategoryCheckboxes():
-    emitter.createCategoryCheckboxes.emit(['test 1', 'test 2', 'test 3'])
+def createCategoryCheckboxes(categoryTitles: list[str]):
+    emitter.createCategoryCheckboxes.emit(categoryTitles)
 
 
 
