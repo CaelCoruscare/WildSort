@@ -16,6 +16,7 @@ Window {
     height: 640
     visible: true
     title: qsTr("WildSort")
+    id: window
 
     Connections{
         target: emitterBridge
@@ -116,16 +117,21 @@ Window {
                     if (event.key == Qt.Key_Return || event.key == Qt.Key_Enter){
                         if (!notesPopup.opened){
                             var note = slotBridge.getNote()
-                            if (note != "NULL") //TODO: implement proper
-                            
-                            notesPopup.open()
-                            notes.text = slotBridge.getNote() 
-                            notes.forceActiveFocus()
+                            if (note != "NULL"){ //TODO: implement proper
+                                //categoryCheckboxHolder.fillCategoryCheckboxes()
+                                
+                                notesPopup.open()
+                                notes.text = slotBridge.getNote() 
+
+                                notes.lastFocus = window.activeFocusItem
+                                notes.forceActiveFocus()
+                            }
                         }
                     }
 
                     if (event.key == Qt.Key_Q) 
                     {
+                        //console.log(focus)
                         //Test things here
                     }
                 }
@@ -257,13 +263,18 @@ Window {
                 placeholderText: qsTr("Put notes here...")
                 wrapMode: Text.WordWrap
                 focus:true
+
+                property var lastFocus
+
                 Keys.onPressed: (event)=> {
-                    if (event.key == Qt.Key_Return && notesPopup.opened) 
+                    if ((event.key == Qt.Key_Return || event.key == Qt.Key_Enter) && notesPopup.opened) 
                     {
-                        slotBridge.setNote(notes.text);
-                        notes.text = "";
-                        photo.forceActiveFocus()
-                        notesPopup.close();
+                        slotBridge.setNote(notes.text)
+
+                        notes.text = ""
+                        notesPopup.close()
+
+                        lastFocus.forceActiveFocus()
                     }
                 }
             }
