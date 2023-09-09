@@ -65,15 +65,13 @@ def set_NextCategoryWillBe(category):
         emitter.showNextCategoryExplanation.emit(category)
         emitter.updatePhoto.emit('AppImages/restart-arrow.png')
 
-def set_CategoriesScreen(text):
-    """This should be called only once, at start-up of the app"""
-    emitter.setCategoriesTutorial.emit(text)
-
 
 
 
 def createCategoryCheckboxes(categoryTitles: list[str]):
     emitter.createCategoryCheckboxes.emit(categoryTitles)
+
+
 
 
 
