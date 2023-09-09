@@ -58,23 +58,9 @@ Window {
             }
         }
 
-        function onFillCategoryCheckboxes(listOfCheckedOrNot){
-            for (var i = 0; i < listOfCheckedOrNot.length; i++) {
-                listOfCheckboxes[i] = listOfCheckedOrNot[i];
-            }
-                
-        }
+        
 
-        function onCreateCategoryCheckboxes(listOfCategories){
-            var component = Qt.createComponent("CategoryBox.qml");
-
-            for (var i = 0; i < listOfCategories.length; i++){
-                console.log(listOfCategories[i])
-                var checkBox = component.createObject(categoryCheckboxesLayout)
-                checkBox.text = listOfCategories[i]
-                checkBox.categoryIndex = i
-            }
-        }
+        
     }
 
 
@@ -252,8 +238,8 @@ Window {
             y: page.height - 100
             x:10
 
-            ColumnLayout{
-                id: categoryCheckboxesLayout
+            CategoryBoxHolder {
+                id: categoryCheckboxeHolder
                 anchors.bottom: spacer.top
                 
             }
