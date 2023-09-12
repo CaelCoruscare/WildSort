@@ -183,13 +183,16 @@ def __getFileData(fileURL):
         return (dateTaken, timeTaken)
     
 
-def _getNoteColumn(photoURLs, notes):
+def _getNoteColumn(photoURLs, notes:dict):
     notesColumn = [''] * len(photoURLs)
 
-    del notes[-1]
+    tutorialNote = notes.get(-1)
+    del notes[-1] #Remove -1 key if it exists
 
     for key in notes:
         notesColumn[key] = notes[key]
+
+    notes[-1] = tutorialNote
 
     return ReportParts(
         headers=['Notes'],
