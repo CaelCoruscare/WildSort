@@ -18,37 +18,79 @@ typesToLook4 = {
 }
 
 typesACKGeneral = {
-    'Landscape': {}
+    'Useful':{
+        'Landscape': {}
 
-    ,'Wildlife': { 
-        'Tracks':{}
-        ,'DikDiks':{}
-        ,'Gerenuks':{}
-        ,'Birds':{
-            'Ostriches':{}
-            ,'Kori Bustards':{}
+        ,'Wildlife': { 
+            'Tracks':{}
+            ,'Herbivores':{
+                'Antelopes':{
+                    'DikDiks':{}
+                    ,'Gerenuks':{}
+                    ,'Gazelles':{}
+                }
+                ,'Zebras':{}
+                ,'Elephants':{}
+                ,'Hyraxes':{}
+            }
+            ,'Predators':{
+                'Hyena':{
+                    'Spotted':{}
+                    ,'Striped':{}
+                }
+                ,'Cats':{
+                    'Cheetahs':{}
+                    ,'Leopards':{}
+                    ,'Lions':{}
+                    ,'Servals':{}
+                    ,'Genets':{}
+                }
+                ,'Canids':{
+                    'Painted Dogs':{}
+                    ,'Jackals':{}
+                    ,'Bat Eared Foxes':{}
+                }
+                ,'Honey Badgers':{}
+                ,'Mongooses':{
+                    'Slender':{}
+                    ,'Dwarf':{}
+                    ,'White Tailed':{}
+                },
+                'Baboons':{}
+            }
+            ,'Birds':{
+                'Ostriches':{}
+                ,'Kori Bustards':{}
+                ,'Guinea Fowls':{}
+                ,'Spur Fowls':{}
+            }
+            ,'Caracasses':{}
+        } 
+        ,'Domestic Animals': { 
+            'Shoats':{}
+            ,'Camels':{}
+            ,'Donkeys':{}
+            ,'Cattle':{}
+            ,'Dogs':{}
+            ,'Caracasses':{}
+        } 
+        ,'People & Scat Dogs':{
+            'Staff Photos': {}
+            ,'Scat Dogs':{
+                'Madi':{}
+                ,'Persi':{}
+            }
+            ,'Community Outreach':{
+                'Rabies Campaign':{}
+                ,'Disease Sampling':{}
+                ,'Takataka Project':{}
+            }
         }
-    } 
-    ,'Domestic Animals': { 
-        'Shoats':{}
-        ,'Camels':{}
-        ,'Donkeys':{}
-        ,'Cattle':{}
-    }
-    ,'Staff Photos': {}
-    ,'Conflict': {
-        'Caracasses':{}
-        ,'Conflict Mitigation Forms':{}
-        ,'Hospital Documents':{}
-    }
-    ,'Community':{
-        'International Cheetah Day':{}
-        ,'Rabies Campaign':{}
-        ,'Football': {}
-    }
-    ,'Canine Team':{
-        'Canine Team Dogs':{}
-        ,'Canine Team People Working':{}
+        ,'Documents': {
+            'Conflict Mitigation Forms':{}
+            ,'Hospital Documents':{}
+            ,'Data Forms':{}
+        }
     }
 }
 

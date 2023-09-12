@@ -16,7 +16,7 @@
             "name": "WildSort",
             "type": "python",
             "request": "launch",
-            "program": "WildSort.py",
+            "program": "main.py",
             "console": "integratedTerminal",
             "justMyCode": true
         }

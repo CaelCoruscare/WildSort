@@ -37,6 +37,3 @@ class EmitterBridge(QObject):
 
     def __init__(self):
         QObject.__init__(self)
-
-    def wtf(self):
-        self.updatePhoto.emit("test")

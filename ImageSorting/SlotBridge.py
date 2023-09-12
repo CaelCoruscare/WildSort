@@ -97,15 +97,23 @@ class SlotBridge(QObject):
     def getNote(self):
         return logic.getNote()
     
-    @Slot(int)
+    @Slot(int, result=list)
     def flipValueInCategory(self, categoryIndex):
         print(f'Flip photo: {data.photoURLs[data.index.photo]} value for category: {data.dataList[categoryIndex].title}')
-        data.flipValueInCategory(categoryIndex)
+        #data.flipValueInCategory(categoryIndex)
+        data.FlipValue(data.getCategory(categoryIndex))
+
+        photoData = data.getPhotoData()
+        return self._cleanPhotoData(photoData)
 
     @Slot(result=list)
     def getDataForPhoto(self):
         photoData = data.getPhotoData()
+        return self._cleanPhotoData(photoData)
+    
+    def _cleanPhotoData(self, photoData):
 
-        photoData = [dat if (dat == 1) else 0 for dat in photoData]
+        photoData = ['None' if (dat == None) else dat for dat in photoData]
+        photoData = [0 if (dat == 'skip') else dat for dat in photoData]
 
         return photoData

@@ -6,6 +6,7 @@ CheckBox {
     checked: false
 
     onToggled: {
-        slotBridge.flipValueInCategory(categoryIndex)
+        var newValues = slotBridge.flipValueInCategory(categoryIndex)
+        parent.fillCategoryCheckboxes(newValues)
     }
 }

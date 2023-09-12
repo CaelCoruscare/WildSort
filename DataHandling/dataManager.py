@@ -16,12 +16,14 @@ index = Index(-1,0)
 class Category():
     title: str
     parent: Category
+    children: list = field(default_factory=lambda: [])
     
     data: list = field(init=False) #This gets filled with [None] during folderInitialization, then filled with useful data when the category is reached
     """1 = Found in photo,
     \n 0 = Not found in photo,
     \n None = Not answered yet,
     \n 'skip' = Parent category not found in photo"""
+
 
     def initializeData(self):
         """initializes the category based on the data of the parent category."""
@@ -86,7 +88,13 @@ def fillDataList(dict_OfTypes, parent=None):
         if len(dict_OfTypes[key]) > 0:
             fillDataList(dict_OfTypes[key], dataList[-1])
           
-fillDataList(DataSortingCategories.typesACKGeneral)
+fillDataList(DataSortingCategories.typesToLook4)
+
+for category in dataList:
+    if category.parent != None:
+        category.parent.children.append(category)
+
+###
 
 def getCategory(categoryIndex)->Category:
     return dataList[categoryIndex]
@@ -122,28 +130,76 @@ def getPhotoData():
 
 #######
 
+
+class FlipValue():
+    """
+    Flips the value of a category for the current photo.
+
+    \nHandles adjusting other values upstream and downstream.
+    """
+    def __init__(self, targetCategory: Category):
+        self._photoIndex = index.photo
+        value = targetCategory.data[index.photo]
+        self.DoIt(value, targetCategory)
+
+    def DoIt(self, value, category: Category):
+        if value == 1:
+            #Parents: No changes
+
+            #Target:
+            category.data[index.photo] = 0
+
+            #Children:
+            for child in category.children:
+                self.set_ToZero(child)
+            
+        elif value == 0: #(if 0 or 'skip' or None)
+            #Parents: no changes
+
+            #Target:
+            category.data[index.photo] = 1
+
+            #Children:
+            for child in category.children:
+                self.setChildAndGrandchildren_ToSkip(child)
+
+        elif value == 'skip':
+            #Parents:
+            self.setParentAndGrandparents_ToOne(category.parent)
+
+            #Target
+            category.data[index.photo] = 1
+
+            #Children:
+            for child in category.children:
+                self.set_ToZero(child)
+
+        elif value == None:
+            raise ValueError(value, "UI should prevent flipping a None value.")
+
+    def setParentAndGrandparents_ToOne(self, parent: Category):
+        if parent == None:
+            return
+        parent.data[self._photoIndex] = 1
+        self.setParentAndGrandparents_ToOne(parent=parent.parent)
+
+    def set_ToZero(self, category: Category):
+        if category == None:
+            return
+        category.data[index.photo] = 0
+        
+        #Below a 0 is always 'skips' until the Nones start
+        for child in category.children:
+            self.setChildAndGrandchildren_ToSkip(child=child)
+
+    def setChildAndGrandchildren_ToSkip(self, child: Category):
+        if child == None:
+            return
+        child.data = 'skip'
+        for grandchild in child.children:
+            self.setChildAndGrandchildren_ToSkip(child=grandchild)
+
 def flipValueInCategory(categoryIndex):
     category = getCategory(categoryIndex)
-
-    if category.data[index.photo] == 1:
-        category.data[index.photo] = 0
-        for child in category.children:
-            __flipChildrenRecursively(child)
+    flipper = FlipValue(category, photoIndex=index.photo)
         
-
-    else: #(if 0 or 'skip' or None)
-        category.data = 1
-        __flipParentsRecursively(category.parent)
-
-        
-
-def __flipChildrenRecursively(category: Category):
-    for child in category.children:
-            if child.data[index.photo] == 1:
-                child.data[index.photo] = 0
-                __flipChildrenRecursively(child)
-
-def __flipParentsRecursively(category: Category):
-    if category.parent.data[index.photo] != 1:
-            category.parent.data[index.photo] = 1
-            __flipParentsRecursively(category.parent)
