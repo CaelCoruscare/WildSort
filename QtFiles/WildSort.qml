@@ -245,21 +245,31 @@ Window {
             width: page.width - 20
             y: page.height - 100
             x:10
+            closePolicy: Popup.CloseOnEscape
+
+            // ScrollView {
+            //     id: frame
+            //     clip: true
+            //     anchors.bottom: spacer.top
+            //     width: 400
+            //     //other properties
+            //     ScrollBar.vertical.policy: ScrollBar.AlwaysOn
+            //     Flickable {
+            //         contentHeight: 2000
+            //         width: parent.width
+            //     }
+            // }
 
             CategoryBoxHolder {
-                id: categoryCheckboxHolder
-                anchors.bottom: spacer.top
-                
-            }
-
+                    id: categoryCheckboxHolder
+                    anchors.bottom: spacer.top
+                    
+                }
             Item {
                 id: spacer
                 height: 20
                 anchors.bottom: notes.top
             }
-
-            
-
             contentItem: TextField {
                 id: notes
                 placeholderText: qsTr("Put notes here...")
