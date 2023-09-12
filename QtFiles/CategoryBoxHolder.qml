@@ -9,8 +9,13 @@ ColumnLayout{
 
     function fillCategoryCheckboxes(listOfCheckedOrNot){
         for (var i = 0; i < listOfCheckedOrNot.length; i++) {
-                console.log("||: " + listOfCheckedOrNot[i])
-            switch(listOfCheckedOrNot[i]) {
+                var value = listOfCheckedOrNot[i]
+                var box = listOfCheckboxes[i]
+                console.log("|value|: " + value)
+                console.log("|box|: " + box)
+
+
+            switch(value) {
                 case 1:
                     console.log("TRUE")
                     listOfCheckboxes[i].enabled = true
@@ -23,13 +28,18 @@ ColumnLayout{
                     break;
                 case "skip":
                     console.log("SKIPPED")
+                    console.log("|box.enabled|: " + box.enabled)
                     listOfCheckboxes[i].enabled = true
+                    console.log("|box.enabled|: " + box.enabled)
+                    console.log("|box.checked|: " + box.checked)
                     listOfCheckboxes[i].checked = false
+                    console.log("|box.checked|: " + box.checked)
                     break;
                 default:
                     console.log("NONE")
-                    listOfCheckboxes[i].enabled = false
+                    listOfCheckboxes[i].enabled = true
                     listOfCheckboxes[i].checked = false
+                    listOfCheckboxes[i].enabled = false
             }
             listOfCheckboxes[i].checked = listOfCheckedOrNot[i];
         }

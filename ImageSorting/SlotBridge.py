@@ -114,6 +114,6 @@ class SlotBridge(QObject):
     def _cleanPhotoData(self, photoData):
 
         photoData = ['None' if (dat == None) else dat for dat in photoData]
-        photoData = [0 if (dat == 'skip') else dat for dat in photoData]
+        #photoData = [0 if (dat == 'skip') else dat for dat in photoData]
 
         return photoData
