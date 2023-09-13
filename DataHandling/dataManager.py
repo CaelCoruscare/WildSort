@@ -131,6 +131,11 @@ def getPhotoData():
 #######
 
 
+
+def flipValueInCategory(categoryIndex):
+    category = getCategory(categoryIndex)
+    flipper = FlipValue(category, photoIndex=index.photo)
+        
 class FlipValue():
     """
     Flips the value of a category for the current photo.
@@ -151,7 +156,7 @@ class FlipValue():
 
             #Children:
             for child in category.children:
-                self.set_ToZero(child)
+                self.setChildAndGrandchildren_ToSkip(child)
             
         elif value == 0: #(if 0 or 'skip' or None)
             #Parents: no changes
@@ -195,11 +200,6 @@ class FlipValue():
     def setChildAndGrandchildren_ToSkip(self, child: Category):
         if child == None:
             return
-        child.data = 'skip'
+        child.data[index.photo] = 'skip'
         for grandchild in child.children:
             self.setChildAndGrandchildren_ToSkip(child=grandchild)
-
-def flipValueInCategory(categoryIndex):
-    category = getCategory(categoryIndex)
-    flipper = FlipValue(category, photoIndex=index.photo)
-        

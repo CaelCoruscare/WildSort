@@ -11,37 +11,30 @@ ColumnLayout{
         for (var i = 0; i < listOfCheckedOrNot.length; i++) {
                 var value = listOfCheckedOrNot[i]
                 var box = listOfCheckboxes[i]
-                console.log("|value|: " + value)
-                console.log("|box|: " + box)
+                console.log("|box|: " + i + "|value|: " + value)
 
 
             switch(value) {
                 case 1:
                     console.log("TRUE")
-                    listOfCheckboxes[i].enabled = true
-                    listOfCheckboxes[i].checked = true
+                    box.enabled = true
+                    box.checked = true
                     break;
                 case 0:
                     console.log("FALSE")
-                    listOfCheckboxes[i].enabled = true
-                    listOfCheckboxes[i].checked = false
+                    box.enabled = true
+                    box.checked = false
                     break;
                 case "skip":
                     console.log("SKIPPED")
-                    console.log("|box.enabled|: " + box.enabled)
-                    listOfCheckboxes[i].enabled = true
-                    console.log("|box.enabled|: " + box.enabled)
-                    console.log("|box.checked|: " + box.checked)
-                    listOfCheckboxes[i].checked = false
-                    console.log("|box.checked|: " + box.checked)
+                    box.enabled = true
+                    box.checked = false
                     break;
                 default:
                     console.log("NONE")
-                    listOfCheckboxes[i].enabled = true
-                    listOfCheckboxes[i].checked = false
-                    listOfCheckboxes[i].enabled = false
+                    box.checked = false
+                    box.enabled = false
             }
-            listOfCheckboxes[i].checked = listOfCheckedOrNot[i];
         }
             
     }
