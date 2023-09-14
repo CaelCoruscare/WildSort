@@ -38,7 +38,7 @@ class Category():
     def getPhotoCounter(self, photoIndex) -> str:
         """Returns the string for the Photo Counter in the UI, ignoring skips."""
         return (
-            str(self.__countPhotosSorted(photoIndex) + 1)
+            str(self._countPhotosSorted(photoIndex) + 1)
             + '/' + 
             str(self.countPhotos())
         )
@@ -47,7 +47,7 @@ class Category():
         """Ignores pictures that will be skipped."""
         return len(self.data) - self.data.count('skip')
 
-    def __countPhotosSorted(self, photoIndex):
+    def _countPhotosSorted(self, photoIndex):
         """Ignores pictures that were skipped. Counts how many pictures the user has sorted for this category."""
         slicedData = self.data[0:photoIndex]
         return len(slicedData) - slicedData.count('skip')
@@ -189,7 +189,7 @@ class FlipValue():
         self.setParentAndGrandparents_ToOne(parent=parent.parent)
 
     def set_ToZero(self, category: Category):
-        if category == None:
+        if category.data[index.photo] == None:
             return
         category.data[index.photo] = 0
         
@@ -198,7 +198,7 @@ class FlipValue():
             self.setChildAndGrandchildren_ToSkip(child=child)
 
     def setChildAndGrandchildren_ToSkip(self, child: Category):
-        if child == None:
+        if child.data[index.photo] == None:
             return
         child.data[index.photo] = 'skip'
         for grandchild in child.children:
