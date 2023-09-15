@@ -68,8 +68,8 @@ def set_NextCategoryWillBe(category):
 
 
 
-def createCategoryCheckboxes(categoryTitles: list[str]):
-    emitter.createCategoryCheckboxes.emit(categoryTitles)
+def createCategoryCheckboxes(categoryTitles: list[str], indentation: list[int]):
+    emitter.createCategoryCheckboxes.emit(categoryTitles, indentation)
 
 
 

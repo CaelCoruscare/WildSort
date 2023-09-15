@@ -33,7 +33,7 @@ class EmitterBridge(QObject):
 
     #TO IMPLEMENT
     setCategoriesTutorial = Signal(str)
-    createCategoryCheckboxes = Signal(list)
+    createCategoryCheckboxes = Signal(list, list)
 
     def __init__(self):
         QObject.__init__(self)

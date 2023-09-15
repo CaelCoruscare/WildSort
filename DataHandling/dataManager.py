@@ -51,6 +51,12 @@ class Category():
         """Ignores pictures that were skipped. Counts how many pictures the user has sorted for this category."""
         slicedData = self.data[0:photoIndex]
         return len(slicedData) - slicedData.count('skip')
+    
+    def countAncestors(self) -> int:
+        if self.parent == None:
+            return 0
+        else:
+            return 1 + self.parent.countAncestors()
 
 ###Photos
 
@@ -88,7 +94,7 @@ def fillDataList(dict_OfTypes, parent=None):
         if len(dict_OfTypes[key]) > 0:
             fillDataList(dict_OfTypes[key], dataList[-1])
           
-fillDataList(DataSortingCategories.typesToLook4)
+fillDataList(DataSortingCategories.typesToLook4Full)
 
 for category in dataList:
     if category.parent != None:

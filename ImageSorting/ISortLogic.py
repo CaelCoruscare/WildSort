@@ -17,6 +17,7 @@ smallDelay = 0.05
 #index.photo is used to store notes in specific arrays here.
 notes = {-1:"You can write notes here when an image is open."}
 
+
 class EdgeCase(Enum):
     SHOWING_FOLDER_AREA = 0
     SHOWING_CAMERA_AND_LOCATION_FORM = 1
@@ -269,8 +270,10 @@ def folderChosen(folderURL):
     dataManager.initializeFromFolder(folderURL)
 
     #This is for the Notes popup
-    listOfTitles = [category.title for category in dataManager.dataList]
-    ui.createCategoryCheckboxes(listOfTitles)
+    ui.createCategoryCheckboxes(
+        categoryTitles=[category.title for category in dataManager.dataList], 
+        indentation=[category.countAncestors() for category in dataManager.dataList])
+
 
     #UI Hide
     ui.hideScreen(Screen.SCREEN_LOAD_FOLDER)

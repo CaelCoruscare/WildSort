@@ -28,10 +28,12 @@ typesACKGeneral = {
                     'DikDiks':{}
                     ,'Gerenuks':{}
                     ,'Gazelles':{}
+                    ,'Kudu':{}
                 }
                 ,'Zebras':{}
                 ,'Elephants':{}
                 ,'Hyraxes':{}
+                ,'Vervet Monkeys':{}
             }
             ,'Predators':{
                 'Hyena':{
@@ -149,35 +151,68 @@ typesToLook4 = {
 
 #This is kept here as a possible future Option
 typesToLook4Full = {
-    'Human Stuff': { 
+
+    'Any Trigger': {
+    'Not Setup/Takedown':{
+    'Human Elements': { 
         'Humans on Foot':{}
-        ,'Motorbikes':{}
-        ,'Cars':{}
-        }, 
-    'Domestic Animals': { 
+        ,'Vehicles':{
+            'Motorbikes':{}
+            ,'Cars':{}
+        }
+    }
+    ,'Domestic Animals': { 
         'Shoats':{}
         ,'Camels':{}
         ,'Donkeys':{}
         ,'Domestic Dogs':{}
-        },
-    'Wild Animals': {
-        'Predators':{
-            'Cats':{}
-            ,'Hyenas':{}
-            ,'Painted Dogs':{}
-            ,'Baboons':{}
+        ,'Cattle':{}
+    }
+    ,'Wildlife': { 
+        'Herbivores':{
+            'Antelopes':{
+                'DikDiks':{}
+                ,'Gerenuks':{}
+                ,'Gazelles':{}
+                ,'Kudu':{}
             }
-        ,'Herbivores':{
-            'Zebras':{}
-            ,'Antelopes':{}
+            ,'Zebras':{}
             ,'Elephants':{}
-            ,'Hyrax':{}
+            ,'Hyraxes':{}
+            ,'Vervet Monkeys':{}
+        }
+        ,'Predators':{
+            'Hyena':{
+                'Spotted':{}
+                ,'Striped':{}
             }
-        ,'Omnivores': {
-            'Fox':{}
-            ,'Genet':{}
-            ,'Mongoose':{}
-            ,'BushBaby':{}
+            ,'Cats & Genets':{
+                'Cheetahs':{}
+                ,'Leopards':{}
+                ,'Lions':{}
+                ,'Servals':{}
+                ,'Genets':{}
             }
-        ,'Birds':{}
-        }}
+            ,'Canids':{
+                'Painted Dogs':{}
+                ,'Jackals':{}
+                ,'Bat Eared Foxes':{}
+            }
+            ,'Honey Badgers':{}
+            ,'Mongooses':{
+                'Slender':{}
+                ,'Dwarf':{}
+                ,'White Tailed':{}
+            },
+            'Baboons':{}
+        }
+        ,'Birds':{
+            'Ostriches':{}
+            ,'Kori Bustards':{}
+            ,'Guinea Fowls':{}
+            ,'Spur Fowls':{} 
+        }
+    } 
+    }
+    }
+}

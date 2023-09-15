@@ -26,7 +26,8 @@ Rectangle {
     }
 
     Keys.onPressed: (event)=> { 
-        if (event.key == Qt.Key_K){
+        if (event.key == Qt.Key_L 
+            && (event.modifiers & Qt.ShiftModifier)){
             slotBridge.choiceMade("continue")
         }
     }

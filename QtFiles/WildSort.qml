@@ -100,15 +100,20 @@ Window {
                 Screen_NextCategory {
                 }
 
-                
-
                 Keys.onPressed: (event)=> { 
                     //console.log("Key pressed: " + event.key)
-                    if (event.key == Qt.Key_L){
+
+                    if (event.key == Qt.Key_L 
+                        && !(event.modifiers & Qt.ShiftModifier)){
                         slotBridge.choiceMade("yes") 
                     }
                     if (event.key == Qt.Key_Semicolon){
-                        slotBridge.choiceMade("no")
+                        if (event.modifiers & Qt.ShiftModifier){
+                            slotBridge.choiceMade("skipcategory")
+                        }
+                        else{
+                            slotBridge.choiceMade("no")
+                        }
                     } 
                     if (event.key == Qt.Key_Apostrophe){ 
                         slotBridge.choiceMade("back")
@@ -118,13 +123,15 @@ Window {
                         if (!notesPopup.opened){
                             var note = slotBridge.getNote()
                             if (note != "NULL"){ //TODO: implement proper
+                                //Fill out the category checkboxes on the Notes Popup
                                 var categoryData = slotBridge.getDataForPhoto()
-                                console.log("categoryData " + categoryData) 
                                 categoryCheckboxHolder.fillCategoryCheckboxes(categoryData)
                                 
+                                //Open the Notes Popup and fill in the text
                                 notesPopup.open()
-                                notes.text = slotBridge.getNote() 
+                                notes.text = note
 
+                                //Handle focusing into the text field, and prepping for focusing back to the last item after Notes Popup is closed.
                                 notes.lastFocus = window.activeFocusItem
                                 notes.forceActiveFocus()
                             }
@@ -133,6 +140,7 @@ Window {
 
                     if (event.key == Qt.Key_Q) 
                     {
+                        testPopup.open()
                         //console.log(focus)
                         //Test things here
                     }
@@ -241,40 +249,51 @@ Window {
         }
 
         Popup {
+            id: testPopup
+        }
+
+        Popup {
             id: notesPopup
             width: page.width - 20
-            y: page.height - 100
+            height: page.height - 20
             x:10
             closePolicy: Popup.CloseOnEscape
-
-            // ScrollView {
-            //     id: frame
-            //     clip: true
-            //     anchors.bottom: spacer.top
-            //     width: 400
-            //     //other properties
-            //     ScrollBar.vertical.policy: ScrollBar.AlwaysOn
-            //     Flickable {
-            //         contentHeight: 2000
-            //         width: parent.width
-            //     }
-            // }
-
-            CategoryBoxHolder {
-                    id: categoryCheckboxHolder
-                    anchors.bottom: spacer.top
-                    
-                }
-            Item {
-                id: spacer
-                height: 20
-                anchors.bottom: notes.top
+            background: Rectangle{
+                color: "transparent"
+                //border.color: "black"
             }
-            contentItem: TextField {
+
+            Rectangle{
+                implicitWidth: 200 // <==
+                implicitHeight: parent.height - 64
+                anchors.top: parent.top
+
+                color:"lightgrey"
+
+                ScrollView {
+                    implicitWidth: 200// <==
+                    implicitHeight: parent.height - 16
+                    y:8
+                    // anchors.top: parent.top
+
+                    CategoryBoxHolder {
+                        id: categoryCheckboxHolder
+                        implicitWidth: 200 // <==
+                        implicitHeight: contentHeight
+                    } 
+                }   
+            }
+
+            TextField {
                 id: notes
                 placeholderText: qsTr("Put notes here...")
                 wrapMode: Text.WordWrap
+                y: page.height - 80
                 focus:true
+
+                //anchors.bottom: parent.bottom
+                //bottomPadding: 50
+                width: parent.width
 
                 property var lastFocus
 
@@ -290,6 +309,7 @@ Window {
                     }
                 }
             }
+            
         }
         
     }
