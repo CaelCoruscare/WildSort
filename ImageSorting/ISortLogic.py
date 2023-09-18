@@ -33,6 +33,9 @@ edgeCase = EdgeCase.SHOWING_FOLDER_AREA
 
 
 def _handleAtEndOfCategory(userResponse):
+        if userResponse == 'continue':
+            return #TODO: Handle this better
+
     #-2 is passed in as userResponse if SortLogic is in the process of skipping.
         if userResponse != -2:
             recordData(userResponse)
@@ -51,7 +54,7 @@ def _handleAtEndOfCategory(userResponse):
 
             nextCategory = dataManager.getCategory(index.category + 1)
             ui.set_NextCategoryWillBe(nextCategory.title)
-            nextCategory.initializeData() # Need to do this here so the next line functions
+            nextCategory.initializeData(photoURLs=dataManager.photoURLs) # Need to do this here so the next line functions
             ui.set_PhotoCounter('-/' + str(nextCategory.countPhotos()))
 
             global edgeCase

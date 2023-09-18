@@ -47,7 +47,7 @@ ColumnLayout {
     TextField {
         id: locationField
         focus:true
-        Keys.forwardTo: [cameraAndLocationButton]
+        //Keys.forwardTo: [cameraAndLocationButton]
 
         Focuser {
             code: "field_location"

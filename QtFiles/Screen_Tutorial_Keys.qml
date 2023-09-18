@@ -18,8 +18,7 @@ ColumnLayout{
     }
 
     Keys.onPressed: (event)=> { 
-        if ((event.key == Qt.Key_L)
-            && (event.modifiers & Qt.ShiftModifier)){
+        if (event.key == Qt.Key_K){
             slotBridge.choiceMade("continue")
         }
     }
@@ -55,9 +54,7 @@ ColumnLayout{
             <br><br>
             Use the <b><font color=\"#E19133\">[return]</font></b> or <b><font color=\"#E19133\">[Enter]</font></b> key to open <b><font color=\"#E19133\">Notes</font></b>.
             <br><br>
-            Press the <b><font color=\"#B942EC\">[shift]</font></b> + <b><font color=\"red\">[;]</font></b> keys to skip to the end of the category.
-            <br><br>
-            Press the <b><font color=\"#B942EC\">[shift]</font></b> + <b><font color=\"green\">[L]</font></b> keys to start sorting.
+            Press the <b><font color=\"#B942EC\">[K]</font></b> key to Continue.
             `
         }
     }

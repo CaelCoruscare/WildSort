@@ -18,8 +18,7 @@ ColumnLayout{
     }
 
     Keys.onPressed: (event)=> { 
-        if ((event.key == Qt.Key_L)
-            && (event.modifiers & Qt.ShiftModifier)){
+        if (event.key == Qt.Key_K){
             slotBridge.choiceMade("continue")
         }
     }

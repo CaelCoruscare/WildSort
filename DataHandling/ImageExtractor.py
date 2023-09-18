@@ -8,7 +8,7 @@ def getImages(folderURL: str) -> list[str]:
     cleaned = _cleanURL(folderURL)
 
     #Get all files in the directory
-    photoURLs = __recursiveGetFiles(folderURL)
+    photoURLs = _recursiveGetFiles(folderURL)
     #Cut out any that aren't jpeg
     photoURLs = [file for file in photoURLs if file.endswith(('.jpeg', '.JPEG', '.jpg', '.JPG'))]
     #Sort 
@@ -17,7 +17,7 @@ def getImages(folderURL: str) -> list[str]:
     return photoURLs
     
 
-def __recursiveGetFiles(folderURL):
+def _recursiveGetFiles(folderURL):
     #os.listdir(folderURL)
     allFiles = []
     for folderPath, subfolders, files in os.walk(folderURL):

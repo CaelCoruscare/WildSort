@@ -152,8 +152,8 @@ typesToLook4 = {
 #This is kept here as a possible future Option
 typesToLook4Full = {
 
+    'Not Setup or Takedown':{
     'Any Trigger': {
-    'Not Setup/Takedown':{
     'Human Elements': { 
         'Humans on Foot':{}
         ,'Vehicles':{
