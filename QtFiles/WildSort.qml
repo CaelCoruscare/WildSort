@@ -85,13 +85,17 @@ Window {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenter: parent.horizontalCenter
 
-                Screen_Tutorial_Keys {
-                }
 
                 Screen_LoadFolder {
                 }
 
                 Screen_CameraAndLocationForm {
+                }
+
+                Screen_Tutorial_Keys {
+                }
+
+                Screen_Tutorial_WhatClick {
                 }
 
                 Screen_PrintReport {

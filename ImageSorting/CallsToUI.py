@@ -7,7 +7,7 @@ class Screen(Enum):
     SCREEN_CAMERA_LOCATION = 'screen_cameralocation'
     TUTORIAL_KEYS = 'tutorial_keys'
     TUTORIAL_CATEGORIES = 'tutorial_categories'
-    TUTORIAL_IMAGES = 'tutorial_images'
+    TUTORIAL_WHATCLICK = 'tutorial_whatclick'
     SCREEN_PRINT_REPORT = 'screen_printreport'
 
 

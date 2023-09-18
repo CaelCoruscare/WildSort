@@ -22,7 +22,7 @@ class EdgeCase(Enum):
     SHOWING_FOLDER_AREA = 0
     SHOWING_CAMERA_AND_LOCATION_FORM = 1
     SHOWING_TUTORIAL_KEYS = 2
-    SHOWING_TUTORIAL_CATEGORIES = 3
+    SHOWING_TUTORIAL_WHATCLICK = 3
     SHOWING_TUTORIAL_IMAGES = 4
     FIRST_SHOWING_NEXT_CATEGORY = 5
     SHOWING_NEXT_CATEGORY_WILL_BE = 6
@@ -139,17 +139,15 @@ def _handleForwardEdgeCases(userResponse) -> bool:
             #Hide UI
             ui.hideScreen(ui.Screen.TUTORIAL_KEYS)
             #Show UI
-            ui.set_NextCategoryWillBe(dataManager.getCategory(0).title)
-            ui.set_PhotoCounter('-/' + str(len(dataManager.photoURLs)))
+            ui.showScreen(ui.Screen.TUTORIAL_WHATCLICK)
             #Update Edge Case
-            edgeCase = EdgeCase.FIRST_SHOWING_NEXT_CATEGORY
+            edgeCase = EdgeCase.SHOWING_TUTORIAL_WHATCLICK
 
             return True
 
-        #TODO: IMPLEMENT
-        case EdgeCase.SHOWING_TUTORIAL_CATEGORIES: 
+        case EdgeCase.SHOWING_TUTORIAL_WHATCLICK: 
             #Hide UI
-            ui.hideScreen(Screen.TUTORIAL_CATEGORIES)
+            ui.hideScreen(Screen.TUTORIAL_WHATCLICK)
             #Show UI
             ui.set_NextCategoryWillBe(dataManager.getCategory(0).title)
             ui.set_PhotoCounter('-/' + str(len(dataManager.photoURLs)))

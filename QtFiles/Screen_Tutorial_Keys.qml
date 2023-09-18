@@ -6,7 +6,7 @@ ColumnLayout{
     id: head
     anchors.top: parent.top
     anchors.horizontalCenter: parent.horizontalCenter
-    height: parent.height * 0.65
+    height: parent.height * 0.95
     visible: false
 
     ShowerHider {
@@ -46,6 +46,8 @@ ColumnLayout{
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter
 
+            font.pointSize: 18
+
             text: `
             Use the <b><font color=\"green\">[L]</font></b> and <b><font color=\"red\">[;]</font></b> keys as <b><font color=\"green\">Yes</font></b> and <b><font color=\"red\">No</font></b>, to Sort the Photos.
             <br><br>
@@ -53,7 +55,9 @@ ColumnLayout{
             <br><br>
             Use the <b><font color=\"#E19133\">[return]</font></b> or <b><font color=\"#E19133\">[Enter]</font></b> key to open <b><font color=\"#E19133\">Notes</font></b>.
             <br><br>
-            Press the <b><font color=\"#B942EC\">[K]</font></b> key to start sorting.
+            Press the <b><font color=\"#B942EC\">[shift]</font></b> + <b><font color=\"red\">[;]</font></b> keys to skip to the end of the category.
+            <br><br>
+            Press the <b><font color=\"#B942EC\">[shift]</font></b> + <b><font color=\"green\">[L]</font></b> keys to start sorting.
             `
         }
     }
