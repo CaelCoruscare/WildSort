@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "wild-sort"
+version = "0.1.0"
+description = ""
+authors = ["CaelCoruscare <caelsumner@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "3.11.5"
+pyinstaller = "^5.13.2"
+pyside6 = "^6.5.2"
+natsort = "^8.4.0"
+exifread = "^3.0.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
