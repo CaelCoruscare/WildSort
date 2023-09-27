@@ -170,7 +170,12 @@ def _getAllFiledata(photoURLs):
             raise ValueError(url, folderOfPhotos, 'folderOfPhotos should be found in the middle of the url')
         else:
             shortenedURL = splitURL[1]
-        fileLink_Column.append(f"=HYPERLINK(\"\"{url}\"\";\"\"{shortenedURL}\"\")")
+        
+        fileLink_Column.append('.' + shortenedURL)
+        #TODO: Would like to get the file address to work with "./", but would need to make a different column for each of the two reports.
+
+        #TODO: Would like to get hyperlinks working automatically, but it looks like that's not supported for a .csv opened by Excel.
+        #fileLink_Column.append(f"=HYPERLINK(\"\"{url}\"\";\"\"{shortenedURL}\"\")")
 
     return ReportParts(
         headers=['Link To File', 'Date', 'Time'],
