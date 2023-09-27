@@ -22,23 +22,27 @@ def nextPhoto():
     """Moves to the next photo, skipping photos that are ruled out for the current category, and telling the ScreenManager \"next()\" when all photos in the current category are accounted for. """
     index.photo +=1
     
-    if index.photo > index.photoMax():
-        Screens.screenManager.next() #Go to NextCategory screen or PrintReport screen
-    elif DataManager.checkForSkip(index):
-        nextPhoto()
-    else:
-        photoElement.set(DataManager.getPhotoURL(index.photo))
+    while index.photo <= index.photoMax():
+        if DataManager.checkForSkip(index):
+            index.photo +=1
+        else:
+            photoElement.set(DataManager.getPhotoURL(index.photo))
+            return
+        
+    #Go to NextCategory screen or PrintReport screen
+    Screens.screenManager.next() 
 
 def previousPhoto():
     index.photo -=1
 
-    if index.photo < 0:
-        Screens.screenManager.back()
-    elif DataManager.checkForSkip(index):
-        previousPhoto()
-    else:
-        photoElement.set(DataManager.getPhotoURL(index.photo))
-        
+    while index.photo > -1:
+        if DataManager.checkForSkip(index):
+            index.photo -=1
+        else: 
+            photoElement.set(DataManager.getPhotoURL(index.photo))
+            return
+
+    Screens.screenManager.back()
 
 def _back():
     #Edge cases are handled in tryBack()
