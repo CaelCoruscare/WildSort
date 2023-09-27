@@ -51,7 +51,7 @@ class SlotBridge(QObject):
                 categoryTitles=[category.title for category in DataManager.dataList], 
                 indentation=[category.countAncestors() for category in DataManager.dataList])
 
-            ReportBuilder.folderOfPhotos = folderURL
+            ReportBuilder.folderOfPhotos = folderURLFixed
 
             Screens.screenManager.next()
         

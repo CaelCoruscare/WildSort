@@ -163,7 +163,8 @@ def _getAllFiledata(photoURLs):
         dateTaken_Column.append(fileData[0])
         timeTaken_Column.append(fileData[1])
 
-        splitURL = url.split(folderOfPhotos,1)
+        justTheFolderName = folderOfPhotos.split('/')[-1]
+        splitURL = url.split(justTheFolderName, 1)
 
         if len(splitURL) == 1:
             raise ValueError(url, folderOfPhotos, 'folderOfPhotos should be found in the middle of the url')
