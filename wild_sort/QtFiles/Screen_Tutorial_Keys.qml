@@ -9,18 +9,12 @@ ColumnLayout{
     height: parent.height * 0.95
     visible: false
 
+    Focuser{
+        code: "screen_tutorial_keys"
+    }
+
     ShowerHider {
-        code: "tutorial_keys"
-    }
-
-    Focuser {
-        code: "tutorial_keys"
-    }
-
-    Keys.onPressed: (event)=> { 
-        if (event.key == Qt.Key_K){
-            slotBridge.choiceMade("continue")
-        }
+        code: "screen_tutorial_keys"
     }
 
     Image {

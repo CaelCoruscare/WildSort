@@ -8,14 +8,21 @@ ColumnLayout{
     anchors.horizontalCenter: parent.horizontalCenter
     visible: false
 
+    Focuser {
+        code: "screen_printreport"
+    }
+
     ShowerHider {
         code: "screen_printreport"
     }
 
-    Focuser {
-        code: "screen_printreport"
+    //This just prevents any input from being registered unless the button is clicked.
+    Keys.onPressed: (event)=> { 
+        console.log("Key pressed from Screen_PrintReport: " + event.key)
+
+        event.accepted = true //Prevent key event from being handled again at base
     }
-    
+
     Button {
         id: printButton
         text: qsTr("Print Report")
@@ -23,7 +30,6 @@ ColumnLayout{
         
         onClicked: {
             slotBridge.printReport();
-            head.visible = false;
         }
     }
 

@@ -7,13 +7,27 @@ import QtQuick.Controls
 Item {
     id: head
     property string code
+    property var lastFocus
+
+    function releaseActiveFocus(){
+            lastFocus.forceActiveFocus()
+        }
+
+    function focusTarget(){
+        console.log("LastFocus: " + window.activeFocusItem)
+        lastFocus = window.activeFocusItem
+        head.parent.forceActiveFocus()
+    }
 
     Connections {
         target: emitterBridge 
 
         function onFocusElement(c){
             if (code == c)
-                head.parent.forceActiveFocus()
+            {
+                console.log("Focus Element is: " + code)
+                focusTarget()
+            }
         }
     }
 }

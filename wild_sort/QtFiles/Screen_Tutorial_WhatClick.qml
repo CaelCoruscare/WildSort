@@ -9,20 +9,13 @@ ColumnLayout{
     height: parent.height * 0.95
     visible: false
 
+    Focuser{
+        code: "screen_tutorial_whatclick"
+    }
+
     ShowerHider {
-        code: "tutorial_whatclick"
+        code: "screen_tutorial_whatclick"
     }
-
-    Focuser {
-        code: "tutorial_whatclick"
-    }
-
-    Keys.onPressed: (event)=> { 
-        if (event.key == Qt.Key_K){
-            slotBridge.choiceMade("continue")
-        }
-    }
-
     Image {
         id: keysTutorial_Pic
         source: "AppImages/tutorial-whatclick.png"

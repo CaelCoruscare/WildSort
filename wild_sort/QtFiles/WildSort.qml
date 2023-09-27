@@ -58,10 +58,6 @@ Window {
                 backArrowTimer.restart()
             }
         }
-
-        
-
-        
     }
 
 
@@ -69,6 +65,26 @@ Window {
         id: page
         anchors.fill: parent
         color: "lightgray"
+        focus: true
+
+        Keys.onPressed: (event)=> { 
+                console.log("Key pressed from Wildsort: " + event.key)
+
+                if (event.key == Qt.Key_K){ 
+                    slotBridge.nextScreen()
+                }
+                if (event.key == Qt.Key_Apostrophe){ 
+                    slotBridge.previousScreen()
+                }
+                
+
+                if (event.key == Qt.Key_Q) 
+                {
+                    testPopup.open()
+                    //console.log(focus)
+                    //Test things here
+                }
+            }
         
         Rectangle {
             id: photoHolder
@@ -77,78 +93,25 @@ Window {
             anchors.top: page.top
             color: "#b7d1b6"
 
-            Image {
-                id: photo
-                width: page.width
-                height:parent.height
-                fillMode: Image.PreserveAspectFit
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.horizontalCenter: parent.horizontalCenter
+            Screen_ImageViewer {
+            }
 
+            Screen_ChooseFolder {
+            }
 
-                Screen_LoadFolder {
-                }
+            Screen_CameraAndLocationForm {
+            }
 
-                Screen_CameraAndLocationForm {
-                }
+            Screen_Tutorial_Keys {
+            }
 
-                Screen_Tutorial_Keys {
-                }
+            Screen_Tutorial_WhatClick {
+            }
 
-                Screen_Tutorial_WhatClick {
-                }
+            Screen_PrintReport {
+            }
 
-                Screen_PrintReport {
-                }
-
-                Screen_NextCategory {
-                }
-
-                Keys.onPressed: (event)=> { 
-                    //console.log("Key pressed: " + event.key)
-
-                    if (event.key == Qt.Key_L 
-                        && !(event.modifiers & Qt.ShiftModifier)){
-                        slotBridge.choiceMade("yes") 
-                    }
-                    if (event.key == Qt.Key_Semicolon){
-                        if (event.modifiers & Qt.ShiftModifier){
-                            slotBridge.choiceMade("skipcategory")
-                        }
-                        else{
-                            slotBridge.choiceMade("no")
-                        }
-                    } 
-                    if (event.key == Qt.Key_Apostrophe){ 
-                        slotBridge.choiceMade("back")
-                    }
-                    
-                    if (event.key == Qt.Key_Return || event.key == Qt.Key_Enter){
-                        if (!notesPopup.opened){
-                            var note = slotBridge.getNote()
-                            if (note != "NULL"){ //TODO: implement proper
-                                //Fill out the category checkboxes on the Notes Popup
-                                var categoryData = slotBridge.getDataForPhoto()
-                                categoryCheckboxHolder.fillCategoryCheckboxes(categoryData)
-                                
-                                //Open the Notes Popup and fill in the text
-                                notesPopup.open()
-                                notes.text = note
-
-                                //Handle focusing into the text field, and prepping for focusing back to the last item after Notes Popup is closed.
-                                notes.lastFocus = window.activeFocusItem
-                                notes.forceActiveFocus()
-                            }
-                        }
-                    }
-
-                    if (event.key == Qt.Key_Q) 
-                    {
-                        testPopup.open()
-                        //console.log(focus)
-                        //Test things here
-                    }
-                }
+            Screen_NextCategory {
             }
         }
 
@@ -179,6 +142,9 @@ Window {
                 rightPadding: 5
                 font.pointSize: 24; font.bold: true
                 visible: false
+                ShowerHider {
+                    code: "text_photocounter"
+                }
             }
 
             Text {
@@ -190,6 +156,9 @@ Window {
                 leftPadding: 5
                 font.pointSize: 24;
                 visible: false
+                ShowerHider {
+                    code: "text_categoryis"
+                }
             }
 
             Text {
@@ -201,7 +170,16 @@ Window {
                 leftPadding: 5
                 font.pointSize: 24; font.bold: true
                 visible: false
+                ShowerHider {
+                    code: "text_categoryis"
+                }
+                Setter{
+                    code: "text_categoryis"
+                    property alias prop: textCategory.text
+                }
             }
+
+            
         }
 
         Image {
@@ -302,6 +280,8 @@ Window {
                 property var lastFocus
 
                 Keys.onPressed: (event)=> {
+                    console.log("Key pressed from Notes: " + event.key)
+
                     if ((event.key == Qt.Key_Return || event.key == Qt.Key_Enter) && notesPopup.opened) 
                     {
                         slotBridge.setNote(notes.text)
@@ -310,6 +290,8 @@ Window {
                         notesPopup.close()
 
                         lastFocus.forceActiveFocus()
+
+                        event.accepted = true
                     }
                 }
             }

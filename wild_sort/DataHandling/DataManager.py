@@ -13,15 +13,23 @@ from DataHandling.FlipValue import FlipValue
 class Index():
     photo: int
     category: int
+
+    def photoMax(self)->int:
+        return len(photoURLs) - 1
+
 index = Index(-1,0)
+"""Keeps track of the current photo and category."""
 
 ###Photos
 
 photoURLs = list[str]
     
-def initializeFromFolder(folderURL):
+def tryInitializeFromFolder(folderURL)->bool:
     global photoURLs
     photoURLs = ImageExtractor.getImages(folderURL)
+
+    if len(photoURLs) == 0: 
+        return False
 
     #Initialize the data[] for the first category (top of the data tree) to the correct length. 
     #   The data[] for the other categories will all be created based on the filled out data[] of their parent.
@@ -31,8 +39,10 @@ def initializeFromFolder(folderURL):
     index.photo = 0
     index.category = 0
 
+    return True
 
-def getPhoto(photoIndex):
+
+def getPhotoURL(photoIndex):
     return photoURLs[photoIndex]
 
 
@@ -73,11 +83,11 @@ def checkForSkip(index: Index):
 
 notes = {-1:"You can put notes here when a picture is loaded."}
 
-def setNote(photoIndex, note):
-    notes[photoIndex] = note
+def setNote(note):
+    notes[index.photo] = note
 
-def getNote(photoIndex):
-    return notes.get(photoIndex, "")
+def getNote():
+    return notes.get(index.photo, "")
 
 
 ###----------------------------

@@ -15,6 +15,7 @@ class EmitterBridge(QObject):
     showElement = Signal(str)
     hideElement = Signal(str)
     focusElement = Signal(str)
+    setText = Signal(str, str)
 
     #Setters
     updateCategoryTracker = Signal(str)

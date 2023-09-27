@@ -11,6 +11,10 @@ Rectangle {
     anchors.horizontalCenter: parent.horizontalCenter
     visible: false
 
+    Focuser{
+        code: "screen_nextcategory"
+    }
+
     ShowerHider {
         code: "screen_nextcategory"
     }
@@ -25,25 +29,36 @@ Rectangle {
         }
     }
 
-    Keys.onPressed: (event)=> { 
-        if (event.key == Qt.Key_K){
-            slotBridge.choiceMade("continue")
-        }
-    }
-
     Text {
         id: nextCategoryText
         text: qsTr("...?")
         topPadding: 10
         leftPadding: 5
         font.pointSize: 18
+        Setter{
+            code: "text_nextcategory"
+            property alias prop: nextCategoryText.text
+        }
+        ShowerHider {
+            code: "text_nextcategory"
+        }
+    }
+
+    Image {
+        id: purpleCircleArrow
+        width: page.width
+        height:page.height
+        fillMode: Image.PreserveAspectFit
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.horizontalCenter: parent.horizontalCenter
+        source: "AppImages/restart-arrow.png"
     }
 
     Image {
         id:explainerImage
-        source: "AppImages/continue.png"
         fillMode: Image.PreserveAspectFit
         
+        source: "AppImages/continue.png"
         width: 265
         anchors.top: head.bottom
     }

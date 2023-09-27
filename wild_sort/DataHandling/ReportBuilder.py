@@ -8,7 +8,7 @@ import shutil
 
 import exifread
 
-import DataHandling.DataManager as data
+import DataHandling.DataManager as DataManager
 
 
 location = ''
@@ -29,14 +29,14 @@ class ReportParts():
         return zip(*self.columns)
 
 
-def buildReports_Human(dataList:list[data.Category], photoURLs:list[str], notes:list[str]):
+def buildReports_Human(dataList:list[DataManager.Category], photoURLs:list[str], notes:list[str]):
     """
 Converts all relevant data into a human-readable and visualization-friendly report. 
 \nBacks up any existing 'cameraTrapData.csv' file in the folder of photos.
 \nPrints to a spreadsheet called 'cameraTrapData.csv' in the folder of photos.
 \nTODO: Adds all rows to an 'ALL_cameraTrapData_DO_NOT_EDIT.csv' file in the working directory.
     """
-    addCategoriesToPhotoName(data.dataList)
+    addCategoriesToPhotoName(DataManager.dataList)
 
     report = _collateReport(dataList, photoURLs, notes)
 
@@ -63,7 +63,7 @@ def buildReport_AI():
     """Collects all relevant data for the human report and prints it to a file called..."""
     raise NotImplementedError("Not written yet")
 
-def _collateReport(dataList:list[data.Category], photoURLs:list[str], notes:list[str]) -> ReportParts:
+def _collateReport(dataList:list[DataManager.Category], photoURLs:list[str], notes:list[str]) -> ReportParts:
     
     fullReport = ReportParts([],[])
     #Columns 1 & 2
@@ -98,7 +98,7 @@ def _convertToHiddenBackup(fileURL):
     backupURL = head + '/.' + fileName + '_backup.' + fileType
     shutil.copyfile(src=fileURL, dst=backupURL)
 
-def _getDataColumns(dataList: list[data.Category]):
+def _getDataColumns(dataList: list[DataManager.Category]):
     headers=[]
     columns=[]
     for category in dataList:
@@ -225,21 +225,21 @@ def _getNoteColumn(photoURLs, notes:dict):
 ###Adding categories to photo names
 ##################----------------------------
 
-def addCategoriesToPhotoName(dataList: list[data.Category]):
+def addCategoriesToPhotoName(dataList: list[DataManager.Category]):
     for category in dataList:
-        for index, photoURL in enumerate(data.photoURLs):
+        for index, photoURL in enumerate(DataManager.photoURLs):
             if category.data[index] == 1:
                 head, tail = os.path.split(photoURL)
                 fileName, fileType = tail.split('.')
                 newName = head + '/' + fileName + '_' + category.title + '.' + fileType
                 os.rename(photoURL, newName)
-                data.photoURLs[index] = newName
+                DataManager.photoURLs[index] = newName
 
-    for index, photoURL in enumerate(data.photoURLs):
-        note = data.notes.get(index, None)
+    for index, photoURL in enumerate(DataManager.photoURLs):
+        note = DataManager.notes.get(index, None)
         if note != None:
             head, tail = os.path.split(photoURL)
             fileName, fileType = tail.split('.')
             newName = head + '/' + fileName + '_' + note + '.' + fileType
             os.rename(photoURL, newName)
-            data.photoURLs[index] = newName
+            DataManager.photoURLs[index] = newName

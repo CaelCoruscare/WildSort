@@ -10,6 +10,21 @@ class Screen(Enum):
     TUTORIAL_WHATCLICK = 'tutorial_whatclick'
     SCREEN_PRINT_REPORT = 'screen_printreport'
 
+def show(code: str):
+    emitter.showElement.emit(code)
+
+def hide(code: str):
+    emitter.hideElement.emit(code)
+
+def focus(code: str):
+    emitter.focusElement.emit(code)
+
+def set(code: str, value):
+    emitter.setText.emit(code, value)
+
+def openNotes(note: str):
+    emitter.openNotes.emit(note)
+
 
 def showScreen(screen: Screen):
     match screen:
@@ -32,8 +47,6 @@ def flashIcon(userAnswer):
             emitter.flashIcon.emit('yes')
         case 0:
             emitter.flashIcon.emit('no')
-        case 'continue':
-            pass
         case _:
             emitter.flashIcon.emit(userAnswer)
 

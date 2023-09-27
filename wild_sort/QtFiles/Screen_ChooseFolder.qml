@@ -11,14 +11,23 @@ ColumnLayout{
     focus: true
 
     ShowerHider {
-        code: "screen_loadfolder"
+        code: "screen_choosefolder"
     }
 
-    Focuser {
-        code: "screen_loadfolder"
+    Focuser{
+        id: focuser
+        code:"screen_choosefolder"
+    }
+
+    Component.onCompleted: {
+        page.forceActiveFocus()
+        console.log("page: " + page)
+        focuser.focusTarget()
     }
 
     Keys.onPressed: (event)=> { 
+        console.log("Key pressed from Screen_ChooseFolder: " + event.key)
+
         if (event.key == Qt.Key_Return || event.key == Qt.Key_Enter) {
             openDialog()
         }

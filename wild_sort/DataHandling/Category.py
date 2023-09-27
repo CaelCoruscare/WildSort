@@ -15,10 +15,9 @@ class Category():
     \n 'skip' = Parent category not found in photo"""
 
 
-    def initializeData(self, photoURLs:list[str]):
+    def initializeData(self):
         """initializes the category based on the data of the parent category."""
         if self.parent == None:
-            self.data = [None] * len(photoURLs)
             return
         if None in self.parent.data:
             raise ValueError(self.parent.data, 'parent\'s data is not filled.')

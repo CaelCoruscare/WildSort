@@ -7,15 +7,18 @@ ColumnLayout {
     anchors.verticalCenter: parent.verticalCenter
     anchors.horizontalCenter: parent.horizontalCenter
     visible: false
-    focus: true
 
     ShowerHider {
         code: "screen_cameralocation"
     }
 
     Keys.onPressed: (event)=> { 
+        console.log("Key pressed from Screen_CamLoc: " + event.key)
+
         if (event.key == Qt.Key_Return || event.key == Qt.Key_Enter) {
             formSubmitted()
+
+            event.accepted = true
         }
     }
 
@@ -30,7 +33,7 @@ ColumnLayout {
 
     function formSubmitted(){
         slotBridge.setCameraAndLocation(cameraField.text, locationField.text)
-        slotBridge.choiceMade("continue")
+        slotBridge.nextScreen()
     }
 
     Text {
@@ -39,6 +42,11 @@ ColumnLayout {
     TextField {
         id: cameraField
         text: qsTr("This should be filled by SlotBridge.SetFolder()")
+
+        Setter{
+            code: "field_camera"
+            property alias prop: cameraField.text
+        }
     }
     
     Text {
@@ -46,10 +54,15 @@ ColumnLayout {
     }
     TextField {
         id: locationField
-        focus:true
         //Keys.forwardTo: [cameraAndLocationButton]
 
+        Setter{
+            code: "field_location"
+            property alias prop: locationField.text
+        }
+
         Focuser {
+            id: locationField_Focuser
             code: "field_location"
         }
     }
