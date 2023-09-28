@@ -127,7 +127,7 @@ class SlotBridge(QObject):
     def flipValueInCategory(self, categoryIndex):
         print(f'Flip photo: {DataManager.photoURLs[DataManager.index.photo]} value for category: {DataManager.dataList[categoryIndex].title}')
         #data.flipValueInCategory(categoryIndex)
-        DataManager.FlipValue(DataManager.getCategory(categoryIndex))
+        DataManager.FlipValue(DataManager.getCategory(categoryIndex), index.photo)
 
         photoData = DataManager.getPhotoData()
         return self._cleanPhotoData(photoData)
