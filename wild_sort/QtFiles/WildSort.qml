@@ -145,6 +145,10 @@ Window {
                 ShowerHider {
                     code: "text_photocounter"
                 }
+                Setter {
+                    code: "text_photocounter"
+                    property alias prop: textPhotoCounter.text
+                }
             }
 
             Text {
