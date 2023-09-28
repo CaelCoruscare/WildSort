@@ -145,10 +145,10 @@ class ImageViewer(WildScreen):
 
     def show(self):
         super().show()
-        cat = DataManager.getCategory(index.category)
-        self._categoryText.set(cat.title)
+        c = DataManager.getCategory(index.category)
+        self._categoryText.set(c.title)
         self._categoryText.show()
-        self._photoCounter.set( str(index.photo+1) + '/' + str(cat.countPhotos()) )
+        self._photoCounter.set( c.getPhotoCounter(index.photo) )
 
     def hide(self):
         super().hide()

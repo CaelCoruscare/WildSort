@@ -10,6 +10,7 @@ import ImageSorting.CallsToUI as ui
 from WildElements.WildElement import WildElement
 from WildElements import WildScreens as Screens
 photoElement = WildElement('photo')
+photoCounterElement = WildElement('text_photocounter')
 
 smallDelay = 0.05
 
@@ -27,6 +28,8 @@ def nextPhoto():
             index.photo +=1
         else:
             photoElement.set(DataManager.getPhotoURL(index.photo))
+            c = DataManager.getCategory(index.category)
+            photoCounterElement.set( c.getPhotoCounter(index.photo) )
             return
         
     #Go to NextCategory screen or PrintReport screen
@@ -40,6 +43,8 @@ def previousPhoto():
             index.photo -=1
         else: 
             photoElement.set(DataManager.getPhotoURL(index.photo))
+            c = DataManager.getCategory(index.category)
+            photoCounterElement.set( c.getPhotoCounter(index.photo) )
             return
 
     Screens.screenManager.back()
