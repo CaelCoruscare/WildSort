@@ -12,6 +12,8 @@ pyside6 = "^6.5.2"
 natsort = "^8.4.0"
 exifread = "^3.0.0"
 pyparsing = "^3.1.1"
+ultralytics = "^8.0.188"
+onnx = "^1.14.1"
 
 
 [build-system]

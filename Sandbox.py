@@ -1,9 +1,62 @@
-import random
+from ultralytics import YOLO
 
-prizes = ['trophy','stuffed animal','money','candy','vacation']
-print()
-prize = random.sample(prizes,1) 
-print(f'Your prize is {prize}')
+
+# Load a model
+model = YOLO('yolov8n.pt')  # pretrained YOLOv8n model
+
+# Run batched inference on a list of images
+results = model(
+    ['/Users/3rd/Desktop/Photos for Initial Testing of Yolo/Dogs/IMG_0122_Not Setup or Takedown_Any Trigger_Human Elements_Humans on Foot_Domestic Animals_Domestic Dogs.JPG',
+      '/Users/3rd/Desktop/Photos for Initial Testing of Yolo/Humans/IMG_0117_Not Setup or Takedown_Any Trigger_Human Elements_Humans on Foot.JPG',
+      '/Users/3rd/Desktop/Photos for Initial Testing of Yolo/Humans/IMG_0175_Not Setup or Takedown_Any Trigger_Human Elements_Humans on Foot_Domestic Animals_Shoats.JPG',
+      '/Users/3rd/Desktop/Photos for Initial Testing of Yolo/Shoats/IMG_0134_Not Setup or Takedown_Any Trigger_Domestic Animals_Shoats.JPG'
+      ], save=True)  # return a list of Results objects
+
+# Process results list
+for result in results:
+    boxes = result.boxes  # Boxes object for bbox outputs
+    masks = result.masks  # Masks object for segmentation masks outputs
+    keypoints = result.keypoints  # Keypoints object for pose outputs
+    probs = result.probs  # Probs object for classification outputs
+    print(probs)
+
+
+
+
+
+
+# # Create a new YOLO model from scratch
+# model = YOLO('yolov8n.yaml')
+
+# # Load a pretrained YOLO model (recommended for training)
+# model = YOLO('yolov8n.pt')
+
+# # Train the model using the 'coco128.yaml' dataset for 3 epochs
+# results = model.train(data='coco128.yaml', epochs=3)
+
+# # Evaluate the model's performance on the validation set
+# results = model.val()
+
+# # Perform object detection on an image using the model
+# results = model('https://ultralytics.com/images/bus.jpg')
+
+# # Export the model to ONNX format
+# success = model.export(format='onnx')
+
+# print(success)
+
+
+
+
+
+
+
+# import random
+
+# prizes = ['trophy','stuffed animal','money','candy','vacation']
+# print()
+# prize = random.sample(prizes,1) 
+# print(f'Your prize is {prize}')
 
 
 #>>>Your prize is {}
