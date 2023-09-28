@@ -6,11 +6,8 @@ model = YOLO('yolov8n.pt')  # pretrained YOLOv8n model
 
 # Run batched inference on a list of images
 results = model(
-    ['/Users/3rd/Desktop/Photos for Initial Testing of Yolo/Dogs/IMG_0122_Not Setup or Takedown_Any Trigger_Human Elements_Humans on Foot_Domestic Animals_Domestic Dogs.JPG',
-      '/Users/3rd/Desktop/Photos for Initial Testing of Yolo/Humans/IMG_0117_Not Setup or Takedown_Any Trigger_Human Elements_Humans on Foot.JPG',
-      '/Users/3rd/Desktop/Photos for Initial Testing of Yolo/Humans/IMG_0175_Not Setup or Takedown_Any Trigger_Human Elements_Humans on Foot_Domestic Animals_Shoats.JPG',
-      '/Users/3rd/Desktop/Photos for Initial Testing of Yolo/Shoats/IMG_0134_Not Setup or Takedown_Any Trigger_Domestic Animals_Shoats.JPG'
-      ], save=True)  # return a list of Results objects
+    '/Users/3rd/Desktop/Photos for Initial Testing of Yolo/Humans/'
+    , save=True)  # return a list of Results objects
 
 # Process results list
 for result in results:

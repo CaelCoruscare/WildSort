@@ -77,6 +77,8 @@ class SlotBridge(QObject):
 
     @Slot()
     def previousPhoto(self):
+        ui.flashIcon('back')
+
         mutexify_ButAllowUIUpdates(
             SortLogic.previousPhoto()
             , []
