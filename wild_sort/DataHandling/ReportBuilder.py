@@ -213,13 +213,10 @@ def _getFileData(fileURL):
 def _getNoteColumn(photoURLs, notes:dict):
     notesColumn = [''] * len(photoURLs)
 
-    tutorialNote = notes.get(-1)
-    del notes[-1] #Remove -1 key if it exists
-
     for key in notes:
         notesColumn[key] = notes[key]
 
-    notes[-1] = tutorialNote
+    notes.clear()
 
     return ReportParts(
         headers=['Notes'],
