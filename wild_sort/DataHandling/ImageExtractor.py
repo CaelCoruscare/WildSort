@@ -7,12 +7,17 @@ def getImages(folderURL: str) -> list[str]:
     """Gets the URLs of all 'jpeg' images in the folder and subfolders, natsorted."""
     cleaned = _cleanURL(folderURL)
 
+    print(f"cleaned: {cleaned}")
+
     #Get all files in the directory
     photoURLs = _recursiveGetFiles(cleaned)
     #Cut out any that aren't jpeg
     photoURLs = [file for file in photoURLs if file.endswith(('.jpeg', '.JPEG', '.jpg', '.JPG'))]
     #Sort 
     photoURLs = natsorted(photoURLs)
+
+
+    print(f"sorted: {photoURLs}")
 
     return photoURLs
     
@@ -21,6 +26,9 @@ def _recursiveGetFiles(folderURL):
     #os.listdir(folderURL)
     allFiles = []
     for folderPath, subfolders, files in os.walk(folderURL):
+
+        print(f"folderURL: {folderURL}")
+        print(f"folderPath: {folderPath}")
         #Make sure it is the full URL, not just the filename
         allFiles.extend([(folderPath + '/' + file) for file in files]) 
 
