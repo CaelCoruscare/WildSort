@@ -45,8 +45,8 @@ def tryInitializeFromFolder(folderURL)->bool:
 
 
 def getPhotoURL(photoIndex):
-    return yoloPhotoURLs[photoIndex]
-    #return photoURLs[photoIndex]
+    #return yoloPhotoURLs[photoIndex]
+    return photoURLs[photoIndex]
 
 
 ###----------------------------------
