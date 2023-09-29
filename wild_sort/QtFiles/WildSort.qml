@@ -99,6 +99,10 @@ Window {
             Screen_ChooseFolder {
             }
 
+            Screen_AI_Thinking{
+                
+            }
+
             Screen_CameraAndLocationForm {
             }
 

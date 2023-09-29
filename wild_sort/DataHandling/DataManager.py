@@ -8,6 +8,7 @@ import DataHandling.ImageExtractor as ImageExtractor
 from DataHandling.Category import Category
 from DataHandling.FlipValue import FlipValue
 
+import WildAI
 
 @dataclass
 class Index():
@@ -23,6 +24,7 @@ index = Index(-1,0)
 ###Photos
 
 photoURLs = list[str]
+yoloPhotoURLs = list[str]
     
 def tryInitializeFromFolder(folderURL)->bool:
     global photoURLs
@@ -43,7 +45,8 @@ def tryInitializeFromFolder(folderURL)->bool:
 
 
 def getPhotoURL(photoIndex):
-    return photoURLs[photoIndex]
+    return yoloPhotoURLs[photoIndex]
+    #return photoURLs[photoIndex]
 
 
 ###----------------------------------

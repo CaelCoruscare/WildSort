@@ -9,15 +9,20 @@ results = model(
     '/Users/3rd/Desktop/Photos for Initial Testing of Yolo/Humans/'
     , save=True)  # return a list of Results objects
 
+
 # Process results list
 for result in results:
     boxes = result.boxes  # Boxes object for bbox outputs
     masks = result.masks  # Masks object for segmentation masks outputs
     keypoints = result.keypoints  # Keypoints object for pose outputs
     probs = result.probs  # Probs object for classification outputs
-    print(probs)
-
-
+    
+    print()
+    print('confidences: ')
+    for box in boxes:
+        print(model.names[int(box.cls)])
+        print(box.conf.numpy()[0])
+    print()
 
 
 

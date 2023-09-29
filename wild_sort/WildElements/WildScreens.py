@@ -59,6 +59,14 @@ class ChooseFolder(WildScreen):
         return self #Ignore going back on this screen
     pass
 
+class AIThinking(WildScreen):
+    def previousScreen(self) -> WildScreen:
+        return self #Ignore going back on this screen
+    
+    def show(self):
+        return super().show()
+    pass
+
 
 class CameraAndLocation(WildScreen):
     _cameraField = WildElement(code='field_camera')
@@ -86,6 +94,10 @@ class CameraAndLocation(WildScreen):
         location = ReportBuilder.location
 
         return (camera, location)
+    
+
+    def previousScreen(self) -> WildScreen:
+        return self #Ignore going back on this screen
     pass
 
 
@@ -184,7 +196,8 @@ class ScreenManager():
 
     def __init__(self):
         cf = ChooseFolder('screen_choosefolder', None)
-        cl = CameraAndLocation('screen_cameralocation', previousScreen=cf)
+        at = AIThinking('screen_ai_thinking', previousScreen=cf)
+        cl = CameraAndLocation('screen_cameralocation', previousScreen=at)
         tk = TutorialKeys('screen_tutorial_keys', previousScreen=cl)
         tw = TutorialWhatClick('screen_tutorial_whatclick', previousScreen=tk)
         nc = NextCategory('screen_nextcategory', previousScreen=tw)

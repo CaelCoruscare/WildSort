@@ -8,7 +8,7 @@ def getImages(folderURL: str) -> list[str]:
     cleaned = _cleanURL(folderURL)
 
     #Get all files in the directory
-    photoURLs = _recursiveGetFiles(folderURL)
+    photoURLs = _recursiveGetFiles(cleaned)
     #Cut out any that aren't jpeg
     photoURLs = [file for file in photoURLs if file.endswith(('.jpeg', '.JPEG', '.jpg', '.JPG'))]
     #Sort 
@@ -27,6 +27,11 @@ def _recursiveGetFiles(folderURL):
     return allFiles
 
 def _cleanURL(dirty: str) -> str:
-    #TODO: This should return a useable URL based on the operating system. It should pass the associated test in /Testing/Test_ImageExtractor
-    return dirty
+    """This returns a useable URL based on the operating system. It should pass the associated test in /Testing/Test_ImageExtractor"""
+    better = dirty.split(':',1)[1]
+    
+    if ':' in better: #This is true if operating system is Windows
+        return better[3:]
+    else:
+        return better[2:]
 

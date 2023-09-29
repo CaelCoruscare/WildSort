@@ -1,7 +1,7 @@
 import random
 import unittest
 
-import DataHandling.ImageExtractor as extractor
+import wild_sort.DataHandling.ImageExtractor as extractor
 
 class Test_ImageExtractor(unittest.TestCase):
 

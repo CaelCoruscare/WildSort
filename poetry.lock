@@ -2,13 +2,13 @@
 
 [[package]]
 name = "altgraph"
-version = "0.17.3"
+version = "0.17.4"
 description = "Python graph (network) package"
 optional = false
 python-versions = "*"
 files = [
-    {file = "altgraph-0.17.3-py2.py3-none-any.whl", hash = "sha256:c8ac1ca6772207179ed8003ce7687757c04b0b71536f81e2ac5755c6226458fe"},
-    {file = "altgraph-0.17.3.tar.gz", hash = "sha256:ad33358114df7c9416cdb8fa1eaa5852166c505118717021c6a8c7c7abbd03dd"},
+    {file = "altgraph-0.17.4-py2.py3-none-any.whl", hash = "sha256:642743b4750de17e655e6711601b077bc6598dbfa3ba5fa2b2a35ce12b508dff"},
+    {file = "altgraph-0.17.4.tar.gz", hash = "sha256:1b5afbb98f6c4dcadb2e2ae6ab9fa994bbb8c1d75f4fa96d340f9437ae454406"},
 ]
 
 [[package]]
@@ -429,13 +429,13 @@ files = [
 
 [[package]]
 name = "macholib"
-version = "1.16.2"
+version = "1.16.3"
 description = "Mach-O header analysis and editing"
 optional = false
 python-versions = "*"
 files = [
-    {file = "macholib-1.16.2-py2.py3-none-any.whl", hash = "sha256:44c40f2cd7d6726af8fa6fe22549178d3a4dfecc35a9cd15ea916d9c83a688e0"},
-    {file = "macholib-1.16.2.tar.gz", hash = "sha256:557bbfa1bb255c20e9abafe7ed6cd8046b48d9525db2f9b77d3122a63a2a8bf8"},
+    {file = "macholib-1.16.3-py2.py3-none-any.whl", hash = "sha256:0e315d7583d38b8c77e815b1ecbdbf504a8258d8b3e17b61165c6feb60d18f2c"},
+    {file = "macholib-1.16.3.tar.gz", hash = "sha256:07ae9e15e8e4cd9a788013d81f5908b3609aa76f9b1421bae9c4d7606ec86a30"},
 ]
 
 [package.dependencies]
@@ -700,18 +700,18 @@ lint = ["lintrunner (>=0.10.0)", "lintrunner-adapters (>=0.3)"]
 
 [[package]]
 name = "opencv-python"
-version = "4.8.0.76"
+version = "4.8.1.78"
 description = "Wrapper package for OpenCV python bindings."
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "opencv-python-4.8.0.76.tar.gz", hash = "sha256:56d84c43ce800938b9b1ec74b33942b2edbcef3f70c2754eb9bfe5dff1ee3ace"},
-    {file = "opencv_python-4.8.0.76-cp37-abi3-macosx_10_16_x86_64.whl", hash = "sha256:67bce4b9aad307c98a9a07c6afb7de3a4e823c1f4991d6d8e88e229e7dfeee59"},
-    {file = "opencv_python-4.8.0.76-cp37-abi3-macosx_11_0_arm64.whl", hash = "sha256:48eb3121d809a873086d6677565e3ac963e6946110d13cd115533fa70e2aa2eb"},
-    {file = "opencv_python-4.8.0.76-cp37-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:93871871b1c9d6b125cddd45b0638a2fa01ee9fd37f5e428823f750e404f2f15"},
-    {file = "opencv_python-4.8.0.76-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:9bcb4944211acf13742dbfd9d3a11dc4e36353ffa1746f2c7dcd6a01c32d1376"},
-    {file = "opencv_python-4.8.0.76-cp37-abi3-win32.whl", hash = "sha256:b2349dc9f97ed6c9ba163d0a7a24bcef9695a3e216cd143e92f1b9659c5d9a49"},
-    {file = "opencv_python-4.8.0.76-cp37-abi3-win_amd64.whl", hash = "sha256:ba32cfa75a806abd68249699d34420737d27b5678553387fc5768747a6492147"},
+    {file = "opencv-python-4.8.1.78.tar.gz", hash = "sha256:cc7adbbcd1112877a39274106cb2752e04984bc01a031162952e97450d6117f6"},
+    {file = "opencv_python-4.8.1.78-cp37-abi3-macosx_10_16_x86_64.whl", hash = "sha256:91d5f6f5209dc2635d496f6b8ca6573ecdad051a09e6b5de4c399b8e673c60da"},
+    {file = "opencv_python-4.8.1.78-cp37-abi3-macosx_11_0_arm64.whl", hash = "sha256:bc31f47e05447da8b3089faa0a07ffe80e114c91ce0b171e6424f9badbd1c5cd"},
+    {file = "opencv_python-4.8.1.78-cp37-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:9814beca408d3a0eca1bae7e3e5be68b07c17ecceb392b94170881216e09b319"},
+    {file = "opencv_python-4.8.1.78-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:c4c406bdb41eb21ea51b4e90dfbc989c002786c3f601c236a99c59a54670a394"},
+    {file = "opencv_python-4.8.1.78-cp37-abi3-win32.whl", hash = "sha256:a7aac3900fbacf55b551e7b53626c3dad4c71ce85643645c43e91fcb19045e47"},
+    {file = "opencv_python-4.8.1.78-cp37-abi3-win_amd64.whl", hash = "sha256:b983197f97cfa6fcb74e1da1802c7497a6f94ed561aba6980f1f33123f904956"},
 ]
 
 [package.dependencies]
@@ -964,13 +964,13 @@ hook-testing = ["execnet (>=1.5.0)", "psutil", "pytest (>=2.7.3)"]
 
 [[package]]
 name = "pyinstaller-hooks-contrib"
-version = "2023.8"
+version = "2023.9"
 description = "Community maintained hooks for PyInstaller"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "pyinstaller-hooks-contrib-2023.8.tar.gz", hash = "sha256:318ccc316fb2b8c0bbdff2456b444bf1ce0e94cb3948a0f4dd48f6fc33d41c01"},
-    {file = "pyinstaller_hooks_contrib-2023.8-py2.py3-none-any.whl", hash = "sha256:d091a52fbeed71cde0359aa9ad66288521a8441cfba163d9446606c5136c72a8"},
+    {file = "pyinstaller-hooks-contrib-2023.9.tar.gz", hash = "sha256:76084b5988e3957a9df169d2a935d65500136967e710ddebf57263f1a909cd80"},
+    {file = "pyinstaller_hooks_contrib-2023.9-py2.py3-none-any.whl", hash = "sha256:f34f4c6807210025c8073ebe665f422a3aa2ac5f4c7ebf4c2a26cc77bebf63b5"},
 ]
 
 [[package]]
@@ -1339,6 +1339,38 @@ typing-extensions = "*"
 opt-einsum = ["opt-einsum (>=3.3)"]
 
 [[package]]
+name = "torchaudio"
+version = "2.0.2"
+description = "An audio package for PyTorch"
+optional = false
+python-versions = "*"
+files = [
+    {file = "torchaudio-2.0.2-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:80c64dabb9d8c33bc6f2a8e0c7ebe17ea87f5028931c0d6a2f73b9e16b5272d0"},
+    {file = "torchaudio-2.0.2-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:1619673500fe08ae96b71952f03ecfc74e7d0843cd9882193d0642a82724f537"},
+    {file = "torchaudio-2.0.2-cp310-cp310-manylinux1_x86_64.whl", hash = "sha256:4dbc7dd84be522f6d1159d33f5cf2fe08656ac5e8402ac2aa07cb626fed4b700"},
+    {file = "torchaudio-2.0.2-cp310-cp310-manylinux2014_aarch64.whl", hash = "sha256:dadf237b4fd155a3d213bdfeffeded47f5a553d383817500438b44f24fa53851"},
+    {file = "torchaudio-2.0.2-cp310-cp310-win_amd64.whl", hash = "sha256:2f975083ba66f0837ea4b55fb8d81f31a63a4a27f8628e54c1e16ebda1842931"},
+    {file = "torchaudio-2.0.2-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:a6cba80d9ab3a2ec1317cdc5cbc0654a189a26e3d8b28ef9f83336159fd5e5e9"},
+    {file = "torchaudio-2.0.2-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:15327132b28f34963baa6fe1813030a634d2581aa9ca120f730c1e8fabdc1102"},
+    {file = "torchaudio-2.0.2-cp311-cp311-manylinux1_x86_64.whl", hash = "sha256:b44ec89d4274856f58d55bce4f90e4294ee26ec3020dc39b3081d541d7fd6184"},
+    {file = "torchaudio-2.0.2-cp311-cp311-manylinux2014_aarch64.whl", hash = "sha256:b22aceaa1ec5a3310cc15642d19dd00d53a7ce399b9096ad1dea0b24e5097af3"},
+    {file = "torchaudio-2.0.2-cp311-cp311-win_amd64.whl", hash = "sha256:2b37ed5ea4846ce334e7a4a93ca798683088b49e9a4943ed04f4fc4ba1ddc3c4"},
+    {file = "torchaudio-2.0.2-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:a8283dd61c579ea5b14d6773bbc0bf84573b12b37f05f02bb4b2425d77767284"},
+    {file = "torchaudio-2.0.2-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:28c9be830608f93c906770eb7b4880962f8fef9bd5275ac5b48c850f3cc4bc32"},
+    {file = "torchaudio-2.0.2-cp38-cp38-manylinux1_x86_64.whl", hash = "sha256:286061f9999905a6b96107c7ac751a4016985a8e2087250ab8328845e4128952"},
+    {file = "torchaudio-2.0.2-cp38-cp38-manylinux2014_aarch64.whl", hash = "sha256:ee08ec303050405998e74a0a3649aee4d16408c2eb4bb1f8c7a726318b1ce1b7"},
+    {file = "torchaudio-2.0.2-cp38-cp38-win_amd64.whl", hash = "sha256:ad43c0ffaa6771bfa05669bb1d8c3c179c859e92efd985683a78d6d313ecefb6"},
+    {file = "torchaudio-2.0.2-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:1138a1c39da2445a1caca20ddce1e77c9657e92263eb34376024f517f5284d4b"},
+    {file = "torchaudio-2.0.2-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:de5d94cb8305c00268dfbc576ca7e445f40891e024a9e5e28c63ad9f851e541a"},
+    {file = "torchaudio-2.0.2-cp39-cp39-manylinux1_x86_64.whl", hash = "sha256:6c617d5978a6b8a29d6675dcd18196e6dc541daac44b7b2b6eeb31aed82f3203"},
+    {file = "torchaudio-2.0.2-cp39-cp39-manylinux2014_aarch64.whl", hash = "sha256:a74f33da0b3c53b770f583a02cabd59196f089fb77a65eb39cd5d811b5a21d63"},
+    {file = "torchaudio-2.0.2-cp39-cp39-win_amd64.whl", hash = "sha256:66df470da29964d7c1e8106a42f5f5c9bc09e824083675ce3aba054d68b4af54"},
+]
+
+[package.dependencies]
+torch = "2.0.1"
+
+[[package]]
 name = "torchvision"
 version = "0.15.2"
 description = "image and video datasets and models for torch deep learning"
@@ -1469,4 +1501,4 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "3.11.5"
-content-hash = "006c5a8956603b96d1b3f8b6a5fcb266179b14fb5ee84aeca2f4427ae6c3e21a"
+content-hash = "cb0f43e3f574b75e504ecd529cf9d6f1deddd064cbbb7a16777bcdc689297d32"

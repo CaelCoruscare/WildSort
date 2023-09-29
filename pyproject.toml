@@ -14,6 +14,9 @@ exifread = "^3.0.0"
 pyparsing = "^3.1.1"
 ultralytics = "^8.0.188"
 onnx = "^1.14.1"
+torch = "^2.0.1"
+torchvision = "^0.15.2"
+torchaudio = "^2.0.2"
 
 
 [build-system]

@@ -41,17 +41,17 @@ class SlotBridge(QObject):
             )
 
     def _handleFolderChosen(self, folderURL):
-        #Fix for QT Filepath:  
-        #   file:///Users/test/Pictures --> /Users/test/Pictures
-        folderURLFixed = folderURL[7:]
+        if DataManager.tryInitializeFromFolder(folderURL):
+            Screens.screenManager.next()
+    
+            DataManager.yoloPhotoURLs = DataManager.WildAI.yoloPhotos(DataManager.photoURLs)
 
-        if DataManager.tryInitializeFromFolder(folderURLFixed):
             #This is for the Notes popup
             ui.createCategoryCheckboxes(
                 categoryTitles=[category.title for category in DataManager.dataList], 
                 indentation=[category.countAncestors() for category in DataManager.dataList])
 
-            ReportBuilder.folderOfPhotos = folderURLFixed
+            ReportBuilder.folderOfPhotos = DataManager.ImageExtractor._cleanURL(folderURL)
 
             Screens.screenManager.next()
         
