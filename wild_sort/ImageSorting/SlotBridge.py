@@ -46,9 +46,9 @@ class SlotBridge(QObject):
         if DataManager.tryInitializeFromFolder(folderURL):
             Screens.screenManager.next()
     
-            #DataManager.yoloPhotoURLs = DataManager.WildAI.yoloPhotos(DataManager.photoURLs)
+            DataManager.yoloPhotoURLs = DataManager.WildAI.yoloPhotos(DataManager.photoURLs)
 
-            #print(DataManager.yoloPhotoURLs)
+            print(DataManager.yoloPhotoURLs)
 
             #This is for the Notes popup
             ui.createCategoryCheckboxes(
