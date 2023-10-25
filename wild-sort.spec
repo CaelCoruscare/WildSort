@@ -13,7 +13,7 @@ a = Analysis(
     ['wild_sort/main.py'],
     pathex=['wild_sort'],
     binaries=[],
-    datas=ultra_files.extend([('wild_sort/QtFiles', 'QtFiles'), ('wild_sort/default.yaml', '.')]),
+    datas=[('wild_sort/QtFiles', 'QtFiles'), ('wild_sort/default.yaml', 'ultralytics/cfg')],
     #
     hiddenimports=[],
     hookspath=[],
