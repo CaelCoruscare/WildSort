@@ -1,12 +1,30 @@
 from ultralytics import YOLO
 
 
-# Load a model
-model = YOLO('yolov8n.pt')  # pretrained YOLOv8n model
+# Load initial model
+#model = YOLO('yolov8n.pt')  # pretrained YOLOv8n model
+
+# Load new model
+model = YOLO("/opt/homebrew/runs/detect/train8/weights/best.pt")
+
+    #'/opt/homebrew/runs/detect/predict17'
+#
+
+#-----
+
+
+# Train the model with 2 GPUs
+results = model.train(data='config.yaml', epochs=2, imgsz=640, device='mps')
+
+
+
+
+#----
 
 # Run batched inference on a list of images
 results = model(
-    '/Users/3rd/Desktop/Photos for Initial Testing of Yolo/Humans/'
+    '/Users/3rd/Desktop/B1-6 Photos Together/b1to6/images/test'
+    #'/Users/3rd/Desktop/Photos for Initial Testing of Yolo/B1/Shoats/'
     , save=True)  # return a list of Results objects
 
 
@@ -21,7 +39,7 @@ for result in results:
     print('confidences: ')
     for box in boxes:
         print(model.names[int(box.cls)])
-        print(box.conf.numpy()[0])
+        print(box.conf.cpu().numpy()[0])
     print()
 
 
