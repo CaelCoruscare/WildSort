@@ -1,0 +1,19 @@
+path: /Users/3rd/Desktop/B1-6 Photos Together/b1to6
+train: images/train
+val: images/validate
+
+nc: 11
+
+#Classes
+names:
+  0: person
+  1: dog
+  2: goat
+  3: sheep
+  4: camel
+  5: donkey
+  6: elephant
+  7: gerenuk
+  8: hyena
+  9: warthog
+  10: baboon
